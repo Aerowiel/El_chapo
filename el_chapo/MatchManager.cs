@@ -47,9 +47,10 @@ namespace el_chapo
         {
             StringBuilder sb = new StringBuilder();
             int index = 0;
-            // Affiche uniquement les catcheurs OP 
+            // Affiche uniquement les catcheurs OP fdp vgrf,f,fi hgitursjgkrjieozjgier
             foreach (Catcheur catcheur in Catcheurs)
             {
+
                 if (catcheur.CatcheurState == CatcheurState.Opérationnel)
                     sb.AppendLine(catcheur.Describe(index++));
             }
