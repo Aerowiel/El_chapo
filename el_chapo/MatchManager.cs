@@ -47,7 +47,8 @@ namespace el_chapo
         {
             StringBuilder sb = new StringBuilder();
             int index = 0;
-            // Affiche uniquement les catcheurs OP fdp vgrf,f,fi hgitursjgkrjieozjgier
+            // Affiche uniquement les catcheurs OP 
+
             foreach (Catcheur catcheur in Catcheurs)
             {
 
@@ -63,14 +64,14 @@ namespace el_chapo
             concurants = new Catcheur[2];
 
             int tempP1;
-            int tempP2 = 666;
+            int tempP2 = int.MaxValue;
 
             Console.WriteLine("Choisissez le 1er catcheur : ");
             tempP1 = MenuManager.instance.TestUserInput(0, opATM);
 
             do
             {
-                if(tempP2 == 666)
+                if(tempP2 == int.MaxValue)
                 {
                     Console.WriteLine("Choisissez le 2éme catcheur : ");
                     tempP2 = MenuManager.instance.TestUserInput(0, opATM);
