@@ -41,4 +41,6 @@ Bret Benoit                       - A : 0.33 | D : 0.33 | S : 0.33 -> 0.08 HP ad
 NaN :
 
 Madusa                            - A : 0.33 | D : 0.33 | S : 0.33 -> 0.4 bloque 4 dmgs et inflige 1HP Oui et non
+
+
 Raie Mystérieuse                  - A : 0.33 | D : 0.33 | S : 0.33 -> 0.6 inflige attaque + 1, bloque 2dmgs Non et Oui
