@@ -11,7 +11,9 @@ namespace el_chapo
         public List<Catcheur> Catcheurs { get; set; }
         public static MatchManager instance = new MatchManager();
         public static Random dice = new Random();
+
         private Boolean someoneIsDead = false;
+        private Catcheur whoIsDead;
 
         private int opATM;
 
@@ -56,6 +58,18 @@ namespace el_chapo
                     sb.AppendLine(catcheur.Describe(index++));
             }
             opATM = index;
+            return sb;
+        }
+
+        public StringBuilder DisplayFullCatcheurList()
+        {
+            StringBuilder sb = new StringBuilder();
+            int index = 0;
+
+            foreach (Catcheur catcheur in Catcheurs)
+            {
+                sb.AppendLine(catcheur.Describe(index++));
+            }
             return sb;
         }
 
@@ -120,12 +134,7 @@ namespace el_chapo
                     string trinaryAction = "" + ((int)c1.action) + "" + ((int)c2.action);
                     Console.WriteLine(GetMatchUpScreen(c1, c2));
                     IterationMatchUp(trinaryAction, c1, c2);
-
-                    if (c1.CatcheurState == CatcheurState.Mort || c2.CatcheurState == CatcheurState.Mort)
-                    {
-                        Console.WriteLine("Le Match est terminé l'un des participant est mort...");
-                        someoneIsDead = true;
-                    }
+                    CheckDeath(c1, c2);
                     Console.WriteLine($"Resultat : \n{c1.Pseudo} : {c1.Vie} HP\n{c2.Pseudo} : {c2.Vie}HP");
 
                 }
@@ -134,6 +143,7 @@ namespace el_chapo
                     break;
                 }
 
+                DisplayEndScreen(c1,c2);
                 Console.WriteLine("Break successfull");
             }
 
@@ -160,14 +170,14 @@ namespace el_chapo
                         if (!c2.AttaqueCible(c1, null))
                         {
                             // Le c1 est mort
-                            Console.WriteLine($"{c1.Pseudo} est mort sur le coup... FIN DU MATCH !");
+                            Console.WriteLine($"{c1.Pseudo} est mort sur le coup...");
                         }
 
                     }
                     else
                     {
                         // Le c2 est mort
-                        Console.WriteLine($"{c2.Pseudo} est mort sur le coup... FIN DU MATCH !");
+                        Console.WriteLine($"{c2.Pseudo} est mort sur le coup...");
                     }
                     Console.WriteLine($"Resultat : \n{c1.Pseudo} : {c1.Vie} HP\n{c2.Pseudo} : {c2.Vie}HP");
                     break;
@@ -175,7 +185,10 @@ namespace el_chapo
                 // Attaque - Defense
                 case "01": //fait
                     Console.WriteLine($"{c1.Pseudo} attaque {c2.Pseudo} à hauteur de {c1.Attaque}, {c2.Pseudo} aborsbe {c2.Defense} point(s) de dégat !");
-                    c1.AttaqueCible(c2, c2.Defense);
+                    if(!c1.AttaqueCible(c2, c2.Defense))
+                    {
+                        Console.WriteLine($"{c2.Pseudo} est mort sur le coup...");
+                    }
                     break;
 
                 case "02":
@@ -183,12 +196,15 @@ namespace el_chapo
                     break;
                 
                 // Defense - Attaque
-                case "10":
+                case "10": //fait
                     Console.WriteLine($"{c2.Pseudo} attaque {c1.Pseudo} à hauteur de {c2.Attaque}, {c1.Pseudo} aborsbe {c1.Defense} point(s) de dégat !");
-                    c2.AttaqueCible(c1, c1.Defense);
+                    if (c2.AttaqueCible(c1, c1.Defense))
+                    {
+                        Console.WriteLine($"{c2.Pseudo} est mort sur le coup...");
+                    }
                     break;
                 // Defense - Defense MDR
-                case "11":
+                case "11": //fait
                     Console.WriteLine($"{c1.Pseudo} et {c2.Pseudo} se regardent droit dans les yeux, tous deux en position de défense, malheureusement personne ne décidera d'attaquer ce tour-ci...");
                     break;
                 case "12":
@@ -205,7 +221,31 @@ namespace el_chapo
                     break;
             }
         }
+        
+        private void CheckDeath(Catcheur c1, Catcheur c2)
+        {
+            if (c1.CatcheurState == CatcheurState.Mort)
+            {
+                Console.WriteLine($"Quelle HORREUR !! {c1.Pseudo} est mort !! FIN DU MATCH !!");
+                whoIsDead = c1;
+                someoneIsDead = true;
+            }
+            else if (c2.CatcheurState == CatcheurState.Mort)
+            {
+                Console.WriteLine($"Quelle HORREUR !! {c2.Pseudo} est mort !! FIN DU MATCH !!");
+                whoIsDead = c2;
+                someoneIsDead = true;
+            }
 
+        }
+
+        private void DisplayEndScreen(Catcheur c1, Catcheur c2)
+        {
+            Console.Clear();
+            Console.WriteLine("THE END");
+            Console.WriteLine("Résumé : ");
+            // à faire par qui veux
+        }
 
     }
 }
