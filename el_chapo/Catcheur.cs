@@ -8,7 +8,7 @@ namespace el_chapo
 {
     public enum CatcheurType { Agile, Brute }
     public enum CatcheurState { Opérationnel, Convalescent, Mort }
-    public enum CatcheurAction { Attack, Defend, SpecialAttack, SpeAttackFailed }
+    public enum CatcheurAction { Attack, Defend, SpecialAttack, SpeAttackFailed, Heal }
 
     public class Catcheur
     {
@@ -23,6 +23,7 @@ namespace el_chapo
 
         public int BonusAttack { get; set; }
         public int BonusDefense { get; set; }
+        public int BonusHeal { get; set; }
 
         public SpecialAttack SpecialAtk { get; set; }
 
@@ -89,13 +90,18 @@ namespace el_chapo
             int targetDefense;
             if(cible.action == CatcheurAction.Attack || cible.action == CatcheurAction.SpeAttackFailed)
             {
-                Console.WriteLine($"{this.Pseudo} attaque {cible.Pseudo} à hauteur de {this.Attack + this.BonusAttack}, {cible.Pseudo} n'absorbe aucun point de dégat !");
+                Console.WriteLine($"{Pseudo} attaque {cible.Pseudo} à hauteur de {Attack + BonusAttack}, {cible.Pseudo} n'absorbe aucun point de dégat !");
                 targetDefense = 0;
+            }
+            else if(cible.action == CatcheurAction.Defend)
+            {
+                Console.WriteLine($"{Pseudo} attaque {cible.Pseudo} à hauteur de {Attack + BonusAttack}, {cible.Pseudo} absorbe {cible.Defense + cible.BonusDefense} point de dégat !");
+                targetDefense = cible.Defense + cible.BonusDefense;
             }
             else
             {
-                Console.WriteLine($"{this.Pseudo} attaque {cible.Pseudo} à hauteur de {this.Attack + this.BonusAttack}, {cible.Pseudo} absorbe {cible.Defense + cible.BonusDefense} point de dégat !");
-                targetDefense = cible.Defense + cible.BonusDefense;
+                Console.WriteLine($"{Pseudo} attaque {cible.Pseudo} à hauteur de {Attack + BonusAttack}, {cible.Pseudo} n'absorbe aucun point de dégat !");
+                targetDefense = 0;
             }
             
             int healthCalculated;
@@ -120,10 +126,36 @@ namespace el_chapo
             }
         }
 
-        public Boolean AttackSpeCible(Catcheur cible, int? defense)
-        {
 
-            return false;
+        public void Heal(int amount)
+        {
+            if(this.CatcheurType == CatcheurType.Agile)
+            {
+                if (Health + amount <= 125)
+                {
+                    Console.WriteLine($"{Pseudo} se soigne à hauteur de {amount} HP.");
+                    this.Health += amount;
+                }
+                else
+                {
+                    Console.WriteLine($"{Pseudo} se soigne à hauteur de {125 - Health} HP");
+                    Health = 125;
+                }
+            }
+            else
+            {
+                if (Health + amount <= 100)
+                {
+                    Console.WriteLine($"{Pseudo} se soigne à hauteur de {amount} HP.");
+                    this.Health += amount;
+                }
+                else
+                {
+                    Console.WriteLine($"{Pseudo} se soigne à hauteur de {100 - Health} HP");
+                    this.Health = 100;
+                }
+            }
+            
         }
     }
 }

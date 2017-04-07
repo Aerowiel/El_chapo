@@ -25,7 +25,7 @@ namespace el_chapo
 
             // Special = 0.33, Attaque = 0.33, Defense = 0.33
             Catcheurs.Add(new Catcheur("L'ordonnateur des pompes funèbres", CatcheurType.Brute, CatcheurState.Opérationnel, SpecialAttack.Bloque));
-            Catcheurs.Add(new Catcheur("Jude Sunny", CatcheurType.Brute, CatcheurState.Opérationnel, SpecialAttack.Bloque));
+            Catcheurs.Add(new Catcheur("Jude Sunny", CatcheurType.Brute, CatcheurState.Opérationnel, SpecialAttack.JuddyPower));
             Catcheurs.Add(new Catcheur("Triple Hache", CatcheurType.Agile, CatcheurState.Opérationnel, SpecialAttack.Bloque));
             Catcheurs.Add(new Catcheur("Dead Poule", CatcheurType.Agile, CatcheurState.Opérationnel, SpecialAttack.Bloque));
             Catcheurs.Add(new Catcheur("Jarvan cinquième du nom", CatcheurType.Brute, CatcheurState.Convalescent, SpecialAttack.Bloque));
@@ -126,6 +126,8 @@ namespace el_chapo
                     c1.BonusDefense = 0;
                     c2.BonusAttack = 0;
                     c2.BonusDefense = 0;
+                    c1.BonusHeal = 0;
+                    c2.BonusHeal = 0;
 
                     // On détermine les actions à faire (random)
                     c1.ChooseAction();
@@ -180,24 +182,13 @@ namespace el_chapo
                 case "00": 
                     if (c1.AttackTarget(c2)) // Si c1 attaque c2 & c2 ne meurt pas
                     {
-                        if (!c2.AttackTarget(c1)) // Si c2 attaque & c1 meurt 
-                        {
-                            Console.WriteLine($"{c1.Pseudo} est mort sur le coup...");
-                        }
-
-                    }
-                    else // Si c1 attaque & c2 meurt
-                    {
-                        Console.WriteLine($"{c2.Pseudo} est mort sur le coup...");
+                        c2.AttackTarget(c1);
                     }
                     break;
 
                 // Attaque - Defense
-                case "01": 
-                    if(!c1.AttackTarget(c2))
-                    {
-                        Console.WriteLine($"{c2.Pseudo} est mort sur le coup...");
-                    }
+                case "01":
+                    c1.AttackTarget(c2);
                     break;
                 // Attaque - AttaqueSpe
                 case "02":
@@ -207,24 +198,19 @@ namespace el_chapo
                    
                 
                 // Defense - Attaque
-                case "10": //fait
-                    //Console.WriteLine($"{c2.Pseudo} attaque {c1.Pseudo} à hauteur de {c2.Attack}, {c1.Pseudo} absorbe {c1.Defense} point(s) de dégat !");
-                    if (!c2.AttackTarget(c1))
-                    {
-                        Console.WriteLine($"{c2.Pseudo} est mort sur le coup...");
-                    }
+                case "10": 
+                    c2.AttackTarget(c1);
                     break;
 
                 // Defense - Defense
-                case "11": //fait
-                    Console.WriteLine($"{c1.Pseudo} et {c2.Pseudo} se regardent droit dans les yeux, tous deux en position de défense, malheureusement personne ne décidera d'attaquer ce tour-ci...");
+                case "11":
+                    NothingIsHappening(c1, c2);
                     break;
 
                 // Defense - AttaqueSpe
                 case "12":
                     SpecialAttackManager.instance.SpecialAttackComputing(c2);
                     ManagaActionAndDisplayResult(c1, c2);
-                    // On traite les attaques spéciales plus tard hein...
                     break;
 
                 //AttaqueSpe - Attaque
@@ -287,14 +273,13 @@ namespace el_chapo
                     {
                         defenseur.AttackTarget(attaquant);
                     }
-                    else if(defenseur.action == CatcheurAction.Defend)
+                    else if(defenseur.action == CatcheurAction.Heal)
                     {
-                            Console.WriteLine($"{attaquant.Pseudo} et {defenseur.Pseudo} se regardent droit dans les yeux, tous deux en position de défense, malheureusement personne ne décidera d'attaquer ce tour-ci...");
+                        defenseur.Heal(defenseur.BonusHeal);
                     }
-                    else if(defenseur.action == CatcheurAction.SpeAttackFailed)
+                    else
                     {
-                            Console.WriteLine($"{attaquant.Pseudo} et {defenseur.Pseudo} se regardent droit dans les yeux, mais rien ne se passe...");
-
+                        NothingIsHappening(attaquant, defenseur);
                     }
 
                     break;
@@ -307,6 +292,13 @@ namespace el_chapo
                             defenseur.AttackTarget(attaquant);
                         }
                     }
+                    if(defenseur.action == CatcheurAction.Heal)
+                    {
+                        if (attaquant.AttackTarget(defenseur))
+                        {
+                            defenseur.Heal(defenseur.BonusHeal);
+                        }
+                    }
                     else if (defenseur.action == CatcheurAction.Defend)
                     {
                         attaquant.AttackTarget(defenseur);
@@ -314,6 +306,26 @@ namespace el_chapo
                     else if (defenseur.action == CatcheurAction.SpeAttackFailed)
                     {
                         attaquant.AttackTarget(defenseur);
+                    }
+                    break;
+                case CatcheurAction.Heal:
+                    if (defenseur.action == CatcheurAction.Attack)
+                    {
+                        attaquant.Heal(attaquant.BonusHeal);
+                        defenseur.AttackTarget(attaquant);
+                    }
+                    if (defenseur.action == CatcheurAction.Heal)
+                    {
+                        attaquant.Heal(attaquant.BonusHeal);
+                        defenseur.Heal(defenseur.BonusHeal);
+                    }
+                    else if (defenseur.action == CatcheurAction.Defend)
+                    {
+                        attaquant.Heal(attaquant.BonusHeal);
+                    }
+                    else if (defenseur.action == CatcheurAction.SpeAttackFailed)
+                    {
+                        attaquant.Heal(attaquant.BonusHeal);
                     }
                     break;
 
@@ -322,18 +334,22 @@ namespace el_chapo
                     {
                         defenseur.AttackTarget(attaquant);
                     }
-                    else if (defenseur.action == CatcheurAction.Defend)
+                    else if (defenseur.action == CatcheurAction.Heal)
                     {
-                        Console.WriteLine($"{attaquant.Pseudo} et {defenseur.Pseudo} se regardent droit dans les yeux, mais rien ne se passe...");
+                        defenseur.Heal(defenseur.BonusHeal);
                     }
-                    else if (defenseur.action == CatcheurAction.SpeAttackFailed)
+                    else
                     {
-                        Console.WriteLine($"{attaquant.Pseudo} et {defenseur.Pseudo} se regardent droit dans les yeux, mais rien ne se passe...");
+                        NothingIsHappening(attaquant, defenseur);
                     }
                     break;
             }
         }
 
+        private void NothingIsHappening(Catcheur c1, Catcheur c2)
+        {
+            Console.WriteLine($"{c1.Pseudo} et {c2.Pseudo} se regardent droit dans les yeux, mais rien ne se passe...");
+        }
 
     }
 }
