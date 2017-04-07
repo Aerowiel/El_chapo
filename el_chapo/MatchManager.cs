@@ -113,7 +113,7 @@ namespace el_chapo
 
             if (("John Cinéma" == CatcheursOp[tempP1].Pseudo) || ("John Cinéma" == CatcheursOp[tempP2].Pseudo))
             {
-                playSimpleSound();
+                playSimpleSoundCina();
                 Thread.Sleep(10000);
             }
             ManageFight(CatcheursOp[tempP1], CatcheursOp[tempP2]);
@@ -171,6 +171,7 @@ namespace el_chapo
                     break;
                 }
 
+                Thread.Sleep(2000);
             }
 
         }
@@ -179,7 +180,27 @@ namespace el_chapo
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine($"\n{c1.Pseudo} - {c1.Health}HP - Action : {c1.action}");
+            if(c1.action == CatcheurAction.Attack)
+            {
+                playSimpleSoundPunch();
+                Thread.Sleep(1000);
+            }
+            else if (c1.action == CatcheurAction.SpecialAttack)
+            {
+                playSimpleSoundKameha();
+                Thread.Sleep(5000);
+            }
+            Thread.Sleep(1000);
+
             sb.AppendLine($"\n{c2.Pseudo} - {c2.Health}HP - Action : {c2.action}");
+            if (c2.action == CatcheurAction.Attack)
+            {
+                playSimpleSoundPunch();
+            }
+            else if (c2.action == CatcheurAction.SpecialAttack)
+            {
+                playSimpleSoundKameha();
+            }
             return sb;
         }
 
@@ -347,9 +368,21 @@ namespace el_chapo
        
     }
 
-        public void playSimpleSound()
+        public void playSimpleSoundCina()
         {
-            SoundPlayer simpleSound = new SoundPlayer(@"C:\Users\eliot\Desktop\ynov\b2\C#\to c#\el chapo\AND GOODBYE.wav");
+            SoundPlayer simpleSound = new SoundPlayer(@"C:\Users\eliot\Desktop\ynov\b2\C#\to c#\el chapo\ressource\AND GOODBYE.wav");
+            simpleSound.Play();
+        }
+
+        public void playSimpleSoundPunch()
+        {
+            SoundPlayer simpleSound = new SoundPlayer(@"C:\Users\eliot\Desktop\ynov\b2\C#\to c#\el chapo\ressource\Punch.wav");
+            simpleSound.Play();
+        }
+
+        public void playSimpleSoundKameha()
+        {
+            SoundPlayer simpleSound = new SoundPlayer(@"C:\Users\eliot\Desktop\ynov\b2\C#\to c#\el chapo\ressource\kamehameha.wav");
             simpleSound.Play();
         }
     }
