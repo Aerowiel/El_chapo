@@ -3,9 +3,9 @@ Project c#
 
 Reflexion sur les pouvoirs + classement :
 
-FIRST signifie que le sort doit obligatoirement être pris en compte avant une eventuelle attaque de l'opposant
-!FIRST signifie que le sort n'a pas besoin d'être pris en compte au début et ne doit pas l'être !
-NaN : signifie que le pouvoir en question est à la fois FIRST et à la fois !FIRST, à voir comment on gére ça...
+*FIRST signifie que le sort doit obligatoirement être pris en compte avant une eventuelle attaque de l'opposant
+	*!FIRST signifie que le sort n'a pas besoin d'être pris en compte au début et ne doit pas l'être !
+		*NaN : signifie que le pouvoir en question est à la fois FIRST et à la fois !FIRST, à voir comment on gére ça...
 
 FIRST :
 
