@@ -8,22 +8,26 @@ namespace el_chapo
 {
     public enum CatcheurType { Agile, Brute }
     public enum CatcheurState { Opérationnel, Convalescent, Mort }
-    public enum CatcheurAction { Attaque, Defend, AttaqueSpecial }
+    public enum CatcheurAction { Attack, Defend, SpecialAttack, SpeAttackFailed }
 
     public class Catcheur
     {
         public string Pseudo { get; set; }
         public CatcheurType CatcheurType { get; set; }
         public CatcheurState CatcheurState { get; set; }
-        public int Vie { get; set; }
+        public int Health { get; set; }
         public int Defense { get; set; }
-        public int Attaque { get; set; }
+        public int Attack { get; set; }
 
         public CatcheurAction action { get; set; }
-       
+
+        public int BonusAttack { get; set; }
+        public int BonusDefense { get; set; }
+
+        public SpecialAttack SpecialAtk { get; set; }
 
 
-        public Catcheur(string pseudo, CatcheurType type, CatcheurState state)
+        public Catcheur(string pseudo, CatcheurType type, CatcheurState state, SpecialAttack specialAtk)
         {
             // Init
             Pseudo = pseudo;
@@ -33,13 +37,13 @@ namespace el_chapo
             switch (type)
             {
                 case CatcheurType.Agile:
-                    Vie = 125; //125
-                    Attaque = 3;
+                    Health = 125; //125
+                    Attack = 3;
                     Defense = 3;
                     break;
                 case CatcheurType.Brute:
-                    Vie = 100; //100
-                    Attaque = 5;
+                    Health = 100; //100
+                    Attack = 5;
                     Defense = 1;
                     break;
             }
@@ -48,7 +52,7 @@ namespace el_chapo
 
        public string Describe(int index)
         {
-            string description = $"{index}. NOM : {Pseudo} | TYPE : {CatcheurType} | HP : {Vie} | Attaque : {Attaque} | Defense : {Defense}";
+            string description = $"{index}. NOM : {Pseudo} | TYPE : {CatcheurType} | HP : {Health} | Attack : {Attack} | Defense : {Defense}";
 
             return description;
         }
@@ -62,7 +66,7 @@ namespace el_chapo
             switch (action)
             {
                 case 1:
-                    this.action = CatcheurAction.Attaque;
+                    this.action = CatcheurAction.Attack;
                     
                     break;
                 case 2:
@@ -71,26 +75,40 @@ namespace el_chapo
                     
                     break;
                 case 3:
-                    this.action = CatcheurAction.AttaqueSpecial;
+                    this.action = CatcheurAction.SpecialAttack;
                     
                     
                     break;
             }  
         }
 
-        public Boolean AttaqueCible(Catcheur cible, int? defense)
+        public Boolean AttackTarget(Catcheur cible, int cibleDefense)
         {
-            if ((cible.Vie + cible.Defense) - this.Attaque > 0)
+            int healthCalculated;
+            healthCalculated = (cible.Health + cibleDefense + cible.BonusDefense) - (this.Attack + this.BonusAttack);
+            if (healthCalculated > 0)
             {
-                cible.Vie = (cible.Vie + cible.Defense) - this.Attaque;
+                if(healthCalculated < cible.Health)
+                {
+                    cible.Health = healthCalculated;
+                }
+                // else no changes...
+
+
                 return true;
             }
             else
             {
-                cible.Vie = 0;
+                cible.Health = 0;
                 cible.CatcheurState = CatcheurState.Mort;
                 return false;
             }
+        }
+
+        public Boolean AttackSpeCible(Catcheur cible, int? defense)
+        {
+
+            return false;
         }
     }
 }

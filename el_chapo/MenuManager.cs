@@ -80,10 +80,7 @@ namespace el_chapo
                 case 2:
                     Console.Clear();
                     Console.WriteLine(MatchManager.instance.DisplayFullCatcheurList());
-                    Console.WriteLine("\nAppuyez sur n'importe quelle touche pour revenir au menu principal... ");
-                    Console.ReadLine();
-                    Console.Clear();
-                    DisplayMenu();
+                    RetourMainMenu();
                     break;
                 case 3:
                     ExitApplication();
@@ -99,6 +96,14 @@ namespace el_chapo
         public void ExitApplication()
         {
             System.Environment.Exit(-1);
+        }
+
+        public void RetourMainMenu()
+        {
+            Console.WriteLine("\nAppuyez sur n'importe quelle touche pour revenir au menu principal... ");
+            Console.ReadLine();
+            Console.Clear();
+            DisplayMenu();
         }
 
 

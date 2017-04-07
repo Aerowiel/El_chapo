@@ -22,18 +22,18 @@ namespace el_chapo
             //Init catcheurs
             Catcheurs = new List<Catcheur>();
 
-            // Special = 0.3, Attaque = 0.35, Defense = 0.35
-            Catcheurs.Add(new Catcheur("L'ordonnateur des pompes funèbres", CatcheurType.Brute, CatcheurState.Opérationnel));
-            Catcheurs.Add(new Catcheur("Jude Sunny", CatcheurType.Brute, CatcheurState.Opérationnel));
-            Catcheurs.Add(new Catcheur("Triple Hache", CatcheurType.Agile, CatcheurState.Opérationnel));
-            Catcheurs.Add(new Catcheur("Dead Poule", CatcheurType.Agile, CatcheurState.Opérationnel));
-            Catcheurs.Add(new Catcheur("Jarvan cinquième du nom", CatcheurType.Brute, CatcheurState.Convalescent));
-            Catcheurs.Add(new Catcheur("Madusa", CatcheurType.Agile, CatcheurState.Opérationnel));
-            Catcheurs.Add(new Catcheur("John Cinéma", CatcheurType.Agile, CatcheurState.Convalescent));
-            Catcheurs.Add(new Catcheur("Jeff Radis", CatcheurType.Brute, CatcheurState.Convalescent));
-            Catcheurs.Add(new Catcheur("Raie Mystérieuse", CatcheurType.Brute, CatcheurState.Opérationnel));
-            Catcheurs.Add(new Catcheur("Chris Hart", CatcheurType.Brute, CatcheurState.Opérationnel));
-            Catcheurs.Add(new Catcheur("Bret Benoit", CatcheurType.Agile, CatcheurState.Opérationnel));
+            // Special = 0.33, Attaque = 0.33, Defense = 0.33
+            Catcheurs.Add(new Catcheur("L'ordonnateur des pompes funèbres", CatcheurType.Brute, CatcheurState.Opérationnel, SpecialAttack.Bloque));
+            Catcheurs.Add(new Catcheur("Jude Sunny", CatcheurType.Brute, CatcheurState.Opérationnel, SpecialAttack.Bloque));
+            Catcheurs.Add(new Catcheur("Triple Hache", CatcheurType.Agile, CatcheurState.Opérationnel, SpecialAttack.Bloque));
+            Catcheurs.Add(new Catcheur("Dead Poule", CatcheurType.Agile, CatcheurState.Opérationnel, SpecialAttack.Bloque));
+            Catcheurs.Add(new Catcheur("Jarvan cinquième du nom", CatcheurType.Brute, CatcheurState.Convalescent, SpecialAttack.Bloque));
+            Catcheurs.Add(new Catcheur("Madusa", CatcheurType.Agile, CatcheurState.Opérationnel, SpecialAttack.Bloque));
+            Catcheurs.Add(new Catcheur("John Cinéma", CatcheurType.Agile, CatcheurState.Convalescent, SpecialAttack.Bloque));
+            Catcheurs.Add(new Catcheur("Jeff Radis", CatcheurType.Brute, CatcheurState.Convalescent, SpecialAttack.Bloque));
+            Catcheurs.Add(new Catcheur("Raie Mystérieuse", CatcheurType.Brute, CatcheurState.Opérationnel, SpecialAttack.Bloque));
+            Catcheurs.Add(new Catcheur("Chris Hart", CatcheurType.Brute, CatcheurState.Opérationnel, SpecialAttack.Bloque));
+            Catcheurs.Add(new Catcheur("Bret Benoit", CatcheurType.Agile, CatcheurState.Opérationnel, SpecialAttack.Bloque));
 
         }
 
@@ -106,11 +106,17 @@ namespace el_chapo
         {
             someoneIsDead = false;
 
-            for (int iteration = 1; iteration <= 20; iteration++)
+            for (int iteration = 1; iteration <= 100; iteration++)
             {
                 if (!someoneIsDead)
                 {
                     Console.WriteLine($"\n\nITERATION {iteration} !");
+
+                    // Refresh bonus
+                    c1.BonusAttack = 0;
+                    c1.BonusDefense = 0;
+                    c2.BonusAttack = 0;
+                    c2.BonusDefense = 0;
 
                     // On détermine les actions à faire (random)
                     c1.ChooseAction();
@@ -135,16 +141,16 @@ namespace el_chapo
                     Console.WriteLine(GetMatchUpScreen(c1, c2));
                     IterationMatchUp(trinaryAction, c1, c2);
                     CheckDeath(c1, c2);
-                    Console.WriteLine($"Resultat : \n{c1.Pseudo} : {c1.Vie} HP\n{c2.Pseudo} : {c2.Vie}HP");
+                    Console.WriteLine($"Resultat : \n{c1.Pseudo} : {c1.Health} HP\n{c2.Pseudo} : {c2.Health} HP");
 
                 }
                 else
                 {
+                    DisplayEndScreen(c1, c2);
+                    Console.WriteLine("Break successfull");
                     break;
                 }
 
-                DisplayEndScreen(c1,c2);
-                Console.WriteLine("Break successfull");
             }
 
         }
@@ -152,8 +158,8 @@ namespace el_chapo
         private StringBuilder GetMatchUpScreen(Catcheur c1, Catcheur c2)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"\n{c1.Pseudo} - {c1.Vie}HP - Action : {c1.action}");
-            sb.AppendLine($"\n{c2.Pseudo} - {c2.Vie}HP - Action : {c2.action}");
+            sb.AppendLine($"\n{c1.Pseudo} - {c1.Health}HP - Action : {c1.action}");
+            sb.AppendLine($"\n{c2.Pseudo} - {c2.Health}HP - Action : {c2.action}");
             return sb;
         }
 
@@ -163,11 +169,11 @@ namespace el_chapo
             {
                 // Attaque - Attaque
                 case "00": // fait
-                    Console.WriteLine($"{c1.Pseudo} attaque {c2.Pseudo} à hauteur de {c1.Attaque}");
-                    if (c1.AttaqueCible(c2, null)) // Si c1 attaque c2 est que c2 ne meurt pas
+                    Console.WriteLine($"{c1.Pseudo} attaque {c2.Pseudo} à hauteur de {c1.Attack}");
+                    if (c1.AttackTarget(c2,0)) // Si c1 attaque c2 est que c2 ne meurt pas
                     {
-                        Console.WriteLine($"{c2.Pseudo} attaque {c1.Pseudo} à hauteur de {c2.Attaque}");
-                        if (!c2.AttaqueCible(c1, null))
+                        Console.WriteLine($"{c2.Pseudo} attaque {c1.Pseudo} à hauteur de {c2.Attack}");
+                        if (!c2.AttackTarget(c1,0))
                         {
                             // Le c1 est mort
                             Console.WriteLine($"{c1.Pseudo} est mort sur le coup...");
@@ -179,45 +185,61 @@ namespace el_chapo
                         // Le c2 est mort
                         Console.WriteLine($"{c2.Pseudo} est mort sur le coup...");
                     }
-                    Console.WriteLine($"Resultat : \n{c1.Pseudo} : {c1.Vie} HP\n{c2.Pseudo} : {c2.Vie}HP");
                     break;
 
                 // Attaque - Defense
                 case "01": //fait
-                    Console.WriteLine($"{c1.Pseudo} attaque {c2.Pseudo} à hauteur de {c1.Attaque}, {c2.Pseudo} aborsbe {c2.Defense} point(s) de dégat !");
-                    if(!c1.AttaqueCible(c2, c2.Defense))
+                    Console.WriteLine($"{c1.Pseudo} attaque {c2.Pseudo} à hauteur de {c1.Attack}, {c2.Pseudo} absorbe {c2.Defense} point(s) de dégat !");
+                    if(!c1.AttackTarget(c2,c2.Defense))
                     {
                         Console.WriteLine($"{c2.Pseudo} est mort sur le coup...");
                     }
                     break;
-
+                // Attaque - AttaqueSpe
                 case "02":
-                    // On traite les attaques spéciales plus tard hein...
+                    SpecialAttackManager.instance.SpecialAttackComputing(c2);
+                    ManagaActionAndDisplayResult(c1, c2);
                     break;
+                   
                 
                 // Defense - Attaque
                 case "10": //fait
-                    Console.WriteLine($"{c2.Pseudo} attaque {c1.Pseudo} à hauteur de {c2.Attaque}, {c1.Pseudo} aborsbe {c1.Defense} point(s) de dégat !");
-                    if (c2.AttaqueCible(c1, c1.Defense))
+                    Console.WriteLine($"{c2.Pseudo} attaque {c1.Pseudo} à hauteur de {c2.Attack}, {c1.Pseudo} absorbe {c1.Defense} point(s) de dégat !");
+                    if (!c2.AttackTarget(c1,c1.Defense))
                     {
                         Console.WriteLine($"{c2.Pseudo} est mort sur le coup...");
                     }
                     break;
-                // Defense - Defense MDR
+
+                // Defense - Defense
                 case "11": //fait
                     Console.WriteLine($"{c1.Pseudo} et {c2.Pseudo} se regardent droit dans les yeux, tous deux en position de défense, malheureusement personne ne décidera d'attaquer ce tour-ci...");
                     break;
+
+                // Defense - AttaqueSpe
                 case "12":
+                    SpecialAttackManager.instance.SpecialAttackComputing(c2);
+                    ManagaActionAndDisplayResult(c1, c2);
                     // On traite les attaques spéciales plus tard hein...
                     break;
+
+                //AttaqueSpe - Attaque
                 case "20":
-
+                    SpecialAttackManager.instance.SpecialAttackComputing(c1);
+                    ManagaActionAndDisplayResult(c1, c2);
                     break;
+
+                //AttaqueSpe - Defense
                 case "21":
-
+                    SpecialAttackManager.instance.SpecialAttackComputing(c1);
+                    ManagaActionAndDisplayResult(c1, c2);
                     break;
-                case "22":
 
+                // AttaqueSpe - AttaqueSpe
+                case "22":
+                    SpecialAttackManager.instance.SpecialAttackComputing(c1);
+                    SpecialAttackManager.instance.SpecialAttackComputing(c2);
+                    ManagaActionAndDisplayResult(c1, c2);
                     break;
             }
         }
@@ -241,11 +263,100 @@ namespace el_chapo
 
         private void DisplayEndScreen(Catcheur c1, Catcheur c2)
         {
+            Console.WriteLine("Appuyez sur n'importe quelle touche pour accéder à l'écran de fin");
+            Console.ReadLine();
             Console.Clear();
             Console.WriteLine("THE END");
             Console.WriteLine("Résumé : ");
             // à faire par qui veux
+
+            //retour menu principal
+            MenuManager.instance.RetourMainMenu();
         }
+
+        public void ManagaActionAndDisplayResult(Catcheur attaquant, Catcheur defenseur)
+        {
+            switch (attaquant.action)
+            {
+                case CatcheurAction.Defend:
+                    if (defenseur.action == CatcheurAction.Attack)
+                    {
+                        Console.WriteLine($"{defenseur.Pseudo} attaque {attaquant.Pseudo} à hauteur de {defenseur.Attack}, {attaquant.Pseudo} absorbe {attaquant.Defense + attaquant.BonusDefense} point(s) de dégat !");
+                        if (!defenseur.AttackTarget(attaquant, attaquant.Defense))
+                        {
+                            Console.WriteLine($"{attaquant.Pseudo} est mort sur le coup...");
+                        }
+                    }
+                    else if(defenseur.action == CatcheurAction.Defend)
+                    {
+                            Console.WriteLine($"{attaquant.Pseudo} et {defenseur.Pseudo} se regardent droit dans les yeux, tous deux en position de défense, malheureusement personne ne décidera d'attaquer ce tour-ci...");
+                    }
+                    else if(defenseur.action == CatcheurAction.SpeAttackFailed)
+                    {
+                            Console.WriteLine($"{attaquant.Pseudo} et {defenseur.Pseudo} se regardent droit dans les yeux, mais rien ne se passe...");
+
+                    }
+
+                    break;
+
+                case CatcheurAction.Attack:
+                    if (defenseur.action == CatcheurAction.Attack)
+                    {
+                        Console.WriteLine($"{attaquant.Pseudo} attaque {defenseur.Pseudo} à hauteur de {attaquant.Attack} !");
+                        if (attaquant.AttackTarget(defenseur,0))
+                        {
+                            Console.WriteLine($"{defenseur.Pseudo} attaque {attaquant.Pseudo} à hauteur de {defenseur.Attack} !");
+                            if (!defenseur.AttackTarget(attaquant,0))
+                            {
+                                Console.WriteLine($"{attaquant.Pseudo} est mort sur le coup...");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine($"{defenseur.Pseudo} est mort sur le coup...");
+                        }
+                    }
+                    else if (defenseur.action == CatcheurAction.Defend)
+                    {
+                        Console.WriteLine($"{attaquant.Pseudo} attaque {defenseur.Pseudo} à hauteur de {attaquant.Attack}, {defenseur.Pseudo} absorbe {defenseur.Defense + defenseur.BonusDefense} point(s) de dégat !");
+                        if (!attaquant.AttackTarget(defenseur, defenseur.Defense))
+                        {
+                            Console.WriteLine($"{defenseur.Pseudo} est mort sur le coup...");
+                        }
+                    }
+                    else if (defenseur.action == CatcheurAction.SpeAttackFailed)
+                    {
+                        Console.WriteLine($"{attaquant.Pseudo} attaque {defenseur.Pseudo} à hauteur de {attaquant.Attack} !");
+                        if (!attaquant.AttackTarget(defenseur,0))
+                        {
+                            Console.WriteLine($"{defenseur.Pseudo} est mort sur le coup...");
+                        }
+
+                    }
+                    break;
+
+                case CatcheurAction.SpeAttackFailed:
+                    if (defenseur.action == CatcheurAction.Attack)
+                    {
+                        Console.WriteLine($"{defenseur.Pseudo} attaque {attaquant.Pseudo} à hauteur de {defenseur.Attack} !");
+                        if (!defenseur.AttackTarget(attaquant,0))
+                        {
+                            Console.WriteLine($"{attaquant.Pseudo} est mort sur le coup...");
+                        }
+
+                    }
+                    else if (defenseur.action == CatcheurAction.Defend)
+                    {
+                        Console.WriteLine($"{attaquant.Pseudo} et {defenseur.Pseudo} se regardent droit dans les yeux, mais rien ne se passe...");
+                    }
+                    else if (defenseur.action == CatcheurAction.SpeAttackFailed)
+                    {
+                        Console.WriteLine($"{attaquant.Pseudo} et {defenseur.Pseudo} se regardent droit dans les yeux, mais rien ne se passe...");
+                    }
+                    break;
+            }
+        }
+
 
     }
 }
