@@ -9,6 +9,7 @@ namespace el_chapo
     class MatchManager
     {
         public List<Catcheur> Catcheurs { get; set; }
+        public List<Catcheur> CatcheursOp { get; set; }
         public static MatchManager instance = new MatchManager();
         public static Random dice = new Random();
 
@@ -33,7 +34,8 @@ namespace el_chapo
             Catcheurs.Add(new Catcheur("Jeff Radis", CatcheurType.Brute, CatcheurState.Convalescent, SpecialAttack.Bloque));
             Catcheurs.Add(new Catcheur("Raie Mystérieuse", CatcheurType.Brute, CatcheurState.Opérationnel, SpecialAttack.Bloque));
             Catcheurs.Add(new Catcheur("Chris Hart", CatcheurType.Brute, CatcheurState.Opérationnel, SpecialAttack.Bloque));
-            Catcheurs.Add(new Catcheur("Bret Benoit", CatcheurType.Agile, CatcheurState.Opérationnel, SpecialAttack.Bloque));
+
+            Catcheurs.Add(new Catcheur("Bret Benoit", CatcheurType.Agile, CatcheurState.Opérationnel, SpecialAttack.Oneshot));
 
         }
 
@@ -48,6 +50,7 @@ namespace el_chapo
         public StringBuilder DisplayCatcheurList()
         {
             StringBuilder sb = new StringBuilder();
+            CatcheursOp = new List<Catcheur>();
             int index = 0;
             // Affiche uniquement les catcheurs OP 
 
@@ -55,7 +58,11 @@ namespace el_chapo
             {
 
                 if (catcheur.CatcheurState == CatcheurState.Opérationnel)
+                {
+                    CatcheursOp.Add(catcheur);
                     sb.AppendLine(catcheur.Describe(index++));
+                }
+                
             }
             opATM = index;
             return sb;
@@ -64,10 +71,12 @@ namespace el_chapo
         public StringBuilder DisplayFullCatcheurList()
         {
             StringBuilder sb = new StringBuilder();
+            
             int index = 0;
 
             foreach (Catcheur catcheur in Catcheurs)
             {
+                
                 sb.AppendLine(catcheur.Describe(index++));
             }
             return sb;
@@ -97,8 +106,8 @@ namespace el_chapo
             }
             while (tempP2 == tempP1);
 
-            Console.WriteLine($"Le combat va se disputer entre {Catcheurs[tempP1].Pseudo} & {Catcheurs[tempP2].Pseudo}");
-            ManageFight(Catcheurs[tempP1], Catcheurs[tempP2]);
+            Console.WriteLine($"Le combat va se disputer entre {CatcheursOp[tempP1].Pseudo} & {CatcheursOp[tempP2].Pseudo}");
+            ManageFight(CatcheursOp[tempP1], CatcheursOp[tempP2]);
 
         }
 
@@ -169,10 +178,10 @@ namespace el_chapo
             {
                 // Attaque - Attaque
                 case "00": // fait
-                    Console.WriteLine($"{c1.Pseudo} attaque {c2.Pseudo} à hauteur de {c1.Attack}");
+                    //Console.WriteLine($"{c1.Pseudo} attaque {c2.Pseudo} à hauteur de {c1.Attack}");
                     if (c1.AttackTarget(c2,0)) // Si c1 attaque c2 est que c2 ne meurt pas
                     {
-                        Console.WriteLine($"{c2.Pseudo} attaque {c1.Pseudo} à hauteur de {c2.Attack}");
+                        //Console.WriteLine($"{c2.Pseudo} attaque {c1.Pseudo} à hauteur de {c2.Attack}");
                         if (!c2.AttackTarget(c1,0))
                         {
                             // Le c1 est mort
@@ -189,7 +198,7 @@ namespace el_chapo
 
                 // Attaque - Defense
                 case "01": //fait
-                    Console.WriteLine($"{c1.Pseudo} attaque {c2.Pseudo} à hauteur de {c1.Attack}, {c2.Pseudo} absorbe {c2.Defense} point(s) de dégat !");
+                    //Console.WriteLine($"{c1.Pseudo} attaque {c2.Pseudo} à hauteur de {c1.Attack}, {c2.Pseudo} absorbe {c2.Defense} point(s) de dégat !");
                     if(!c1.AttackTarget(c2,c2.Defense))
                     {
                         Console.WriteLine($"{c2.Pseudo} est mort sur le coup...");
@@ -204,7 +213,7 @@ namespace el_chapo
                 
                 // Defense - Attaque
                 case "10": //fait
-                    Console.WriteLine($"{c2.Pseudo} attaque {c1.Pseudo} à hauteur de {c2.Attack}, {c1.Pseudo} absorbe {c1.Defense} point(s) de dégat !");
+                    //Console.WriteLine($"{c2.Pseudo} attaque {c1.Pseudo} à hauteur de {c2.Attack}, {c1.Pseudo} absorbe {c1.Defense} point(s) de dégat !");
                     if (!c2.AttackTarget(c1,c1.Defense))
                     {
                         Console.WriteLine($"{c2.Pseudo} est mort sur le coup...");
@@ -281,7 +290,7 @@ namespace el_chapo
                 case CatcheurAction.Defend:
                     if (defenseur.action == CatcheurAction.Attack)
                     {
-                        Console.WriteLine($"{defenseur.Pseudo} attaque {attaquant.Pseudo} à hauteur de {defenseur.Attack}, {attaquant.Pseudo} absorbe {attaquant.Defense + attaquant.BonusDefense} point(s) de dégat !");
+                        //Console.WriteLine($"{defenseur.Pseudo} attaque {attaquant.Pseudo} à hauteur de {defenseur.Attack}, {attaquant.Pseudo} absorbe {attaquant.Defense + attaquant.BonusDefense} point(s) de dégat !");
                         if (!defenseur.AttackTarget(attaquant, attaquant.Defense))
                         {
                             Console.WriteLine($"{attaquant.Pseudo} est mort sur le coup...");
@@ -302,10 +311,10 @@ namespace el_chapo
                 case CatcheurAction.Attack:
                     if (defenseur.action == CatcheurAction.Attack)
                     {
-                        Console.WriteLine($"{attaquant.Pseudo} attaque {defenseur.Pseudo} à hauteur de {attaquant.Attack} !");
+                        //Console.WriteLine($"{attaquant.Pseudo} attaque {defenseur.Pseudo} à hauteur de {attaquant.Attack} !");
                         if (attaquant.AttackTarget(defenseur,0))
                         {
-                            Console.WriteLine($"{defenseur.Pseudo} attaque {attaquant.Pseudo} à hauteur de {defenseur.Attack} !");
+                            //Console.WriteLine($"{defenseur.Pseudo} attaque {attaquant.Pseudo} à hauteur de {defenseur.Attack} !");
                             if (!defenseur.AttackTarget(attaquant,0))
                             {
                                 Console.WriteLine($"{attaquant.Pseudo} est mort sur le coup...");
@@ -318,7 +327,7 @@ namespace el_chapo
                     }
                     else if (defenseur.action == CatcheurAction.Defend)
                     {
-                        Console.WriteLine($"{attaquant.Pseudo} attaque {defenseur.Pseudo} à hauteur de {attaquant.Attack}, {defenseur.Pseudo} absorbe {defenseur.Defense + defenseur.BonusDefense} point(s) de dégat !");
+                        //Console.WriteLine($"{attaquant.Pseudo} attaque {defenseur.Pseudo} à hauteur de {attaquant.Attack}, {defenseur.Pseudo} absorbe {defenseur.Defense + defenseur.BonusDefense} point(s) de dégat !");
                         if (!attaquant.AttackTarget(defenseur, defenseur.Defense))
                         {
                             Console.WriteLine($"{defenseur.Pseudo} est mort sur le coup...");
@@ -326,7 +335,7 @@ namespace el_chapo
                     }
                     else if (defenseur.action == CatcheurAction.SpeAttackFailed)
                     {
-                        Console.WriteLine($"{attaquant.Pseudo} attaque {defenseur.Pseudo} à hauteur de {attaquant.Attack} !");
+                        //Console.WriteLine($"{attaquant.Pseudo} attaque {defenseur.Pseudo} à hauteur de {attaquant.Attack} !");
                         if (!attaquant.AttackTarget(defenseur,0))
                         {
                             Console.WriteLine($"{defenseur.Pseudo} est mort sur le coup...");
@@ -338,7 +347,7 @@ namespace el_chapo
                 case CatcheurAction.SpeAttackFailed:
                     if (defenseur.action == CatcheurAction.Attack)
                     {
-                        Console.WriteLine($"{defenseur.Pseudo} attaque {attaquant.Pseudo} à hauteur de {defenseur.Attack} !");
+                        //Console.WriteLine($"{defenseur.Pseudo} attaque {attaquant.Pseudo} à hauteur de {defenseur.Attack} !");
                         if (!defenseur.AttackTarget(attaquant,0))
                         {
                             Console.WriteLine($"{attaquant.Pseudo} est mort sur le coup...");

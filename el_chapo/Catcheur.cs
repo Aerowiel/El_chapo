@@ -47,6 +47,8 @@ namespace el_chapo
                     Defense = 1;
                     break;
             }
+
+            SpecialAtk = specialAtk;
            
         }
 
@@ -84,6 +86,15 @@ namespace el_chapo
 
         public Boolean AttackTarget(Catcheur cible, int cibleDefense)
         {
+            if(cible.action == CatcheurAction.Attack || cible.action == CatcheurAction.SpeAttackFailed)
+            {
+                Console.WriteLine($"{this.Pseudo} attaque {cible.Pseudo} à hauteur de {this.Attack}, {cible.Pseudo} n'absorbe aucun point de dégat !");
+            }
+            else
+            {
+                Console.WriteLine($"{this.Pseudo} attaque {cible.Pseudo} à hauteur de {this.Attack}, {cible.Pseudo} absorbe {cible.Defense + cible.BonusDefense} point de dégat !");
+            }
+            
             int healthCalculated;
             healthCalculated = (cible.Health + cibleDefense + cible.BonusDefense) - (this.Attack + this.BonusAttack);
             if (healthCalculated > 0)
