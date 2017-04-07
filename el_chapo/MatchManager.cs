@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Media;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace el_chapo
@@ -30,7 +32,7 @@ namespace el_chapo
             Catcheurs.Add(new Catcheur("Dead Poule", CatcheurType.Agile, CatcheurState.Opérationnel, SpecialAttack.Bloque));
             Catcheurs.Add(new Catcheur("Jarvan cinquième du nom", CatcheurType.Brute, CatcheurState.Convalescent, SpecialAttack.Bloque));
             Catcheurs.Add(new Catcheur("Madusa", CatcheurType.Agile, CatcheurState.Opérationnel, SpecialAttack.Bloque));
-            Catcheurs.Add(new Catcheur("John Cinéma", CatcheurType.Agile, CatcheurState.Convalescent, SpecialAttack.Bloque));
+            Catcheurs.Add(new Catcheur("John Cinéma", CatcheurType.Agile, CatcheurState.Opérationnel, SpecialAttack.Bloque));
             Catcheurs.Add(new Catcheur("Jeff Radis", CatcheurType.Brute, CatcheurState.Convalescent, SpecialAttack.Bloque));
             Catcheurs.Add(new Catcheur("Raie Mystérieuse", CatcheurType.Brute, CatcheurState.Opérationnel, SpecialAttack.Bloque));
             Catcheurs.Add(new Catcheur("Chris Hart", CatcheurType.Brute, CatcheurState.Opérationnel, SpecialAttack.Bloque));
@@ -107,7 +109,15 @@ namespace el_chapo
             while (tempP2 == tempP1);
 
             Console.WriteLine($"Le combat va se disputer entre {CatcheursOp[tempP1].Pseudo} & {CatcheursOp[tempP2].Pseudo}");
+
+            if (("John Cinéma" == CatcheursOp[tempP1].Pseudo) || ("John Cinéma" == CatcheursOp[tempP2].Pseudo))
+            {
+                playSimpleSound();
+                Thread.Sleep(10000);
+            }
             ManageFight(CatcheursOp[tempP1], CatcheursOp[tempP2]);
+
+            
 
         }
 
@@ -364,8 +374,14 @@ namespace el_chapo
                     }
                     break;
             }
+
+       
+    }
+
+        public void playSimpleSound()
+        {
+            SoundPlayer simpleSound = new SoundPlayer(@"C:\Users\eliot\Desktop\ynov\b2\C#\to c#\el chapo\AND GOODBYE.wav");
+            simpleSound.Play();
         }
-
-
     }
 }

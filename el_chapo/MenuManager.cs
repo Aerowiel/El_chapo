@@ -76,6 +76,7 @@ namespace el_chapo
 
                 case 1:
                     
+                    
                     break;
                 case 2:
                     Console.Clear();
