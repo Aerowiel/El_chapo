@@ -175,6 +175,7 @@ namespace el_chapo
                 // Attaque - Defense
                 case "01": //fait
                     Console.WriteLine($"{c1.Pseudo} attaque {c2.Pseudo} à hauteur de {c1.Attaque}, {c2.Pseudo} aborsbe {c2.Defense} point(s) de dégat !");
+                    c1.AttaqueCible(c2, c2.Defense);
                     break;
 
                 case "02":
@@ -184,6 +185,7 @@ namespace el_chapo
                 // Defense - Attaque
                 case "10":
                     Console.WriteLine($"{c2.Pseudo} attaque {c1.Pseudo} à hauteur de {c2.Attaque}, {c1.Pseudo} aborsbe {c1.Defense} point(s) de dégat !");
+                    c2.AttaqueCible(c1, c1.Defense);
                     break;
                 // Defense - Defense MDR
                 case "11":

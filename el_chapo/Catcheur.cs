@@ -33,12 +33,12 @@ namespace el_chapo
             switch (type)
             {
                 case CatcheurType.Agile:
-                    Vie = 2; //125
+                    Vie = 125; //125
                     Attaque = 3;
                     Defense = 3;
                     break;
                 case CatcheurType.Brute:
-                    Vie = 3; //100
+                    Vie = 100; //100
                     Attaque = 5;
                     Defense = 1;
                     break;
