@@ -84,19 +84,22 @@ namespace el_chapo
             }  
         }
 
-        public Boolean AttackTarget(Catcheur cible, int cibleDefense)
+        public Boolean AttackTarget(Catcheur cible)
         {
+            int targetDefense;
             if(cible.action == CatcheurAction.Attack || cible.action == CatcheurAction.SpeAttackFailed)
             {
-                Console.WriteLine($"{this.Pseudo} attaque {cible.Pseudo} à hauteur de {this.Attack}, {cible.Pseudo} n'absorbe aucun point de dégat !");
+                Console.WriteLine($"{this.Pseudo} attaque {cible.Pseudo} à hauteur de {this.Attack + this.BonusAttack}, {cible.Pseudo} n'absorbe aucun point de dégat !");
+                targetDefense = 0;
             }
             else
             {
-                Console.WriteLine($"{this.Pseudo} attaque {cible.Pseudo} à hauteur de {this.Attack}, {cible.Pseudo} absorbe {cible.Defense + cible.BonusDefense} point de dégat !");
+                Console.WriteLine($"{this.Pseudo} attaque {cible.Pseudo} à hauteur de {this.Attack + this.BonusAttack}, {cible.Pseudo} absorbe {cible.Defense + cible.BonusDefense} point de dégat !");
+                targetDefense = cible.Defense + cible.BonusDefense;
             }
             
             int healthCalculated;
-            healthCalculated = (cible.Health + cibleDefense + cible.BonusDefense) - (this.Attack + this.BonusAttack);
+            healthCalculated = (cible.Health + targetDefense) - (this.Attack + this.BonusAttack);
             if (healthCalculated > 0)
             {
                 if(healthCalculated < cible.Health)
@@ -110,6 +113,7 @@ namespace el_chapo
             }
             else
             {
+                Console.WriteLine($"{cible.Pseudo} est mort sur le coup...");
                 cible.Health = 0;
                 cible.CatcheurState = CatcheurState.Mort;
                 return false;

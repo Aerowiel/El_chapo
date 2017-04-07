@@ -188,29 +188,24 @@ namespace el_chapo
             switch (trinary)
             {
                 // Attaque - Attaque
-                case "00": // fait
-                    //Console.WriteLine($"{c1.Pseudo} attaque {c2.Pseudo} à hauteur de {c1.Attack}");
-                    if (c1.AttackTarget(c2,0)) // Si c1 attaque c2 est que c2 ne meurt pas
+                case "00": 
+                    if (c1.AttackTarget(c2)) // Si c1 attaque c2 & c2 ne meurt pas
                     {
-                        //Console.WriteLine($"{c2.Pseudo} attaque {c1.Pseudo} à hauteur de {c2.Attack}");
-                        if (!c2.AttackTarget(c1,0))
+                        if (!c2.AttackTarget(c1)) // Si c2 attaque & c1 meurt 
                         {
-                            // Le c1 est mort
                             Console.WriteLine($"{c1.Pseudo} est mort sur le coup...");
                         }
 
                     }
-                    else
+                    else // Si c1 attaque & c2 meurt
                     {
-                        // Le c2 est mort
                         Console.WriteLine($"{c2.Pseudo} est mort sur le coup...");
                     }
                     break;
 
                 // Attaque - Defense
-                case "01": //fait
-                    //Console.WriteLine($"{c1.Pseudo} attaque {c2.Pseudo} à hauteur de {c1.Attack}, {c2.Pseudo} absorbe {c2.Defense} point(s) de dégat !");
-                    if(!c1.AttackTarget(c2,c2.Defense))
+                case "01": 
+                    if(!c1.AttackTarget(c2))
                     {
                         Console.WriteLine($"{c2.Pseudo} est mort sur le coup...");
                     }
@@ -225,7 +220,7 @@ namespace el_chapo
                 // Defense - Attaque
                 case "10": //fait
                     //Console.WriteLine($"{c2.Pseudo} attaque {c1.Pseudo} à hauteur de {c2.Attack}, {c1.Pseudo} absorbe {c1.Defense} point(s) de dégat !");
-                    if (!c2.AttackTarget(c1,c1.Defense))
+                    if (!c2.AttackTarget(c1))
                     {
                         Console.WriteLine($"{c2.Pseudo} est mort sur le coup...");
                     }
@@ -301,11 +296,7 @@ namespace el_chapo
                 case CatcheurAction.Defend:
                     if (defenseur.action == CatcheurAction.Attack)
                     {
-                        //Console.WriteLine($"{defenseur.Pseudo} attaque {attaquant.Pseudo} à hauteur de {defenseur.Attack}, {attaquant.Pseudo} absorbe {attaquant.Defense + attaquant.BonusDefense} point(s) de dégat !");
-                        if (!defenseur.AttackTarget(attaquant, attaquant.Defense))
-                        {
-                            Console.WriteLine($"{attaquant.Pseudo} est mort sur le coup...");
-                        }
+                        defenseur.AttackTarget(attaquant);
                     }
                     else if(defenseur.action == CatcheurAction.Defend)
                     {
@@ -322,48 +313,25 @@ namespace el_chapo
                 case CatcheurAction.Attack:
                     if (defenseur.action == CatcheurAction.Attack)
                     {
-                        //Console.WriteLine($"{attaquant.Pseudo} attaque {defenseur.Pseudo} à hauteur de {attaquant.Attack} !");
-                        if (attaquant.AttackTarget(defenseur,0))
+                        if (attaquant.AttackTarget(defenseur))
                         {
-                            //Console.WriteLine($"{defenseur.Pseudo} attaque {attaquant.Pseudo} à hauteur de {defenseur.Attack} !");
-                            if (!defenseur.AttackTarget(attaquant,0))
-                            {
-                                Console.WriteLine($"{attaquant.Pseudo} est mort sur le coup...");
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine($"{defenseur.Pseudo} est mort sur le coup...");
+                            defenseur.AttackTarget(attaquant);
                         }
                     }
                     else if (defenseur.action == CatcheurAction.Defend)
                     {
-                        //Console.WriteLine($"{attaquant.Pseudo} attaque {defenseur.Pseudo} à hauteur de {attaquant.Attack}, {defenseur.Pseudo} absorbe {defenseur.Defense + defenseur.BonusDefense} point(s) de dégat !");
-                        if (!attaquant.AttackTarget(defenseur, defenseur.Defense))
-                        {
-                            Console.WriteLine($"{defenseur.Pseudo} est mort sur le coup...");
-                        }
+                        attaquant.AttackTarget(defenseur);
                     }
                     else if (defenseur.action == CatcheurAction.SpeAttackFailed)
                     {
-                        //Console.WriteLine($"{attaquant.Pseudo} attaque {defenseur.Pseudo} à hauteur de {attaquant.Attack} !");
-                        if (!attaquant.AttackTarget(defenseur,0))
-                        {
-                            Console.WriteLine($"{defenseur.Pseudo} est mort sur le coup...");
-                        }
-
+                        attaquant.AttackTarget(defenseur);
                     }
                     break;
 
                 case CatcheurAction.SpeAttackFailed:
                     if (defenseur.action == CatcheurAction.Attack)
                     {
-                        //Console.WriteLine($"{defenseur.Pseudo} attaque {attaquant.Pseudo} à hauteur de {defenseur.Attack} !");
-                        if (!defenseur.AttackTarget(attaquant,0))
-                        {
-                            Console.WriteLine($"{attaquant.Pseudo} est mort sur le coup...");
-                        }
-
+                        defenseur.AttackTarget(attaquant);
                     }
                     else if (defenseur.action == CatcheurAction.Defend)
                     {
