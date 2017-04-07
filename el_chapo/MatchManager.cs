@@ -51,6 +51,7 @@ namespace el_chapo
 
             foreach (Catcheur catcheur in Catcheurs)
             {
+
                 if (catcheur.CatcheurState == CatcheurState.Opérationnel)
                     sb.AppendLine(catcheur.Describe(index++));
             }
