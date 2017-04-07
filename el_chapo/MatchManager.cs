@@ -105,6 +105,7 @@ namespace el_chapo
                     tempP2 = MenuManager.instance.TestUserInput(0, opATM);
                 }
                 
+
             }
             while (tempP2 == tempP1);
 
