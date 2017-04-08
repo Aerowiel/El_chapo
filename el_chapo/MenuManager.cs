@@ -106,6 +106,12 @@ namespace el_chapo
             DisplayMenu();
         }
 
+        public void RetourMainMenuInstant()
+        {
+            Console.Clear();
+            DisplayMenu();
+        }
+
 
     }
 }

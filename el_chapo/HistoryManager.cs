@@ -30,17 +30,13 @@ namespace el_chapo
 
         }
 
-        public   void Addhistory(  Catcheur victory, Catcheur perdant, WinState state, int round, double gain )
-        {
-            
-            
+        public void Addhistory(Catcheur victory, Catcheur perdant, WinState state, int round, double gain )
+        { 
             HistoryCatcheur.Add(new History(victory.Pseudo, perdant.Pseudo, state , round, gain));
         }
 
         public void FilterWinnerByKO_OR_WinnerByTKO( int choix)
-        {
-            
-            
+        { 
             switch(choix)
             {
                 case 0:
@@ -52,15 +48,8 @@ namespace el_chapo
                     break;
 
                 case 2:
-                    MenuManager.instance.RetourMainMenu();
+                    MenuManager.instance.RetourMainMenuInstant();
                     break;
-
-                default:
-                    Console.WriteLine("Ce menu n'existe pas veuillez saisir un autre numéro de menu...\n");
-                    //DisplayMenu();
-                    break;
-
-
             }
             
         }
@@ -74,13 +63,11 @@ namespace el_chapo
 
             foreach (History history in HistoryCatcheur)
             {
-
                 if (history.WinState == WinState.KO)
                 {
                     HistoryCatcheurKO.Add(history);
                     sb.AppendLine(history.DescribeHistory());
                 }
-
             }
             
             return sb;

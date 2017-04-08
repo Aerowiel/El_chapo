@@ -61,7 +61,7 @@ namespace el_chapo
             CatcheursOp = new List<Catcheur>();
             int index = 0;
             // Affiche uniquement les catcheurs OP 
-            OrderByPsuedo();
+            OrderByPseudo();
             foreach (Catcheur catcheur in Catcheurs)
             {
 
@@ -76,9 +76,8 @@ namespace el_chapo
             return sb;
         }
 
-        public void OrderByPsuedo() // tri par ordre alphabetique 
+        public void OrderByPseudo() // tri par ordre alphabetique 
         {
-
                 Catcheurs.Sort((x, y) => string.Compare(x.Pseudo, y.Pseudo));       
         }
      
@@ -88,10 +87,9 @@ namespace el_chapo
             StringBuilder sb = new StringBuilder();
             
             int index = 0;
-            OrderByPsuedo();
+            OrderByPseudo();
             foreach (Catcheur catcheur in Catcheurs)
             {
-               
                 sb.AppendLine(catcheur.Describe(index++));
             }
             
@@ -196,7 +194,7 @@ namespace el_chapo
                 {
                     break;
                 }
-                Thread.Sleep(2000);
+                //Thread.Sleep(2000);
             }
             DisplayAndManageEndGame(c1,c2);
         }
@@ -309,7 +307,7 @@ namespace el_chapo
                 // Attaque - AttaqueSpe
                 case "02":
                     SpecialAttackManager.instance.SpecialAttackComputing(c2);
-                    ManagaActionAndDisplayResult(c1, c2);
+                    ManageActionAndDisplayResult(c1, c2);
                     break;
                    
                 // Defense - Attaque
@@ -325,26 +323,26 @@ namespace el_chapo
                 // Defense - AttaqueSpe
                 case "12":
                     SpecialAttackManager.instance.SpecialAttackComputing(c2);
-                    ManagaActionAndDisplayResult(c1, c2);
+                    ManageActionAndDisplayResult(c1, c2);
                     break;
 
                 //AttaqueSpe - Attaque
                 case "20":
                     SpecialAttackManager.instance.SpecialAttackComputing(c1);
-                    ManagaActionAndDisplayResult(c1, c2);
+                    ManageActionAndDisplayResult(c1, c2);
                     break;
 
                 //AttaqueSpe - Defense
                 case "21":
                     SpecialAttackManager.instance.SpecialAttackComputing(c1);
-                    ManagaActionAndDisplayResult(c1, c2);
+                    ManageActionAndDisplayResult(c1, c2);
                     break;
 
                 // AttaqueSpe - AttaqueSpe
                 case "22":
                     SpecialAttackManager.instance.SpecialAttackComputing(c1);
                     SpecialAttackManager.instance.SpecialAttackComputing(c2);
-                    ManagaActionAndDisplayResult(c1, c2);
+                    ManageActionAndDisplayResult(c1, c2);
                     break;
             }
         }
@@ -392,7 +390,7 @@ namespace el_chapo
             MenuManager.instance.RetourMainMenu();
         }
 
-        public void ManagaActionAndDisplayResult(Catcheur attaquant, Catcheur defenseur)
+        public void ManageActionAndDisplayResult(Catcheur attaquant, Catcheur defenseur)
         {
             switch (attaquant.action)
             {
