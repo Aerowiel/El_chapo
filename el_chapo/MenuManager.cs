@@ -22,14 +22,6 @@ namespace el_chapo
         {
             //Init
             benefCum = 0f;
-           
-            // Déclaration des lignes du menu principal
-            menuPrincipalContent = new StringBuilder();
-            menuPrincipalContent.AppendLine("################ MENU ###############");
-            menuPrincipalContent.AppendLine("0 - Créer le match de samedi prochain");
-            menuPrincipalContent.AppendLine("1 - Consulter l'historique des matchs");
-            menuPrincipalContent.AppendLine("2 - Consulter la base des contacts");
-            menuPrincipalContent.AppendLine("3 - Quitter le jeu");
 
             //Déclaration des lignes de création de match
             menuCreationMatch = new StringBuilder();
@@ -61,6 +53,13 @@ namespace el_chapo
 
         public void DisplayMenu()
         {
+            menuPrincipalContent = new StringBuilder();
+            menuPrincipalContent.AppendLine("################ MENU ###############");
+            menuPrincipalContent.AppendLine($"Argent gagné : {MoneyManager.instance.Money} $");
+            menuPrincipalContent.AppendLine("0 - Créer le match de samedi prochain");
+            menuPrincipalContent.AppendLine("1 - Consulter l'historique des matchs");
+            menuPrincipalContent.AppendLine("2 - Consulter la base des contacts");
+            menuPrincipalContent.AppendLine("3 - Quitter le jeu");
             Console.WriteLine(menuPrincipalContent);
             SelectedMenu(TestUserInput(0, 4));
             
@@ -76,9 +75,7 @@ namespace el_chapo
 
                 case 1:
                     Console.WriteLine(MatchManager.instance.DisplayHistory());
-                    MatchManager.instance.test();
-                    
-                    
+
                     break;
                 case 2:
 

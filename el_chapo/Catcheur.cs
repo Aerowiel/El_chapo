@@ -18,6 +18,7 @@ namespace el_chapo
         public CatcheurState CatcheurState { get; set; }
        
         public int Health { get; set; }
+        public int maxHealth { get; set; }
         public int Defense { get; set; }
         public int Attack { get; set; }
 
@@ -41,11 +42,13 @@ namespace el_chapo
             {
                 case CatcheurType.Agile:
                     Health = 125; //125
+                    maxHealth = 125;
                     Attack = 3;
                     Defense = 3;
                     break;
                 case CatcheurType.Brute:
                     Health = 100; //100
+                    maxHealth = 100;
                     Attack = 5;
                     Defense = 1;
                     break;
@@ -66,7 +69,7 @@ namespace el_chapo
         {
             // On crée un objet de type Random qui permet de générer des nombres aléatoire (dice = dés)
             
-            int action = MatchManager.dice.Next(1, 4);
+            int action = MatchManager.instance.dice.Next(1, 4);
 
             switch (action)
             {
@@ -132,33 +135,17 @@ namespace el_chapo
 
         public void Heal(int amount)
         {
-            if(this.CatcheurType == CatcheurType.Agile)
-            {
-                if (Health + amount <= 125)
+                if (Health + amount <= maxHealth)
                 {
                     Console.WriteLine($"{Pseudo} se soigne à hauteur de {amount} HP.");
                     this.Health += amount;
                 }
                 else
                 {
-                    Console.WriteLine($"{Pseudo} se soigne à hauteur de {125 - Health} HP");
-                    Health = 125;
+                    Console.WriteLine($"{Pseudo} se soigne à hauteur de {maxHealth - Health} HP");
+                    Health = maxHealth;
                 }
-            }
-            else
-            {
-                if (Health + amount <= 100)
-                {
-                    Console.WriteLine($"{Pseudo} se soigne à hauteur de {amount} HP.");
-                    this.Health += amount;
-                }
-                else
-                {
-                    Console.WriteLine($"{Pseudo} se soigne à hauteur de {100 - Health} HP");
-                    this.Health = 100;
-                }
-            }
-            
+
         }
     }
 }

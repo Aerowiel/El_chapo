@@ -98,7 +98,7 @@ namespace el_chapo
             int Count = 1;
             foreach (int successRate in rates)
             {
-                int random = MatchManager.dice.Next(1, 101);
+                int random = MatchManager.instance.dice.Next(1, 101);
                 if (random >= 1 && random <= successRate)
                 {
                     Console.WriteLine($"L'attaque spéciale [{specialAtk}] de {catcheurPseudo} a réussi !");
