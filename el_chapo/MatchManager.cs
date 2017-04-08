@@ -21,7 +21,7 @@ namespace el_chapo
         private Catcheur whoIsDead;
         private int iteration;
 
-        private int iterationMax = 100;
+        private int iterationMax = 10;
 
         private int opATM;
 
@@ -61,7 +61,7 @@ namespace el_chapo
             CatcheursOp = new List<Catcheur>();
             int index = 0;
             // Affiche uniquement les catcheurs OP 
-            OrderByPsuedo();
+            OrderByPseudo();
             foreach (Catcheur catcheur in Catcheurs)
             {
 
@@ -76,9 +76,8 @@ namespace el_chapo
             return sb;
         }
 
-        public void OrderByPsuedo() // tri par ordre alphabetique 
+        public void OrderByPseudo() // tri par ordre alphabetique 
         {
-
                 Catcheurs.Sort((x, y) => string.Compare(x.Pseudo, y.Pseudo));       
         }
      
@@ -88,10 +87,9 @@ namespace el_chapo
             StringBuilder sb = new StringBuilder();
             
             int index = 0;
-            OrderByPsuedo();
+            OrderByPseudo();
             foreach (Catcheur catcheur in Catcheurs)
             {
-               
                 sb.AppendLine(catcheur.Describe(index++));
             }
             
@@ -140,6 +138,7 @@ namespace el_chapo
             if(MatchThisSeason % 8 == 0)
             {
                 Season++;
+                MatchThisSeason = 0;
             }
             else
             {
@@ -190,11 +189,12 @@ namespace el_chapo
                     DisplayResultCurrentIteration(c1,c2,iteration);
                     //la
                 }
-                // Thread.Sleep(2000);
+
                 if(iteration == iterationMax)
                 {
                     break;
                 }
+                //Thread.Sleep(2000);
             }
             DisplayAndManageEndGame(c1,c2);
         }
@@ -265,18 +265,13 @@ namespace el_chapo
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine($"\n{c1.Pseudo} - {c1.Health}HP - Action : {c1.action}");
-            // s'il attaque, lance le son du punch 
-           // SoundAttak(c1);
-          
-            //Thread.Sleep(1000);
-           // SoundAttak(c2);
+
             sb.AppendLine($"\n{c2.Pseudo} - {c2.Health}HP - Action : {c2.action}");
-            //s'il attaque, lance le son du punch 
-            
+
             return sb;
         }
 
-        public void SoundAttak(Catcheur c)
+        /*public void SoundAttak(Catcheur c)
         {
 
             if (c.action == CatcheurAction.Attack)
@@ -289,14 +284,16 @@ namespace el_chapo
                 SoundManager.instance.playSimpleSoundKameha();
                 Thread.Sleep(5000);
             }
-        }
+        }*/
 
         private void IterationMatchUp(String trinary, Catcheur c1, Catcheur c2)
         {
+            //ICI LE THREAD ?
             switch (trinary)
             {
                 // Attaque - Attaque
-                case "00": 
+                case "00":
+                    // ICI LE SON SPEFICIQUE
                     if (c1.AttackTarget(c2)) // Si c1 attaque c2 & c2 ne meurt pas
                     {
                         c2.AttackTarget(c1);
@@ -310,7 +307,7 @@ namespace el_chapo
                 // Attaque - AttaqueSpe
                 case "02":
                     SpecialAttackManager.instance.SpecialAttackComputing(c2);
-                    ManagaActionAndDisplayResult(c1, c2);
+                    ManageActionAndDisplayResult(c1, c2);
                     break;
                    
                 // Defense - Attaque
@@ -326,26 +323,26 @@ namespace el_chapo
                 // Defense - AttaqueSpe
                 case "12":
                     SpecialAttackManager.instance.SpecialAttackComputing(c2);
-                    ManagaActionAndDisplayResult(c1, c2);
+                    ManageActionAndDisplayResult(c1, c2);
                     break;
 
                 //AttaqueSpe - Attaque
                 case "20":
                     SpecialAttackManager.instance.SpecialAttackComputing(c1);
-                    ManagaActionAndDisplayResult(c1, c2);
+                    ManageActionAndDisplayResult(c1, c2);
                     break;
 
                 //AttaqueSpe - Defense
                 case "21":
                     SpecialAttackManager.instance.SpecialAttackComputing(c1);
-                    ManagaActionAndDisplayResult(c1, c2);
+                    ManageActionAndDisplayResult(c1, c2);
                     break;
 
                 // AttaqueSpe - AttaqueSpe
                 case "22":
                     SpecialAttackManager.instance.SpecialAttackComputing(c1);
                     SpecialAttackManager.instance.SpecialAttackComputing(c2);
-                    ManagaActionAndDisplayResult(c1, c2);
+                    ManageActionAndDisplayResult(c1, c2);
                     break;
             }
         }
@@ -393,7 +390,7 @@ namespace el_chapo
             MenuManager.instance.RetourMainMenu();
         }
 
-        public void ManagaActionAndDisplayResult(Catcheur attaquant, Catcheur defenseur)
+        public void ManageActionAndDisplayResult(Catcheur attaquant, Catcheur defenseur)
         {
             switch (attaquant.action)
             {
@@ -476,16 +473,6 @@ namespace el_chapo
        
        
     }
-        public void test() // fonction de  test :p vu que je savais pas ou afficher tout ca
-        {
-            Console.WriteLine(Assembly.GetExecutingAssembly().Location);
-            
-        }
-
-
-
-        
-        
 
         private void NothingIsHappening(Catcheur c1, Catcheur c2)
         {
