@@ -329,7 +329,7 @@ namespace el_chapo
         }
            
 
-        private  void Victory(Catcheur c1, Catcheur c2, out string victoryCatcheur, out string looserCatcheur)
+        private void Victory(Catcheur c1, Catcheur c2, out string victoryCatcheur, out string looserCatcheur)
         {
            
             if (c1.Health > c2.Health)

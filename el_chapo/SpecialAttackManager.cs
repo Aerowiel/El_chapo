@@ -40,7 +40,7 @@ namespace el_chapo
                     specialAttackSelected = (int)whatToDo[1];
                     if (specialAttackSuccess)
                     {
-                        attaquant.BonusDefense = int.MaxValue - 100;
+                        attaquant.BonusDefense = int.MaxValue - 1000; //apparement si int.MaxValue dépasse la max value justement le nombre devient négatif ! J'ai soustrait 1000 pour éviter ça :)
                         attaquant.action = CatcheurAction.Defend;
                     }
                     else
@@ -54,7 +54,7 @@ namespace el_chapo
                     specialAttackSelected = (int)whatToDo[1];
                     if (specialAttackSuccess)
                     {
-                        attaquant.BonusAttack = int.MaxValue - 100;
+                        attaquant.BonusAttack = int.MaxValue - 1000;
                         attaquant.action = CatcheurAction.Attack;
                     }
                     else
@@ -85,6 +85,7 @@ namespace el_chapo
                         attaquant.action = CatcheurAction.SpeAttackFailed;
                     }
                     break;
+                
                 
                 
 

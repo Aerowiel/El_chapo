@@ -108,6 +108,7 @@ namespace el_chapo
             
             int healthCalculated;
             healthCalculated = (cible.Health + targetDefense) - (this.Attack + this.BonusAttack);
+            //Console.WriteLine(healthCalculated);
             if (healthCalculated > 0)
             {
                 if(healthCalculated < cible.Health)
