@@ -11,26 +11,20 @@ namespace el_chapo
 {
     class MatchManager
     {
+        public static MatchManager instance = new MatchManager();
+        public Random dice = new Random();
+
         public List<Catcheur> Catcheurs { get; set; }
         public List<Catcheur> CatcheursOp { get; set; }
         public List<History> HistoryCatcheur { get; set; }
-        //test
-        public List<string> HistoryCtacheur { get; set; }
-        public static MatchManager instance = new MatchManager();
-        public static Random dice = new Random();
+        public int Season { get; set; }
+        public int MatchThisSeason { get; set; }
 
         private Boolean someoneIsDead = false;
         private Catcheur whoIsDead;
-
-        private string victoryCatcheur;
-        private string looserCatcheur;
-        private int itération; // need for history 
-        private int benefMoney ;
-        private int actuelMoney ;
-        private int saison;
+        private int iteration;
 
         private int opATM;
-       
 
         public MatchManager()
         {
@@ -52,8 +46,6 @@ namespace el_chapo
 
         }
        
-
-
         public void CreateNewMatch()
         {
             Console.WriteLine(MenuManager.instance.menuCreationMatch);
@@ -138,17 +130,25 @@ namespace el_chapo
 
         private void ManageFight(Catcheur c1, Catcheur c2)
         {
-            someoneIsDead = false;
-            benefMoney = 0;
-            
-
-            for (int iteration = 1; iteration <= 101; iteration++) // 101 plutot que 100 pour pouvoir afficher le vainquer par defaut si pas de mort
-
+            if(MatchThisSeason % 8 == 0)
             {
-                if (!someoneIsDead && iteration < 101) // rajout de la condition 
+                Season++;
+            }
+            else
+            {
+                MatchThisSeason++;
+            }
+
+            someoneIsDead = false;
+            iteration = 1;
+            whoIsDead = null;
+
+            for (iteration = 1; iteration <= 20; iteration++) // 101 plutot que 100 pour pouvoir afficher le vainquer par defaut si pas de mort
+            {
+                if (!someoneIsDead) 
                 {
                     Console.WriteLine($"\n\nITERATION {iteration} !");
-                    itération = iteration;
+
                     // Refresh bonus
                     c1.BonusAttack = 0;
                     c1.BonusDefense = 0;
@@ -179,46 +179,57 @@ namespace el_chapo
                     string trinaryAction = "" + ((int)c1.action) + "" + ((int)c2.action);
                     Console.WriteLine(GetMatchUpScreen(c1, c2));
                     IterationMatchUp(trinaryAction, c1, c2);
+
+                    // On regarde si l'un des deux joueurs est mort à la fin de l'itération en cours.
                     CheckDeath(c1, c2);
-                    Console.WriteLine($"Resultat : \n{c1.Pseudo} : {c1.Health} HP\n{c2.Pseudo} : {c2.Health} HP");
-                    benefMoney += 5000;
-                    
-                 
 
+                    // On display le résultat pour cette itération
+                    DisplayResultCurrentIteration(c1,c2,iteration);
                 }
-                else
-                {
-                    
-                    Saison();                 
-                    Victory(c1, c2, out victoryCatcheur, out looserCatcheur);// determine le vainqueur et ressort les variables utilisé pour l'historique 
-                    Console.WriteLine($"Vous avez gagnez {benefMoney} $ sur ce match");
-                    Createhistory(c1, c2);// in progress
-                    DisplayEndScreen(c1, c2);            
-                    Console.WriteLine("Break successfull");
-                    break;
-                }
-
-               // Thread.Sleep(2000);
+                // Thread.Sleep(2000);
             }
 
+            DisplayAndManageEndGame(c1,c2);
+            //Saison();
+            //Createhistory(c1, c2);// in progress
+            DisplayEndScreen(c1, c2);
+            //Console.WriteLine("Break successfull");
 
 
         }
 
-
-        public void Saison()
+        private void DisplayAndManageEndGame(Catcheur c1, Catcheur c2)
         {
-            if (!someoneIsDead)// si ca atteint 100 tour ba il gagne que 1000
+            Catcheur[] winnerLooser = WhoWinsAndLooses(c1, c2);
+            Catcheur winner = winnerLooser[0];
+            Catcheur looser = winnerLooser[1];
+            double gainDuMatch;
+
+            if (whoIsDead == null)
             {
-                benefMoney += 1000;
+                gainDuMatch = MoneyManager.instance.UpdateMoney(iteration, false);
+                Console.WriteLine($"\n\nLES {iteration - 1} ROUNDS SONT FINIS, FIN DU MATCH SANS MORT !");
+                Console.WriteLine($"Le Vainqueur du match est {winner.Pseudo}, BRAVO ! *El Chapo applaudit*");
+                Console.WriteLine($"Le perdant n'est nul autre que {looser.Pseudo}, ce match lui aura valu une bonne convalescence !");
+                Console.WriteLine($"Argent généré par le match : {gainDuMatch} $");
+                Console.WriteLine($"Money : {MoneyManager.instance.Money}");
             }
             else
             {
-                benefMoney += 10000;
+                gainDuMatch = MoneyManager.instance.UpdateMoney(iteration, true);
+                Console.WriteLine($"\n\nLE MATCH C'EST TERMINE EN {iteration - 1} ROUNDS, malheureusement {looser.Pseudo} est mort !");
+                Console.WriteLine($"Le Vainqueur du match est {winner.Pseudo}, BRAVO ! *El Chapo applaudit*");
+                Console.WriteLine($"Le perdant n'est nul autre que {looser.Pseudo}, ce match lui aura valu un sejour à la morgue...");
+                Console.WriteLine($"Argent généré par le match : {gainDuMatch}$ ");
+                Console.WriteLine($"Money : {MoneyManager.instance.Money}");
+
             }
-            saison += 1; 
-            if(saison % 8 == 0) { benefMoney = benefMoney + benefMoney*(13/100); }// majoration de  13% par saison 
-            actuelMoney += benefMoney;
+
+        }
+
+        private void DisplayResultCurrentIteration(Catcheur c1, Catcheur c2, int iteration)
+        {
+            Console.WriteLine($"\nRésumé du round {iteration} : \n{c1.Pseudo} : {c1.Health} HP\n{c2.Pseudo} : {c2.Health} HP");
         }
 
         private StringBuilder GetMatchUpScreen(Catcheur c1, Catcheur c2)
@@ -273,7 +284,6 @@ namespace el_chapo
                     ManagaActionAndDisplayResult(c1, c2);
                     break;
                    
-                
                 // Defense - Attaque
                 case "10": 
                     c2.AttackTarget(c1);
@@ -315,35 +325,26 @@ namespace el_chapo
         {
             if (c1.CatcheurState == CatcheurState.Mort)
             {
-                Console.WriteLine($"Quelle HORREUR !! {c1.Pseudo} est mort !! FIN DU MATCH !!");
                 whoIsDead = c1;
                 someoneIsDead = true;
-
             }
             else if (c2.CatcheurState == CatcheurState.Mort)
             {
-                Console.WriteLine($"Quelle HORREUR !! {c2.Pseudo} est mort !! FIN DU MATCH !!");
                 whoIsDead = c2;
                 someoneIsDead = true;
             }
-
         }
            
 
-        private  void Victory(Catcheur c1, Catcheur c2, out string victoryCatcheur, out string looserCatcheur)
+        private Catcheur[] WhoWinsAndLooses(Catcheur c1, Catcheur c2)
         {
-           
             if (c1.Health > c2.Health)
             {
-                Console.WriteLine($"Le Vainqueur est {c1.Pseudo}");
-                victoryCatcheur = c1.Pseudo;
-                looserCatcheur = c2.Pseudo;    
+                return new Catcheur[] { c1, c2 };
             }
             else
             {
-                Console.WriteLine($"Le Vainqueur est {c2.Pseudo}");
-                victoryCatcheur = c2.Pseudo;
-                looserCatcheur = c1.Pseudo;
+                return new Catcheur[] { c2, c1 };
             }
         }
 
@@ -441,6 +442,7 @@ namespace el_chapo
                     break;
             }
        
+       
     }
         public void test() // fonction de  test :p vu que je savais pas ou afficher tout ca
         {
@@ -486,6 +488,5 @@ namespace el_chapo
         {
             Console.WriteLine($"{c1.Pseudo} et {c2.Pseudo} se regardent droit dans les yeux, mais rien ne se passe...");
         }
-
     }
 }
