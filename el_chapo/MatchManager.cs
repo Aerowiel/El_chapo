@@ -12,13 +12,24 @@ namespace el_chapo
     {
         public List<Catcheur> Catcheurs { get; set; }
         public List<Catcheur> CatcheursOp { get; set; }
+        public List<History> HistoryCatcheur { get; set; }
+        //test
+        public List<string> HistoryCtacheur { get; set; }
         public static MatchManager instance = new MatchManager();
         public static Random dice = new Random();
 
         private Boolean someoneIsDead = false;
         private Catcheur whoIsDead;
 
+        private string victoryCatcheur;
+        private string looserCatcheur;
+        private int itération; // need for history 
+        private int benefMoney ;
+        private int actuelMoney ;
+        private int saison;
+
         private int opATM;
+       
 
         public MatchManager()
         {
@@ -32,14 +43,15 @@ namespace el_chapo
             Catcheurs.Add(new Catcheur("Dead Poule", CatcheurType.Agile, CatcheurState.Opérationnel, SpecialAttack.Bloque));
             Catcheurs.Add(new Catcheur("Jarvan cinquième du nom", CatcheurType.Brute, CatcheurState.Convalescent, SpecialAttack.Bloque));
             Catcheurs.Add(new Catcheur("Madusa", CatcheurType.Agile, CatcheurState.Opérationnel, SpecialAttack.Bloque));
-            Catcheurs.Add(new Catcheur("John Cinéma", CatcheurType.Agile, CatcheurState.Convalescent, SpecialAttack.Bloque));
+            Catcheurs.Add(new Catcheur("John Cinéma", CatcheurType.Agile, CatcheurState.Opérationnel, SpecialAttack.Bloque));
             Catcheurs.Add(new Catcheur("Jeff Radis", CatcheurType.Brute, CatcheurState.Convalescent, SpecialAttack.Bloque));
             Catcheurs.Add(new Catcheur("Raie Mystérieuse", CatcheurType.Brute, CatcheurState.Opérationnel, SpecialAttack.Bloque));
             Catcheurs.Add(new Catcheur("Chris Hart", CatcheurType.Brute, CatcheurState.Opérationnel, SpecialAttack.Bloque));
-
             Catcheurs.Add(new Catcheur("Bret Benoit", CatcheurType.Agile, CatcheurState.Opérationnel, SpecialAttack.Oneshot));
 
         }
+       
+
 
         public void CreateNewMatch()
         {
@@ -69,6 +81,8 @@ namespace el_chapo
             opATM = index;
             return sb;
         }
+
+     
 
         public StringBuilder DisplayFullCatcheurList()
         {
@@ -109,26 +123,31 @@ namespace el_chapo
             while (tempP2 == tempP1);
 
             Console.WriteLine($"Le combat va se disputer entre {CatcheursOp[tempP1].Pseudo} & {CatcheursOp[tempP2].Pseudo}");
-
-            if (("John Cinéma" == CatcheursOp[tempP1].Pseudo) || ("John Cinéma" == CatcheursOp[tempP2].Pseudo))
+            // lancement du son de debut de match 
+            /*if (("John Cinéma" == CatcheursOp[tempP1].Pseudo) || ("John Cinéma" == CatcheursOp[tempP2].Pseudo))
             {
                 playSimpleSoundCina();
                 Thread.Sleep(10000);
             }
+            */
             ManageFight(CatcheursOp[tempP1], CatcheursOp[tempP2]);
 
         }
+        
 
         private void ManageFight(Catcheur c1, Catcheur c2)
         {
             someoneIsDead = false;
+            benefMoney = 0;
+            
 
-            for (int iteration = 1; iteration <= 100; iteration++)
+            for (int iteration = 1; iteration <= 101; iteration++) // 101 plutot que 100 pour pouvoir afficher le vainquer par defaut si pas de mort
+
             {
-                if (!someoneIsDead)
+                if (!someoneIsDead && iteration < 101) // rajout de la condition 
                 {
                     Console.WriteLine($"\n\nITERATION {iteration} !");
-
+                    itération = iteration;
                     // Refresh bonus
                     c1.BonusAttack = 0;
                     c1.BonusDefense = 0;
@@ -161,25 +180,52 @@ namespace el_chapo
                     IterationMatchUp(trinaryAction, c1, c2);
                     CheckDeath(c1, c2);
                     Console.WriteLine($"Resultat : \n{c1.Pseudo} : {c1.Health} HP\n{c2.Pseudo} : {c2.Health} HP");
+                    benefMoney += 5000;
+                    
+                 
 
                 }
                 else
                 {
-                    DisplayEndScreen(c1, c2);
+                    
+                    Saison();                 
+                    Victory(c1, c2, out victoryCatcheur, out looserCatcheur);// determine le vainqueur et ressort les variables utilisé pour l'historique 
+                    Console.WriteLine($"Vous avez gagnez {benefMoney} $ sur ce match");
+                    Createhistory(c1, c2);// in progress
+                    DisplayEndScreen(c1, c2);            
                     Console.WriteLine("Break successfull");
                     break;
                 }
 
-                Thread.Sleep(2000);
+               // Thread.Sleep(2000);
             }
 
+
+
+        }
+
+
+        public void Saison()
+        {
+            if (!someoneIsDead)// si ca atteint 100 tour ba il gagne que 1000
+            {
+                benefMoney += 1000;
+            }
+            else
+            {
+                benefMoney += 10000;
+            }
+            saison += 1; 
+            if(saison % 8 == 0) { benefMoney = benefMoney + benefMoney*(13/100); }// majoration de  13% par saison 
+            actuelMoney += benefMoney;
         }
 
         private StringBuilder GetMatchUpScreen(Catcheur c1, Catcheur c2)
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine($"\n{c1.Pseudo} - {c1.Health}HP - Action : {c1.action}");
-            if(c1.action == CatcheurAction.Attack)
+            // s'il attaque, lance le son du punch 
+            /*if(c1.action == CatcheurAction.Attack)
             {
                 playSimpleSoundPunch();
                 Thread.Sleep(1000);
@@ -189,17 +235,18 @@ namespace el_chapo
                 playSimpleSoundKameha();
                 Thread.Sleep(5000);
             }
-            Thread.Sleep(1000);
+            Thread.Sleep(1000);*/
 
             sb.AppendLine($"\n{c2.Pseudo} - {c2.Health}HP - Action : {c2.action}");
-            if (c2.action == CatcheurAction.Attack)
+            //s'il attaque, lance le son du punch 
+            /*if (c2.action == CatcheurAction.Attack)
             {
                 playSimpleSoundPunch();
             }
             else if (c2.action == CatcheurAction.SpecialAttack)
             {
                 playSimpleSoundKameha();
-            }
+            }*/
             return sb;
         }
 
@@ -270,6 +317,7 @@ namespace el_chapo
                 Console.WriteLine($"Quelle HORREUR !! {c1.Pseudo} est mort !! FIN DU MATCH !!");
                 whoIsDead = c1;
                 someoneIsDead = true;
+
             }
             else if (c2.CatcheurState == CatcheurState.Mort)
             {
@@ -278,6 +326,24 @@ namespace el_chapo
                 someoneIsDead = true;
             }
 
+        }
+           
+
+        private  void Victory(Catcheur c1, Catcheur c2, out string victoryCatcheur, out string looserCatcheur)
+        {
+           
+            if (c1.Health > c2.Health)
+            {
+                Console.WriteLine($"Le Vainqueur est {c1.Pseudo}");
+                victoryCatcheur = c1.Pseudo;
+                looserCatcheur = c2.Pseudo;    
+            }
+            else
+            {
+                Console.WriteLine($"Le Vainqueur est {c2.Pseudo}");
+                victoryCatcheur = c2.Pseudo;
+                looserCatcheur = c1.Pseudo;
+            }
         }
 
         private void DisplayEndScreen(Catcheur c1, Catcheur c2)
@@ -373,9 +439,72 @@ namespace el_chapo
                     }
                     break;
             }
-
        
     }
+        public void test() // fonction de  test :p vu que je savais pas ou afficher tout ca
+        {
+            Console.WriteLine(actuelMoney);
+            
+        }
+
+
+        public void  Createhistory(Catcheur c1, Catcheur c2)
+        {
+                       //         j'arrive pas a implementer
+            HistoryCatcheur = new List<History>();
+         
+                if (c1.CatcheurState == CatcheurState.Mort || c2.CatcheurState == CatcheurState.Mort)
+                {
+
+                    HistoryCatcheur.Add(new History(victoryCatcheur, looserCatcheur, WinState.KO, itération));
+
+                }
+                else
+                {
+                    HistoryCatcheur.Add(new History(victoryCatcheur, looserCatcheur, WinState.PAR_DELAI, itération));
+                }
+            
+
+        }
+
+        public StringBuilder DisplayHistory()
+        {
+            StringBuilder sb = new StringBuilder();
+            int index = 0;
+
+            foreach (History history in HistoryCatcheur)
+            {
+
+                sb.AppendLine(history.DescribeHistory(index++));
+            }
+            return sb;
+        }
+        /*public StringBuilder DisplayCatcheurList()
+        {
+            StringBuilder sb = new StringBuilder();
+            CatcheursOp = new List<Catcheur>();
+            int index = 0;
+            // Affiche uniquement les catcheurs OP 
+
+            foreach (Catcheur catcheur in Catcheurs)
+            {
+
+                if (catcheur.CatcheurState == CatcheurState.Opérationnel)
+                {
+                    CatcheursOp.Add(catcheur);
+                    sb.AppendLine(catcheur.Describe(index++));
+                }
+
+            }
+            opATM = index;
+            return sb;
+        }*/
+
+        private void NothingIsHappening(Catcheur c1, Catcheur c2)
+        {
+            Console.WriteLine($"{c1.Pseudo} et {c2.Pseudo} se regardent droit dans les yeux, mais rien ne se passe...");
+        }
+
 
         public void playSimpleSoundCina()
         {

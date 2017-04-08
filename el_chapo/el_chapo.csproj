@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Catcheur.cs" />
+    <Compile Include="History.cs" />
     <Compile Include="MatchManager.cs" />
     <Compile Include="MenuManager.cs" />
     <Compile Include="Program.cs" />

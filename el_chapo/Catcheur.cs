@@ -9,12 +9,14 @@ namespace el_chapo
     public enum CatcheurType { Agile, Brute }
     public enum CatcheurState { Opérationnel, Convalescent, Mort }
     public enum CatcheurAction { Attack, Defend, SpecialAttack, SpeAttackFailed, Heal }
+    
 
     public class Catcheur
     {
         public string Pseudo { get; set; }
         public CatcheurType CatcheurType { get; set; }
         public CatcheurState CatcheurState { get; set; }
+       
         public int Health { get; set; }
         public int Defense { get; set; }
         public int Attack { get; set; }

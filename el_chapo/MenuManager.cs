@@ -75,10 +75,13 @@ namespace el_chapo
                     break;
 
                 case 1:
+                    Console.WriteLine(MatchManager.instance.DisplayHistory());
+                    MatchManager.instance.test();
                     
                     
                     break;
                 case 2:
+
                     Console.Clear();
                     Console.WriteLine(MatchManager.instance.DisplayFullCatcheurList());
                     RetourMainMenu();
