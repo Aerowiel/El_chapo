@@ -24,7 +24,7 @@ namespace el_chapo
         private Catcheur whoIsDead;
         private int iteration;
 
-        private int iterationMax = 100;
+        private int iterationMax = 10;
 
         private int opATM;
 
@@ -134,6 +134,7 @@ namespace el_chapo
             if(MatchThisSeason % 8 == 0)
             {
                 Season++;
+                MatchThisSeason = 0;
             }
             else
             {
@@ -184,11 +185,12 @@ namespace el_chapo
                     DisplayResultCurrentIteration(c1,c2,iteration);
                     //la
                 }
-                // Thread.Sleep(2000);
+
                 if(iteration == iterationMax)
                 {
                     break;
                 }
+                Thread.Sleep(2000);
             }
             DisplayAndManageEndGame(c1,c2);
         }
@@ -260,18 +262,13 @@ namespace el_chapo
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine($"\n{c1.Pseudo} - {c1.Health}HP - Action : {c1.action}");
-            // s'il attaque, lance le son du punch 
-            SoundAttak(c1);
-          
-            Thread.Sleep(1000);
-            SoundAttak(c2);
+
             sb.AppendLine($"\n{c2.Pseudo} - {c2.Health}HP - Action : {c2.action}");
-            //s'il attaque, lance le son du punch 
-            
+
             return sb;
         }
 
-        public void SoundAttak(Catcheur c)
+        /*public void SoundAttak(Catcheur c)
         {
 
             if (c.action == CatcheurAction.Attack)
@@ -284,14 +281,16 @@ namespace el_chapo
                 SoundManager.playSimpleSoundKameha();
                 Thread.Sleep(5000);
             }
-        }
+        }*/
 
         private void IterationMatchUp(String trinary, Catcheur c1, Catcheur c2)
         {
+            //ICI LE THREAD ?
             switch (trinary)
             {
                 // Attaque - Attaque
-                case "00": 
+                case "00":
+                    // ICI LE SON SPEFICIQUE
                     if (c1.AttackTarget(c2)) // Si c1 attaque c2 & c2 ne meurt pas
                     {
                         c2.AttackTarget(c1);
@@ -471,45 +470,6 @@ namespace el_chapo
        
        
     }
-        public void test() // fonction de  test :p vu que je savais pas ou afficher tout ca
-        {
-            Console.WriteLine(Assembly.GetExecutingAssembly().Location);
-            
-        }
-
-
-        public void  Createhistory(Catcheur c1, Catcheur c2)
-        {
-                       //         j'arrive pas a implementer
-            HistoryCatcheur = new List<History>();
-         
-                if (c1.CatcheurState == CatcheurState.Mort || c2.CatcheurState == CatcheurState.Mort)
-                {
-
-                    HistoryCatcheur.Add(new History(victoryCatcheur, looserCatcheur, WinState.KO, itération));
-
-                }
-                else
-                {
-                    HistoryCatcheur.Add(new History(victoryCatcheur, looserCatcheur, WinState.PAR_DELAI, itération));
-                }
-            
-
-        }
-
-        public StringBuilder DisplayHistory()
-        {
-            StringBuilder sb = new StringBuilder();
-            int index = 0;
-
-            foreach (History history in HistoryCatcheur)
-            {
-
-                sb.AppendLine(history.DescribeHistory(index++));
-            }
-            return sb;
-        }
-        
 
         private void NothingIsHappening(Catcheur c1, Catcheur c2)
         {

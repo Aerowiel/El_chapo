@@ -66,7 +66,7 @@ namespace el_chapo
                     break;
 
                 case 1:
-                    Console.WriteLine(MatchManager.instance.DisplayHistory());
+                    //Console.WriteLine(MatchManager.instance.DisplayHistory());
 
                     break;
                 case 2:
