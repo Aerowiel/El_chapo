@@ -56,6 +56,8 @@ namespace el_chapo
             SelectedMenu(TestUserInput(0, 4));
             
         }
+        
+      
 
         public void SelectedMenu(int selected)
         {
@@ -66,13 +68,18 @@ namespace el_chapo
                     break;
 
                 case 1:
-                    //Console.WriteLine(MatchManager.instance.DisplayHistory());
+                    Console.Clear();
+                    Console.WriteLine(HistoryManager.instance.DisplayHistory());
+                    HistoryManager.instance.DisplayMenuHistory();
+                   
 
                     break;
                 case 2:
 
                     Console.Clear();
+
                     Console.WriteLine(MatchManager.instance.DisplayFullCatcheurList());
+
                     RetourMainMenu();
                     break;
                 case 3:

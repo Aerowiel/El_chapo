@@ -13,13 +13,10 @@ namespace el_chapo
     {
         public static MatchManager instance = new MatchManager();
         public Random dice = new Random();
-
         public List<Catcheur> Catcheurs { get; set; }
         public List<Catcheur> CatcheursOp { get; set; }
-        public List<History> HistoryCatcheur { get; set; }
         public int Season { get; set; }
         public int MatchThisSeason { get; set; }
-
         private Boolean someoneIsDead = false;
         private Catcheur whoIsDead;
         private int iteration;
@@ -33,6 +30,7 @@ namespace el_chapo
             
             //Init catcheurs
             Catcheurs = new List<Catcheur>();
+            
 
             // Special = 0.33, Attaque = 0.33, Defense = 0.33
             Catcheurs.Add(new Catcheur("L'ordonnateur des pompes funèbres", CatcheurType.Brute, CatcheurState.Opérationnel, SpecialAttack.Bloque));
@@ -46,7 +44,7 @@ namespace el_chapo
             Catcheurs.Add(new Catcheur("Raie Mystérieuse", CatcheurType.Brute, CatcheurState.Opérationnel, SpecialAttack.RaieDuC));
             Catcheurs.Add(new Catcheur("Chris Hart", CatcheurType.Brute, CatcheurState.Opérationnel, SpecialAttack.Bloque));
             Catcheurs.Add(new Catcheur("Bret Benoit", CatcheurType.Agile, CatcheurState.Opérationnel, SpecialAttack.Oneshot));
-
+            
         }
        
         public void CreateNewMatch()
@@ -63,7 +61,7 @@ namespace el_chapo
             CatcheursOp = new List<Catcheur>();
             int index = 0;
             // Affiche uniquement les catcheurs OP 
-
+            OrderByPsuedo();
             foreach (Catcheur catcheur in Catcheurs)
             {
 
@@ -78,17 +76,25 @@ namespace el_chapo
             return sb;
         }
 
+        public void OrderByPsuedo() // tri par ordre alphabetique 
+        {
+
+                Catcheurs.Sort((x, y) => string.Compare(x.Pseudo, y.Pseudo));       
+        }
+     
+
         public StringBuilder DisplayFullCatcheurList()
         {
             StringBuilder sb = new StringBuilder();
             
             int index = 0;
-
+            OrderByPsuedo();
             foreach (Catcheur catcheur in Catcheurs)
             {
-                
+               
                 sb.AppendLine(catcheur.Describe(index++));
             }
+            
             return sb;
         }
 
@@ -120,7 +126,7 @@ namespace el_chapo
             // lancement du son de debut de match 
             if (("John Cinéma" == CatcheursOp[tempP1].Pseudo) || ("John Cinéma" == CatcheursOp[tempP2].Pseudo))
             {
-                SoundManager.playSimpleSoundCina();
+                SoundManager.instance.playSimpleSoundCina();
                 Thread.Sleep(10000);
             }
             
@@ -210,9 +216,8 @@ namespace el_chapo
                 Console.WriteLine($"Le perdant n'est nul autre que {looser.Pseudo}, ce match lui aura valu une bonne convalescence !");
                 Console.WriteLine($"Argent généré par le match : {gainDuMatch} $");
                 Console.WriteLine($"Money : {MoneyManager.instance.Money}");
-
-                //ICI
-                
+                HistoryManager.instance.Addhistory(winner, looser, WinState.PAR_DELAI, iteration - 1, gainDuMatch);
+               
             }
             else
             {
@@ -222,8 +227,8 @@ namespace el_chapo
                 Console.WriteLine($"Le perdant n'est nul autre que {looser.Pseudo}, ce match lui aura valu un sejour à la morgue...");
                 Console.WriteLine($"Argent généré par le match : {gainDuMatch}$ ");
                 Console.WriteLine($"Money : {MoneyManager.instance.Money}");
-
-                // ET LA
+                HistoryManager.instance.Addhistory(winner, looser, WinState.KO, iteration - 1, gainDuMatch);
+                
 
             }
             DisplayEndScreen(c1, c2);
@@ -273,12 +278,12 @@ namespace el_chapo
 
             if (c.action == CatcheurAction.Attack)
             {
-                SoundManager.playSimpleSoundPunch();
+                SoundManager.instance.playSimpleSoundPunch();
                 Thread.Sleep(1000);
             }
             else if (c.action == CatcheurAction.SpecialAttack)
             {
-                SoundManager.playSimpleSoundKameha();
+                SoundManager.instance.playSimpleSoundKameha();
                 Thread.Sleep(5000);
             }
         }*/
