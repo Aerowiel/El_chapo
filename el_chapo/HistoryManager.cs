@@ -22,8 +22,8 @@ namespace el_chapo
         public void DisplayMenuHistory() //menu pour le choix du filtre 
         {
             menuHistoryContent = new StringBuilder();
-            menuHistoryContent.AppendLine("0 - Filter l'historique par KO");
-            menuHistoryContent.AppendLine("1 - Filter l'hisotrique par DELAI");
+            menuHistoryContent.AppendLine("0 - Filtrer l'historique par KO");
+            menuHistoryContent.AppendLine("1 - Filtrer l'hisotrique par DELAI");
             menuHistoryContent.AppendLine("2 - Revenir au menu principal");
             Console.WriteLine(menuHistoryContent);
             FilterWinnerByKO_OR_WinnerByTKO(MenuManager.instance.TestUserInput(0 , 3));
@@ -44,11 +44,11 @@ namespace el_chapo
             switch(choix)
             {
                 case 0:
-                    DisplayCatcheurHistoryByKOList();
+                    Console.WriteLine(DisplayCatcheurHistoryByKOList());
                     break;
 
                 case 1:
-                    DisplayCatcheurHistoryByTKOList();
+                    Console.WriteLine(DisplayCatcheurHistoryByTKOList());
                     break;
 
                 case 2:
