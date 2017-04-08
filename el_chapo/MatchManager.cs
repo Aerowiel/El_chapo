@@ -23,23 +23,26 @@ namespace el_chapo
         private Catcheur whoIsDead;
         private int iteration;
 
+        private int iterationMax = 100;
+
         private int opATM;
 
         public MatchManager()
         {
+            
             //Init catcheurs
             Catcheurs = new List<Catcheur>();
 
             // Special = 0.33, Attaque = 0.33, Defense = 0.33
             Catcheurs.Add(new Catcheur("L'ordonnateur des pompes funèbres", CatcheurType.Brute, CatcheurState.Opérationnel, SpecialAttack.Bloque));
             Catcheurs.Add(new Catcheur("Jude Sunny", CatcheurType.Brute, CatcheurState.Opérationnel, SpecialAttack.JuddyPower));
-            Catcheurs.Add(new Catcheur("Triple Hache", CatcheurType.Agile, CatcheurState.Opérationnel, SpecialAttack.Bloque));
-            Catcheurs.Add(new Catcheur("Dead Poule", CatcheurType.Agile, CatcheurState.Opérationnel, SpecialAttack.Bloque));
+            Catcheurs.Add(new Catcheur("Triple Hache", CatcheurType.Agile, CatcheurState.Opérationnel, SpecialAttack.HacheFoudroyante));
+            Catcheurs.Add(new Catcheur("Dead Poule", CatcheurType.Agile, CatcheurState.Opérationnel, SpecialAttack.DeadPoulePower));
             Catcheurs.Add(new Catcheur("Jarvan cinquième du nom", CatcheurType.Brute, CatcheurState.Convalescent, SpecialAttack.Bloque));
-            Catcheurs.Add(new Catcheur("Madusa", CatcheurType.Agile, CatcheurState.Opérationnel, SpecialAttack.Bloque));
-            Catcheurs.Add(new Catcheur("John Cinéma", CatcheurType.Agile, CatcheurState.Opérationnel, SpecialAttack.Bloque));
+            Catcheurs.Add(new Catcheur("Madusa", CatcheurType.Agile, CatcheurState.Opérationnel, SpecialAttack.OffensiveBlock));
+            Catcheurs.Add(new Catcheur("John Cinéma", CatcheurType.Agile, CatcheurState.Opérationnel, SpecialAttack.HacheFoudroyante));
             Catcheurs.Add(new Catcheur("Jeff Radis", CatcheurType.Brute, CatcheurState.Convalescent, SpecialAttack.Bloque));
-            Catcheurs.Add(new Catcheur("Raie Mystérieuse", CatcheurType.Brute, CatcheurState.Opérationnel, SpecialAttack.Bloque));
+            Catcheurs.Add(new Catcheur("Raie Mystérieuse", CatcheurType.Brute, CatcheurState.Opérationnel, SpecialAttack.RaieDuC));
             Catcheurs.Add(new Catcheur("Chris Hart", CatcheurType.Brute, CatcheurState.Opérationnel, SpecialAttack.Bloque));
             Catcheurs.Add(new Catcheur("Bret Benoit", CatcheurType.Agile, CatcheurState.Opérationnel, SpecialAttack.Oneshot));
 
@@ -73,8 +76,6 @@ namespace el_chapo
             opATM = index;
             return sb;
         }
-
-     
 
         public StringBuilder DisplayFullCatcheurList()
         {
@@ -142,19 +143,12 @@ namespace el_chapo
             iteration = 1;
             whoIsDead = null;
 
-            for (iteration = 1; iteration <= 20; iteration++) // 101 plutot que 100 pour pouvoir afficher le vainquer par defaut si pas de mort
+            for (iteration = 1; iteration <= iterationMax; iteration++) 
             {
                 if (!someoneIsDead) 
                 {
                     Console.WriteLine($"\n\nITERATION {iteration} !");
-
-                    // Refresh bonus
-                    c1.BonusAttack = 0;
-                    c1.BonusDefense = 0;
-                    c2.BonusAttack = 0;
-                    c2.BonusDefense = 0;
-                    c1.BonusHeal = 0;
-                    c2.BonusHeal = 0;
+                    RefreshBonus(c1, c2);
 
                     // On détermine les actions à faire (random)
                     c1.ChooseAction();
@@ -180,21 +174,22 @@ namespace el_chapo
                     IterationMatchUp(trinaryAction, c1, c2);
 
                     // On regarde si l'un des deux joueurs est mort à la fin de l'itération en cours.
-                    CheckDeath(c1, c2);
-
+                    if (CheckDeath(c1, c2))
+                    {
+                        DisplayResultCurrentIteration(c1, c2, iteration);
+                        break;
+                    }
                     // On display le résultat pour cette itération
                     DisplayResultCurrentIteration(c1,c2,iteration);
+                    //la
                 }
                 // Thread.Sleep(2000);
+                if(iteration == iterationMax)
+                {
+                    break;
+                }
             }
-
             DisplayAndManageEndGame(c1,c2);
-            //Saison();
-            //Createhistory(c1, c2);// in progress
-            DisplayEndScreen(c1, c2);
-            //Console.WriteLine("Break successfull");
-
-
         }
 
         private void DisplayAndManageEndGame(Catcheur c1, Catcheur c2)
@@ -207,22 +202,51 @@ namespace el_chapo
             if (whoIsDead == null)
             {
                 gainDuMatch = MoneyManager.instance.UpdateMoney(iteration, false);
-                Console.WriteLine($"\n\nLES {iteration - 1} ROUNDS SONT FINIS, FIN DU MATCH SANS MORT !");
+                Console.WriteLine($"\n\nLES {iteration} ROUNDS SONT FINIS, FIN DU MATCH SANS MORT !");
                 Console.WriteLine($"Le Vainqueur du match est {winner.Pseudo}, BRAVO ! *El Chapo applaudit*");
                 Console.WriteLine($"Le perdant n'est nul autre que {looser.Pseudo}, ce match lui aura valu une bonne convalescence !");
                 Console.WriteLine($"Argent généré par le match : {gainDuMatch} $");
                 Console.WriteLine($"Money : {MoneyManager.instance.Money}");
+
+                //ICI
+                
             }
             else
             {
                 gainDuMatch = MoneyManager.instance.UpdateMoney(iteration, true);
-                Console.WriteLine($"\n\nLE MATCH C'EST TERMINE EN {iteration - 1} ROUNDS, malheureusement {looser.Pseudo} est mort !");
+                Console.WriteLine($"\n\nLE MATCH C'EST TERMINE EN {iteration} ROUNDS, malheureusement {looser.Pseudo} est mort !");
                 Console.WriteLine($"Le Vainqueur du match est {winner.Pseudo}, BRAVO ! *El Chapo applaudit*");
                 Console.WriteLine($"Le perdant n'est nul autre que {looser.Pseudo}, ce match lui aura valu un sejour à la morgue...");
                 Console.WriteLine($"Argent généré par le match : {gainDuMatch}$ ");
                 Console.WriteLine($"Money : {MoneyManager.instance.Money}");
 
+                // ET LA
+
             }
+            DisplayEndScreen(c1, c2);
+        }
+
+        private void RefreshBonus(Catcheur c1, Catcheur c2)
+        {
+            // Refresh bonus
+            c1.BonusAttack = 0;
+            c1.BonusDefense = 0;
+
+            c2.BonusAttack = 0;
+            c2.BonusDefense = 0;
+
+            c1.BonusHeal = 0;
+            c2.BonusHeal = 0;
+
+
+            c1.DebuffHealth = 0;
+            c2.DebuffHealth = 0;
+
+            c1.DebuffAttack = 0;
+            c2.DebuffAttack = 0;
+
+            c1.DebuffDefense = 0;
+            c2.DebuffDefense = 0;
 
         }
 
@@ -320,18 +344,21 @@ namespace el_chapo
             }
         }
         
-        private void CheckDeath(Catcheur c1, Catcheur c2)
+        private Boolean CheckDeath(Catcheur c1, Catcheur c2)
         {
             if (c1.CatcheurState == CatcheurState.Mort)
             {
                 whoIsDead = c1;
                 someoneIsDead = true;
+                return true;
             }
             else if (c2.CatcheurState == CatcheurState.Mort)
             {
                 whoIsDead = c2;
                 someoneIsDead = true;
+                return true;
             }
+            return false;
         }
            
 

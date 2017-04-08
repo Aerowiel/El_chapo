@@ -16,20 +16,12 @@ namespace el_chapo
 
         public static MenuManager instance = new MenuManager();
 
-        private float benefCum;
-
         public MenuManager()
         {
-            //Init
-            benefCum = 0f;
-
             //Déclaration des lignes de création de match
             menuCreationMatch = new StringBuilder();
             menuCreationMatch.AppendLine("############# NEW MATCH ############");
             menuCreationMatch.AppendLine("CHOISISSEZ UN CATCHEUR DANS LA LISTE CI-DESSOUS");
-
-
-
         }
 
         public int TestUserInput(int min, int max)

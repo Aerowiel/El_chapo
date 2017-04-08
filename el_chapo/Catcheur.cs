@@ -28,8 +28,11 @@ namespace el_chapo
         public int BonusDefense { get; set; }
         public int BonusHeal { get; set; }
 
-        public SpecialAttack SpecialAtk { get; set; }
+        public int DebuffHealth { get; set; }
+        public int DebuffAttack { get; set; }
+        public int DebuffDefense { get; set; }
 
+        public SpecialAttack SpecialAtk { get; set; }
 
         public Catcheur(string pseudo, CatcheurType type, CatcheurState state, SpecialAttack specialAtk)
         {
@@ -92,25 +95,41 @@ namespace el_chapo
 
         public Boolean AttackTarget(Catcheur cible)
         {
-            int targetDefense;
-            if(cible.action == CatcheurAction.Attack || cible.action == CatcheurAction.SpeAttackFailed)
+            int targetDefense = 0;
+            if(cible.action == CatcheurAction.Attack || cible.action == CatcheurAction.SpeAttackFailed || cible.action == CatcheurAction.Heal)
             {
-                Console.WriteLine($"{Pseudo} attaque {cible.Pseudo} à hauteur de {Attack + BonusAttack}, {cible.Pseudo} n'absorbe aucun point de dégat !");
+                Console.WriteLine($"{Pseudo} attaque {cible.Pseudo} à hauteur de {Attack + BonusAttack - DebuffAttack}, {cible.Pseudo} absorbe {cible.BonusDefense} point de dégat !");
+                if(this.BonusHeal > 0)
+                {
+                    Console.WriteLine($"{Pseudo} vol {BonusHeal}");
+                    Health += BonusHeal;
+                }
+                else if(this.DebuffHealth > 0)
+                {
+                    Console.WriteLine($"{Pseudo} se prend -{DebuffHealth} point de dégat de malus dans la face du KING !");
+                    Health -= DebuffHealth;
+                }
                 targetDefense = 0;
             }
             else if(cible.action == CatcheurAction.Defend)
             {
-                Console.WriteLine($"{Pseudo} attaque {cible.Pseudo} à hauteur de {Attack + BonusAttack}, {cible.Pseudo} absorbe {cible.Defense + cible.BonusDefense} point de dégat !");
+                Console.WriteLine($"{Pseudo} attaque {cible.Pseudo} à hauteur de {Attack + BonusAttack - DebuffAttack}, {cible.Pseudo} absorbe {cible.Defense + cible.BonusDefense} point de dégat !");
                 targetDefense = cible.Defense + cible.BonusDefense;
-            }
-            else
-            {
-                Console.WriteLine($"{Pseudo} attaque {cible.Pseudo} à hauteur de {Attack + BonusAttack}, {cible.Pseudo} n'absorbe aucun point de dégat !");
-                targetDefense = 0;
+                if (this.BonusHeal > 0)
+                {
+                    Console.WriteLine($"{Pseudo} vol {BonusHeal}");
+                    Health += BonusHeal;
+                }
+                else if (DebuffHealth > 0)
+                {
+                    Console.WriteLine($"{Pseudo} se prend -{DebuffHealth} point de dégat de malus !");
+                    Health -= DebuffHealth;
+                }
             }
             
+            
             int healthCalculated;
-            healthCalculated = (cible.Health + targetDefense) - (this.Attack + this.BonusAttack);
+            healthCalculated = (cible.Health + targetDefense - cible.DebuffDefense) - (this.Attack + this.BonusAttack - this.DebuffAttack);
             //Console.WriteLine(healthCalculated);
             if (healthCalculated > 0)
             {
