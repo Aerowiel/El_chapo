@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Media;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -117,12 +118,12 @@ namespace el_chapo
 
             Console.WriteLine($"Le combat va se disputer entre {CatcheursOp[tempP1].Pseudo} & {CatcheursOp[tempP2].Pseudo}");
             // lancement du son de debut de match 
-            /*if (("John Cinéma" == CatcheursOp[tempP1].Pseudo) || ("John Cinéma" == CatcheursOp[tempP2].Pseudo))
+            if (("John Cinéma" == CatcheursOp[tempP1].Pseudo) || ("John Cinéma" == CatcheursOp[tempP2].Pseudo))
             {
-                playSimpleSoundCina();
+                SoundManager.playSimpleSoundCina();
                 Thread.Sleep(10000);
             }
-            */
+            
             ManageFight(CatcheursOp[tempP1], CatcheursOp[tempP2]);
 
         }
@@ -260,29 +261,29 @@ namespace el_chapo
             StringBuilder sb = new StringBuilder();
             sb.AppendLine($"\n{c1.Pseudo} - {c1.Health}HP - Action : {c1.action}");
             // s'il attaque, lance le son du punch 
-            /*if(c1.action == CatcheurAction.Attack)
-            {
-                playSimpleSoundPunch();
-                Thread.Sleep(1000);
-            }
-            else if (c1.action == CatcheurAction.SpecialAttack)
-            {
-                playSimpleSoundKameha();
-                Thread.Sleep(5000);
-            }
-            Thread.Sleep(1000);*/
-
+            SoundAttak(c1);
+          
+            Thread.Sleep(1000);
+            SoundAttak(c2);
             sb.AppendLine($"\n{c2.Pseudo} - {c2.Health}HP - Action : {c2.action}");
             //s'il attaque, lance le son du punch 
-            /*if (c2.action == CatcheurAction.Attack)
-            {
-                playSimpleSoundPunch();
-            }
-            else if (c2.action == CatcheurAction.SpecialAttack)
-            {
-                playSimpleSoundKameha();
-            }*/
+            
             return sb;
+        }
+
+        public void SoundAttak(Catcheur c)
+        {
+
+            if (c.action == CatcheurAction.Attack)
+            {
+                SoundManager.playSimpleSoundPunch();
+                Thread.Sleep(1000);
+            }
+            else if (c.action == CatcheurAction.SpecialAttack)
+            {
+                SoundManager.playSimpleSoundKameha();
+                Thread.Sleep(5000);
+            }
         }
 
         private void IterationMatchUp(String trinary, Catcheur c1, Catcheur c2)
@@ -468,6 +469,32 @@ namespace el_chapo
                     break;
             }
        
+       
+    }
+        public void test() // fonction de  test :p vu que je savais pas ou afficher tout ca
+        {
+            Console.WriteLine(Assembly.GetExecutingAssembly().Location);
+            
+        }
+
+
+        public void  Createhistory(Catcheur c1, Catcheur c2)
+        {
+                       //         j'arrive pas a implementer
+            HistoryCatcheur = new List<History>();
+         
+                if (c1.CatcheurState == CatcheurState.Mort || c2.CatcheurState == CatcheurState.Mort)
+                {
+
+                    HistoryCatcheur.Add(new History(victoryCatcheur, looserCatcheur, WinState.KO, itération));
+
+                }
+                else
+                {
+                    HistoryCatcheur.Add(new History(victoryCatcheur, looserCatcheur, WinState.PAR_DELAI, itération));
+                }
+            
+
         }
 
         public StringBuilder DisplayHistory()
@@ -482,6 +509,7 @@ namespace el_chapo
             }
             return sb;
         }
+        
 
         private void NothingIsHappening(Catcheur c1, Catcheur c2)
         {
