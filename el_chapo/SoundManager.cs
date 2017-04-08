@@ -7,25 +7,29 @@ using System.Threading.Tasks;
 
 namespace el_chapo
 {
+    
     class SoundManager
     {
+        public static SoundManager instance = new SoundManager();
 
-        public static void playSimpleSoundCina()
+        public  void playSimpleSoundCina()
         {
             SoundPlayer simpleSound = new SoundPlayer(@"..\..\..\ressource\AND GOODBYE.wav");
             simpleSound.Play();
         }
 
-        public static void playSimpleSoundPunch()
+        public  void playSimpleSoundPunch()
         {
             SoundPlayer simpleSound = new SoundPlayer(@"..\..\..\ressource\Punch.wav");
             simpleSound.Play();
         }
 
-        public static void  playSimpleSoundKameha()
+        public  void  playSimpleSoundKameha()
         {
             SoundPlayer simpleSound = new SoundPlayer(@"..\..\..\ressource\kamehameha.wav");
             simpleSound.Play();
         }
+
+
     }
 }

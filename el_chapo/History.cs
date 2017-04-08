@@ -17,22 +17,24 @@ namespace el_chapo
         public string VictoryCatcheur { get; set; }
         public string LooserCatcheur { get; set; }
         public WinState WinState { get; set; }
-        public int Itération { get; set; }
+        public int Iteration { get; set; }
+        public double Gain { get; set; }
         
         
 
-        public History(string victoryCatcheur, string looserCatcheur, WinState winstate, int itération)
+        public History(string victoryCatcheur, string looserCatcheur, WinState winState, int iteration, double gain )
         {
             // Init
             VictoryCatcheur = victoryCatcheur;
             LooserCatcheur = looserCatcheur;
-            WinState = WinState;
-            Itération = Itération;
+            WinState = winState;
+            Iteration = iteration;
+            Gain = gain;
         }
 
-        public string DescribeHistory(int index)
+        public string DescribeHistory()
         {
-            string description = $" {VictoryCatcheur} a  gagné contre {LooserCatcheur} au bout de {Itération} round par {WinState} et a remporté 30 000 boulas, OH YEAH! ";
+            string description = $" {VictoryCatcheur} a  gagné contre {LooserCatcheur} au bout de {Iteration} round par {WinState} et a remporté {Gain} boulas, OH YEAH! ";
 
             return description;
         }
