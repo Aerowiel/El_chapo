@@ -21,12 +21,14 @@ namespace el_chapo
         private Catcheur whoIsDead;
         private int iteration;
 
-        private int iterationMax = 10;
+        private int iterationMax = 100;
 
         private int opATM;
 
         public MatchManager()
         {
+            //Init Stats
+            Season = 1;
             
             //Init catcheurs
             Catcheurs = new List<Catcheur>();
@@ -154,8 +156,6 @@ namespace el_chapo
                 if (!someoneIsDead) 
                 {
                     Console.WriteLine($"\n\nITERATION {iteration} !");
-                    RefreshBonus(c1, c2);
-
                     // On détermine les actions à faire (random)
                     c1.ChooseAction();
                     c2.ChooseAction();
@@ -180,12 +180,14 @@ namespace el_chapo
                     IterationMatchUp(trinaryAction, c1, c2);
 
                     // On regarde si l'un des deux joueurs est mort à la fin de l'itération en cours.
-                    if (CheckDeath(c1, c2))
+                    if (CheckDeathAndManageDeath(c1, c2))
                     {
+                        RefreshBonus(c1, c2);
                         DisplayResultCurrentIteration(c1, c2, iteration);
                         break;
                     }
                     // On display le résultat pour cette itération
+                    RefreshBonus(c1, c2);
                     DisplayResultCurrentIteration(c1,c2,iteration);
                     //la
                 }
@@ -215,6 +217,7 @@ namespace el_chapo
                 Console.WriteLine($"Argent généré par le match : {gainDuMatch} $");
                 Console.WriteLine($"Money : {MoneyManager.instance.Money}");
                 HistoryManager.instance.Addhistory(winner, looser, WinState.PAR_DELAI, iteration, gainDuMatch);
+                SetConvalAndHeal(winner, looser);
                
             }
             else
@@ -226,8 +229,7 @@ namespace el_chapo
                 Console.WriteLine($"Argent généré par le match : {gainDuMatch}$ ");
                 Console.WriteLine($"Money : {MoneyManager.instance.Money}");
                 HistoryManager.instance.Addhistory(winner, looser, WinState.KO, iteration, gainDuMatch);
-                
-
+                HealWinner(winner);
             }
             DisplayEndScreen(c1, c2);
         }
@@ -347,21 +349,69 @@ namespace el_chapo
             }
         }
         
-        private Boolean CheckDeath(Catcheur c1, Catcheur c2)
+        private Boolean CheckDeathAndManageDeath(Catcheur c1, Catcheur c2)
         {
             if (c1.CatcheurState == CatcheurState.Mort)
             {
-                whoIsDead = c1;
-                someoneIsDead = true;
-                return true;
+                return SetDeath(c1);
             }
             else if (c2.CatcheurState == CatcheurState.Mort)
             {
-                whoIsDead = c2;
-                someoneIsDead = true;
-                return true;
+                return SetDeath(c2);
             }
             return false;
+        }
+
+        private Boolean SetDeath(Catcheur dead)
+        {
+            whoIsDead = dead;
+            someoneIsDead = true;
+            return true;
+        }
+
+        private void SetConvalAndHeal(Catcheur winner, Catcheur looser)
+        {
+            HealWinner(winner);
+            if(looser.Health < (looser.maxHealth / 2) )
+            {
+                looser.DayRemainingBeforeOp = dice.Next(2, 6);
+                looser.CatcheurState = CatcheurState.Convalescent;
+                Console.WriteLine($"Le perdant {looser.Pseudo} part en convalescence pour {looser.DayRemainingBeforeOp} jours suite à ses blessures...");
+            }
+            else
+            {
+                Console.WriteLine($"Le perdant {looser.Pseudo} est assez en forme pour continuer la saison !");
+            }
+        }
+
+        private void HealWinner(Catcheur winner)
+        {
+            winner.Health = winner.maxHealth;
+            Console.WriteLine($"Le gagnant {winner.Pseudo} a été soigné de la totalité de ses points de vie !");
+            UpdateConvalAndChangeState();
+        }
+
+        private void UpdateConvalAndChangeState()
+        {
+            foreach(Catcheur catcheur in Catcheurs)
+            {
+                if(catcheur.CatcheurState == CatcheurState.Convalescent && catcheur.DayRemainingBeforeOp >= 0)
+                {
+                    if(catcheur.DayRemainingBeforeOp > 0)
+                    {
+                        catcheur.DayRemainingBeforeOp -= 1;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"{catcheur.Pseudo} peut de nouveau combattre !");
+                        catcheur.CatcheurState = CatcheurState.Opérationnel;
+                        catcheur.Health = catcheur.maxHealth;
+                    }
+                }
+                
+                
+               
+            }
         }
            
 

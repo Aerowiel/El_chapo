@@ -49,6 +49,7 @@ namespace el_chapo
             menuPrincipalContent = new StringBuilder();
             menuPrincipalContent.AppendLine("################ MENU ###############");
             menuPrincipalContent.AppendLine($"Argent gagné : {MoneyManager.instance.Money} $");
+            menuPrincipalContent.AppendLine($"Saison : {MatchManager.instance.Season} | Match cette saison {MatchManager.instance.MatchThisSeason}");
             menuPrincipalContent.AppendLine("0 - Créer le match de samedi prochain");
             menuPrincipalContent.AppendLine("1 - Consulter l'historique des matchs");
             menuPrincipalContent.AppendLine("2 - Consulter la base des contacts");
@@ -76,7 +77,7 @@ namespace el_chapo
 
                     break;
                 case 2:
-                    //Console.WriteLine(MatchManager.instance.DisplayFullCatcheurList());
+                    Console.WriteLine(MatchManager.instance.DisplayFullCatcheurList());
                   
                    
                     RetourMainMenu();

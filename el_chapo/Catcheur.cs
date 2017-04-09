@@ -34,6 +34,8 @@ namespace el_chapo
 
         public SpecialAttack SpecialAtk { get; set; }
 
+        public int DayRemainingBeforeOp { get; set; }
+
         public Catcheur(string pseudo, CatcheurType type, CatcheurState state, SpecialAttack specialAtk)
         {
             // Init
@@ -63,9 +65,14 @@ namespace el_chapo
 
        public string Describe(int index)
         {
-            string description = $"{index}. NOM : {Pseudo} | TYPE : {CatcheurType} | HP : {Health} | Attack : {Attack} | Defense : {Defense}";
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"{index}. NOM : {Pseudo} | TYPE : {CatcheurType} | HP : {Health} | Attack : {Attack} | Defense : {Defense} | Attaque Spéciale : {SpecialAtk} | Statut : {CatcheurState}");
+            if(CatcheurState == CatcheurState.Convalescent)
+            {
+                sb.Append($" | Jour(s) restant(s) : {DayRemainingBeforeOp}");
+            }
 
-            return description;
+            return sb.ToString();
         }
 
         public void ChooseAction()
@@ -145,8 +152,8 @@ namespace el_chapo
             else
             {
                 Console.WriteLine($"{cible.Pseudo} est mort sur le coup...");
-                cible.Health = 0;
                 cible.CatcheurState = CatcheurState.Mort;
+                cible.Health = 0;
                 return false;
             }
         }

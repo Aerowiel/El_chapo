@@ -14,7 +14,7 @@ namespace el_chapo
 
     class History
     {
-        public string VictoryCatcheur { get; set; }
+        public string VictoryCatcheur { get; set; } = "";
         public string LooserCatcheur { get; set; }
         public WinState WinState { get; set; }
         public int Iteration { get; set; }
@@ -34,14 +34,10 @@ namespace el_chapo
 
         public string DescribeHistory()
         {
-            string description =String.Format( " {0} a  gagné contre {1} au bout de {2} round par {3} et a remporté {4} $ ",
-                                                       VictoryCatcheur,
-                                                       LooserCatcheur,
-                                                       Iteration + 1,
-                                                       WinState,
-                                                       Gain);
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($" {VictoryCatcheur} a  gagné contre {LooserCatcheur} au bout de {Iteration} round par {WinState} et a remporté {Gain} $ ");
 
-            return description;
+            return sb.ToString();
         }
         
     }
