@@ -214,7 +214,7 @@ namespace el_chapo
                 Console.WriteLine($"Le perdant n'est nul autre que {looser.Pseudo}, ce match lui aura valu une bonne convalescence !");
                 Console.WriteLine($"Argent généré par le match : {gainDuMatch} $");
                 Console.WriteLine($"Money : {MoneyManager.instance.Money}");
-                HistoryManager.instance.Addhistory(winner, looser, WinState.PAR_DELAI, iteration - 1, gainDuMatch);
+                HistoryManager.instance.Addhistory(winner, looser, WinState.PAR_DELAI, iteration, gainDuMatch);
                
             }
             else
@@ -225,7 +225,7 @@ namespace el_chapo
                 Console.WriteLine($"Le perdant n'est nul autre que {looser.Pseudo}, ce match lui aura valu un sejour à la morgue...");
                 Console.WriteLine($"Argent généré par le match : {gainDuMatch}$ ");
                 Console.WriteLine($"Money : {MoneyManager.instance.Money}");
-                HistoryManager.instance.Addhistory(winner, looser, WinState.KO, iteration - 1, gainDuMatch);
+                HistoryManager.instance.Addhistory(winner, looser, WinState.KO, iteration, gainDuMatch);
                 
 
             }
