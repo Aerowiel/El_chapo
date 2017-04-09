@@ -45,6 +45,7 @@ namespace el_chapo
 
         public void DisplayMenu()
         {
+            
             menuPrincipalContent = new StringBuilder();
             menuPrincipalContent.AppendLine("################ MENU ###############");
             menuPrincipalContent.AppendLine($"Argent gagné : {MoneyManager.instance.Money} $");
@@ -54,10 +55,10 @@ namespace el_chapo
             menuPrincipalContent.AppendLine("3 - Quitter le jeu");
             Console.WriteLine(menuPrincipalContent);
             SelectedMenu(TestUserInput(0, 4));
-            
+
         }
-        
-      
+
+
 
         public void SelectedMenu(int selected)
         {
@@ -71,20 +72,18 @@ namespace el_chapo
                     Console.Clear();
                     Console.WriteLine(HistoryManager.instance.DisplayHistory());
                     HistoryManager.instance.DisplayMenuHistory();
-                   
+
 
                     break;
                 case 2:
-
-                    Console.Clear();
-
-                    Console.WriteLine(MatchManager.instance.DisplayFullCatcheurList());
-
+                    //Console.WriteLine(MatchManager.instance.DisplayFullCatcheurList());
+                  
+                   
                     RetourMainMenu();
                     break;
                 case 3:
                     ExitApplication();
-                    
+
                     break;
                 default:
                     Console.WriteLine("Ce menu n'existe pas veuillez saisir un autre numéro de menu...\n");
@@ -113,5 +112,9 @@ namespace el_chapo
         }
 
 
+
+       
+
     }
-}
+
+    }

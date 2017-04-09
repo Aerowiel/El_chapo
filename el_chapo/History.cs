@@ -34,9 +34,15 @@ namespace el_chapo
 
         public string DescribeHistory()
         {
-            string description = $" {VictoryCatcheur} a  gagné contre {LooserCatcheur} au bout de {Iteration} round par {WinState} et a remporté {Gain} boulas, OH YEAH! ";
+            string description =String.Format( " {0} a  gagné contre {1} au bout de {2} round par {3} et a remporté {4} $ ",
+                                                       VictoryCatcheur,
+                                                       LooserCatcheur,
+                                                       Iteration + 1,
+                                                       WinState,
+                                                       Gain);
 
             return description;
         }
+        
     }
 }
