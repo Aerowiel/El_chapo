@@ -21,7 +21,7 @@ namespace el_chapo
         private Catcheur whoIsDead;
         private int iteration;
 
-        private int iterationMax = 20;
+        private int iterationMax = 100;
 
         private int opATM;
 
@@ -224,8 +224,10 @@ namespace el_chapo
             }
             else
             {
+                SoundManager.instance.playSimpleSoundMort();
                 gainDuMatch = MoneyManager.instance.UpdateMoney(iteration, true);
                 Console.WriteLine($"\n\nLE MATCH C'EST TERMINE EN {iteration} ROUNDS, malheureusement {looser.Pseudo} est mort !\n");
+                Thread.Sleep(3000);
                 Console.WriteLine($"Le Vainqueur du match est {winner.Pseudo}, BRAVO ! *El Chapo applaudit*");
                 Console.WriteLine($"Le perdant n'est nul autre que {looser.Pseudo}, ce match lui aura valu une bonne convalescence !\n");
                 Console.WriteLine($"Le match vous a rapporté  : {gainDuMatch} $ ");
@@ -314,55 +316,72 @@ namespace el_chapo
                 case "00":
 
                     ColorAttack(c1);
+                    SoundManager.instance.playSimpleSoundPunch();
                     ColorAttack(c2);
+                    SoundManager.instance.playSimpleSoundPunch();
                     break;
 
                 case "01":
 
                     ColorAttack(c1);
+                    SoundManager.instance.playSimpleSoundPunch();
                     ColorDefend(c2);
+                    SoundManager.instance.playSimpleSoundDefend();
                     break;
 
                 case "02":
 
                     ColorAttack(c1);
+                    SoundManager.instance.playSimpleSoundPunch();
                     ColorAttackSpe(c2);
                     break;
 
 
                 case "10":
                     ColorDefend(c1);
+                    SoundManager.instance.playSimpleSoundDefend();
                     ColorAttack(c2);
+                    SoundManager.instance.playSimpleSoundPunch();
                     break;
 
 
                 case "11":
                     ColorDefend(c1);
+                    SoundManager.instance.playSimpleSoundDefend();
                     ColorDefend(c2);
+                    SoundManager.instance.playSimpleSoundDefend();
                     break;
 
 
                 case "12":
                     ColorDefend(c1);
+                    SoundManager.instance.playSimpleSoundDefend();
                     ColorAttackSpe(c2);
+                    SoundManager.instance.playSimpleSoundKameha();
                     break;
 
 
                 case "20":
                     ColorAttackSpe(c1);
+                    SoundManager.instance.playSimpleSoundKameha();
                     ColorAttack(c2);
+                    SoundManager.instance.playSimpleSoundPunch();
                     break;
 
 
                 case "21":
                     ColorAttackSpe(c1);
+                    SoundManager.instance.playSimpleSoundKameha();
                     ColorDefend(c2);
+                    SoundManager.instance.playSimpleSoundDefend();
                     break;
 
 
                 case "22":
                     ColorAttackSpe(c1);
+                    SoundManager.instance.playSimpleSoundKameha();
                     ColorAttackSpe(c2);
+                    SoundManager.instance.playSimpleSoundKameha();
                     break;
             }
         }
