@@ -46,6 +46,7 @@ namespace el_chapo
         public void DisplayMenu()
         {
             
+            
             menuPrincipalContent = new StringBuilder();
             menuPrincipalContent.AppendLine("################ MENU ###############");
             menuPrincipalContent.AppendLine($"Argent gagné : {MoneyManager.instance.Money} $");
