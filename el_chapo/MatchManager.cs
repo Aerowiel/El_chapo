@@ -21,7 +21,7 @@ namespace el_chapo
         private Catcheur whoIsDead;
         private int iteration;
 
-        private int iterationMax = 100;
+        private int iterationMax = 20;
 
         private int opATM;
 
@@ -212,23 +212,24 @@ namespace el_chapo
             if (whoIsDead == null)
             {
                 gainDuMatch = MoneyManager.instance.UpdateMoney(iteration, false);
-                Console.WriteLine($"\n\nLES {iteration} ROUNDS SONT FINIS, FIN DU MATCH SANS MORT !");
+                Console.WriteLine($"\n\nLES {iteration} ROUNDS SONT FINIS, FIN DU MATCH SANS MORT !\n");
+
                 Console.WriteLine($"Le Vainqueur du match est {winner.Pseudo}, BRAVO ! *El Chapo applaudit*");
-                Console.WriteLine($"Le perdant n'est nul autre que {looser.Pseudo}, ce match lui aura valu une bonne convalescence !");
-                Console.WriteLine($"Argent généré par le match : {gainDuMatch} $");
-                Console.WriteLine($"Money : {MoneyManager.instance.Money}");
+                Console.WriteLine($"Le perdant n'est nul autre que {looser.Pseudo}, ce match lui aura valu une bonne convalescence !\n");
+                ColorMoney(gainDuMatch, MoneyManager.instance.Money);
                 HistoryManager.instance.Addhistory(winner, looser, WinState.PAR_DELAI, iteration, gainDuMatch);
+                Console.WriteLine("  ####  NEWS  ####\n  ");
                 SetConvalAndHeal(winner, looser);
 
             }
             else
             {
                 gainDuMatch = MoneyManager.instance.UpdateMoney(iteration, true);
-                Console.WriteLine($"\n\nLE MATCH C'EST TERMINE EN {iteration} ROUNDS, malheureusement {looser.Pseudo} est mort !");
+                Console.WriteLine($"\n\nLE MATCH C'EST TERMINE EN {iteration} ROUNDS, malheureusement {looser.Pseudo} est mort !\n");
                 Console.WriteLine($"Le Vainqueur du match est {winner.Pseudo}, BRAVO ! *El Chapo applaudit*");
-                Console.WriteLine($"Le perdant n'est nul autre que {looser.Pseudo}, ce match lui aura valu un sejour à la morgue...");
-                Console.WriteLine($"Argent généré par le match : {gainDuMatch}$ ");
-                Console.WriteLine($"Money : {MoneyManager.instance.Money}");
+                Console.WriteLine($"Le perdant n'est nul autre que {looser.Pseudo}, ce match lui aura valu une bonne convalescence !\n");
+                Console.WriteLine($"Le match vous a rapporté  : {gainDuMatch} $ ");
+                Console.WriteLine($"Votre fortune s'élève a   : {MoneyManager.instance.Money} $\n");
                 HistoryManager.instance.Addhistory(winner, looser, WinState.KO, iteration, gainDuMatch);
                 HealWinner(winner);
             }
@@ -261,7 +262,7 @@ namespace el_chapo
 
         private void DisplayResultCurrentIteration(Catcheur c1, Catcheur c2, int iteration)
         {
-            Console.WriteLine($"\nRésumé du round {iteration} : \n{c1.Pseudo} : {c1.Health} HP\n{c2.Pseudo} : {c2.Health} HP");
+            Console.WriteLine($"\nRésumé du round {iteration} : \n{c1.Pseudo} : {c1.Health} HP\n{c2.Pseudo} : {c2.Health} HP\n");
         }
 
 
@@ -269,7 +270,7 @@ namespace el_chapo
         {
             Console.Write($"\n{c.Pseudo} - {c.Health}HP - Action : ");
             Console.ForegroundColor = ConsoleColor.DarkRed;
-            Console.Write(c.action + "\n");
+            Console.WriteLine(c.action + "\n");
             Console.ResetColor();
 
         }
@@ -278,7 +279,7 @@ namespace el_chapo
         {
             Console.Write($"\n{c.Pseudo} - {c.Health}HP - Action : ");
             Console.ForegroundColor = ConsoleColor.DarkMagenta;
-            Console.Write(c.action + "\n");
+            Console.WriteLine(c.action + "\n");
             Console.ResetColor();
         }
 
@@ -286,11 +287,23 @@ namespace el_chapo
         {
             Console.Write($"\n{c.Pseudo} - {c.Health}HP - Action : ");
             Console.ForegroundColor = ConsoleColor.DarkGreen;
-            Console.Write(c.action + "\n");
+            Console.WriteLine(c.action + "\n");
             Console.ResetColor();
 
         }
 
+        private void ColorMoney(double matchMoney, double totalMoney)
+        {
+            
+            Console.Write("Le match vous a rapporté  : ");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine(matchMoney + "$ ");
+            Console.ResetColor();
+            Console.Write($"Votre fortune s'élève a   : ");
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine(totalMoney + "$\n");
+            Console.ResetColor();
+        }
 
         private void GetMatchUpScreen(Catcheur c1, Catcheur c2, String trinary)
         {
@@ -354,32 +367,7 @@ namespace el_chapo
             }
         }
 
-        /* public CatcheurAction ColorRed(CatcheurAction catcheurAction)
-         {
-             Console.ForegroundColor = ConsoleColor.Red;
-
-
-             return catcheurAction;
-             //Console.WriteLine(catcheurAction);
-
-
-
-         }*/
-
-        /*public void SoundAttak(Catcheur c)
-        {
-
-            if (c.action == CatcheurAction.Attack)
-            {
-                SoundManager.instance.playSimpleSoundPunch();
-                Thread.Sleep(1000);
-            }
-            else if (c.action == CatcheurAction.SpecialAttack)
-            {
-                SoundManager.instance.playSimpleSoundKameha();
-                Thread.Sleep(5000);
-            }
-        }*/
+    
 
         private void IterationMatchUp(String trinary, Catcheur c1, Catcheur c2)
         {
@@ -469,18 +457,24 @@ namespace el_chapo
             {
                 looser.DayRemainingBeforeOp = dice.Next(2, 6);
                 looser.CatcheurState = CatcheurState.Convalescent;
-                Console.WriteLine($"Le perdant {looser.Pseudo} part en convalescence pour {looser.DayRemainingBeforeOp} jours suite à ses blessures...");
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.WriteLine($"Le perdant {looser.Pseudo} part en convalescence pour {looser.DayRemainingBeforeOp} jours suite à ses blessures...\n");
+                Console.ResetColor();
             }
             else
             {
-                Console.WriteLine($"Le perdant {looser.Pseudo} est assez en forme pour continuer la saison !");
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.WriteLine($"Le perdant {looser.Pseudo} est assez en forme pour continuer la saison !\n");
+                Console.ResetColor();
             }
         }
 
         private void HealWinner(Catcheur winner)
         {
             winner.Health = winner.maxHealth;
+            Console.ForegroundColor = ConsoleColor.DarkGray;
             Console.WriteLine($"Le gagnant {winner.Pseudo} a été soigné de la totalité de ses points de vie !");
+            Console.ResetColor();
             UpdateConvalAndChangeState();
         }
 
@@ -496,7 +490,9 @@ namespace el_chapo
                     }
                     else
                     {
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
                         Console.WriteLine($"{catcheur.Pseudo} peut de nouveau combattre !");
+                        Console.ResetColor();
                         catcheur.CatcheurState = CatcheurState.Opérationnel;
                         catcheur.Health = catcheur.maxHealth;
                     }
