@@ -101,11 +101,28 @@ namespace el_chapo
 
         public void ExitApplication()
         {
-            SaveManager saveManager = new SaveManager();
-            saveManager.Save();
-            Thread.Sleep(2000);
+            Console.WriteLine("Voulez-vous sauvegarder la partie en cours avant de quitter l'application ?");
+            Console.WriteLine("1. Oui");
+            Console.WriteLine("2. Non");
+            WouldYouLikeToSave(TestUserInput(1, 2));
+        }
 
-            System.Environment.Exit(-1);
+        public void WouldYouLikeToSave(int answer)
+        {
+            switch (answer)
+            {
+                case 0:
+                    System.Environment.Exit(-1);
+                    break;
+                case 1:
+                    SaveManager saveManager = new SaveManager();
+                    Console.Write("\nNom : ");
+                    string name = Console.ReadLine().Replace(" ", "_");
+                    saveManager.Save(name);
+                    System.Environment.Exit(-1);
+                    break;
+            }
+            
         }
 
         public void RetourMainMenu()
@@ -126,8 +143,26 @@ namespace el_chapo
         {
             SaveManager saveManager = new SaveManager();
 
-            Console.WriteLine("VEUILLEZ CHOISIR UNE SAUVEGARDE PARMIS LA LISTE CI-DESSOUS");
-            //int selected = Console.ReadLine(TestUserInput(0,))
+            int index = 0;
+
+            Console.WriteLine("Veuillez choisir un numero de sauvegarde dans la liste ci dessous :");
+            foreach (String saveName in saveManager.Saves)
+            {
+                string formatedString = index++ + saveName.Replace("..\\..\\..\\saves\\", ". ").Replace(".xml","");
+                Console.WriteLine(formatedString);
+            }
+            Console.WriteLine($"{index}. Retour");
+            int selected = TestUserInput(0, saveManager.Saves.Count + 1);
+            if(selected == (saveManager.Saves.Count))
+            {
+                Console.Clear();
+                DisplayMenu();
+            }
+            else {
+                saveManager.LoadAndUpdateObjects(saveManager.Saves[selected]);
+                DisplayMenu();
+            }
+            
         }
 
 

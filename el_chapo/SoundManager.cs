@@ -46,7 +46,7 @@ namespace el_chapo
         {
             //SoundPlayer simpleSound = new SoundPlayer(@"..\..\..\ressource\MortTroll.wav");
             //simpleSound.Play();
-            Thread.Sleep(10000);
+            //Thread.Sleep(10000);
         }
 
 

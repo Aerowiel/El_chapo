@@ -13,11 +13,11 @@ namespace el_chapo
 
         //MatchManager.cs important variables
         public List<Catcheur> CatcheurList { get; set; }
-        public int SeasonMaMa { get; set; }
-        public int MatchThisSeasonMaMa { get; set; }
+        public int Season { get; set; }
+        public int MatchThisSeason { get; set; }
 
         //MoneyManager.cs important variables
-        public double MoneyMoMa { get; set; }
+        public double Money { get; set; }
 
         //Hisory
 
@@ -28,11 +28,11 @@ namespace el_chapo
             //MatchManager
             CatcheurList = new List<Catcheur>();
             CatcheurList = MatchManager.instance.Catcheurs;
-            SeasonMaMa = MatchManager.instance.Season;
-            MatchThisSeasonMaMa = MatchManager.instance.MatchThisSeason;
+            Season = MatchManager.instance.Season;
+            MatchThisSeason = MatchManager.instance.MatchThisSeason;
 
             //MoneyManager
-            MoneyMoMa = MoneyManager.instance.Money;
+            Money = MoneyManager.instance.Money;
 
             //HistoryManager
             HistoryList = new List<History>();

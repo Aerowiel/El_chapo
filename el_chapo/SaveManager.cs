@@ -7,18 +7,26 @@ using System.IO;
 using System.Xml.Linq;
 using System.Xml;
 using System.Xml.Serialization;
+using System.Threading;
 
 namespace el_chapo
 {
 
     class SaveManager
     {
-        public List<Save> Saves { get; set; }
+        public List<String> Saves { get; set; }
 
         public SaveManager()
         {
-            Saves = new List<Save>();
+            Saves = new List<String>();
             CheckAndCreateSaveFolder();
+            string[] saves = Directory.GetFiles(GetPath());
+
+            foreach (string saveName in saves)
+            {
+                Saves.Add(saveName);
+            }
+
             //int saveCount = Directory.GetFiles(path, "*", SearchOption.TopDirectoryOnly).Length;
         }
 
@@ -32,7 +40,7 @@ namespace el_chapo
             }
         }
 
-        public void Save()
+        public void Save(string name)
         {
             Save save = new Save()
             {
@@ -43,10 +51,12 @@ namespace el_chapo
             string path = GetPath();
 
             XDocument xmlFile = new XDocument();
-            using (var writer = xmlFile.CreateWriter())
+
+            //Shortcut pour initialiser une variable local qu'on utilisera directement par la suite ! Trés utile !
+            using (XmlWriter writer = xmlFile.CreateWriter())
             {
                 try{
-                    var serializer = new XmlSerializer(typeof(Save));
+                    XmlSerializer serializer = new XmlSerializer(typeof(Save));
                     serializer.Serialize(writer, save);
                 }
                 catch(Exception e)
@@ -58,12 +68,38 @@ namespace el_chapo
 
                 
             }
+            //Puis on save dans ..\..\..\saves\
+            xmlFile.Save(Path.Combine(path, $"{name}.xml"));
+        }
 
-            //XmlWriter writer = xmlFile.CreateWriter();
-            //XmlSerializer serializer = new XmlSerializer(typeof(Save));
+        public void LoadAndUpdateObjects(string nameOfSave)
+        {
 
+            Save save;
+            XmlSerializer serializer = new XmlSerializer(typeof(Save));
+            string path = Path.Combine(nameOfSave);
+            using (FileStream fileStream = File.Open(path, FileMode.Open))
+            {
+                save = (Save)serializer.Deserialize(fileStream);
+                Console.WriteLine("Deserializing file stream");
+                ExperimentalProgressBar progressBar = new ExperimentalProgressBar(ConsoleColor.Blue, 25);
+                progressBar.DisplayProgressBar();
+                
+            }
+            //MatchManager
+            MatchManager.instance.Catcheurs = save.CatcheurList;
+            MatchManager.instance.Season = save.Season;
+            MatchManager.instance.MatchThisSeason = save.MatchThisSeason;
 
-            xmlFile.Save(Path.Combine(path, "sauvegardes.xml"));
+            //MoneyManager
+            MoneyManager.instance.Money = save.Money;
+
+            //HistoryManager
+            HistoryManager.instance.HistoryCatcheur = save.HistoryList;
+            Console.WriteLine($"\n *La sauvegarde \"{nameOfSave}\" s'est chargée avec succès !");
+            Thread.Sleep(2000);
+            Console.Clear();
+            
         }
 
         public string GetPath()

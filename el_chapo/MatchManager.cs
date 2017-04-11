@@ -22,7 +22,7 @@ namespace el_chapo
         private Catcheur whoIsDead;
         private int iteration;
 
-        private int iterationMax = 100;
+        private int iterationMax = 20;
 
         private int opATM;
 
@@ -146,14 +146,10 @@ namespace el_chapo
 
         private void ManageFight(Catcheur c1, Catcheur c2)
         {
-            if(MatchThisSeason % 8 == 0)
-            {
-                MatchThisSeason++;
-            }
-            else if(MatchThisSeason % 8 == 0)
+            if(MatchThisSeason % 8 == 0 && MatchThisSeason != 0)
             {
                 Season++;
-                MatchThisSeason = 0;
+                MatchThisSeason = 1;
             }
             else
             {
@@ -233,14 +229,12 @@ namespace el_chapo
                 HistoryManager.instance.Addhistory(winner, looser, WinState.PAR_DELAI, iteration, gainDuMatch);
                 Console.WriteLine("  ####  NEWS  ####\n  ");
                 SetConvalAndHeal(winner, looser);
-
             }
             else
             {
                 SoundManager.instance.playSimpleSoundMort();
                 gainDuMatch = MoneyManager.instance.UpdateMoney(iteration, true);
                 Console.WriteLine($"\n\nLE MATCH C'EST TERMINE EN {iteration} ROUNDS, malheureusement {looser.Pseudo} est mort !\n");
-                Thread.Sleep(3000);
                 Console.WriteLine($"Le Vainqueur du match est {winner.Pseudo}, BRAVO ! *El Chapo applaudit*");
                 Console.WriteLine($"Le perdant n'est nul autre que {looser.Pseudo}, ce match lui aura valu une bonne convalescence !\n");
                 MoneyManager.instance.ColorAndDisplayMoney(gainDuMatch, MoneyManager.instance.Money);
@@ -248,6 +242,7 @@ namespace el_chapo
                 HealWinner(winner);
             }
             DisplayEndScreen(c1, c2);
+            Thread.Sleep(3000);
         }
 
         private void RefreshBonus(Catcheur c1, Catcheur c2)
