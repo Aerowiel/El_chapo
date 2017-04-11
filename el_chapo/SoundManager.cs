@@ -37,15 +37,15 @@ namespace el_chapo
 
         public  void  playSimpleSoundKameha()
         {
-            SoundPlayer simpleSound = new SoundPlayer(@"..\..\..\ressource\kamehameha.wav");
+            SoundPlayer simpleSound = new SoundPlayer(@"..\..\..\ressource\Punch.wav");
             simpleSound.Play();
            Thread.Sleep(6000);
         }
 
         public void playSimpleSoundMort()
         {
-            SoundPlayer simpleSound = new SoundPlayer(@"..\..\..\ressource\MortTroll.wav");
-            simpleSound.Play();
+            //SoundPlayer simpleSound = new SoundPlayer(@"..\..\..\ressource\MortTroll.wav");
+            //simpleSound.Play();
             Thread.Sleep(10000);
         }
 

@@ -33,5 +33,18 @@ namespace el_chapo
             return moneyEarnedThisRound;
         }
 
+        public void ColorAndDisplayMoney(double matchMoney, double totalMoney)
+        {
+
+            Console.Write("Le match vous a rapporté  : ");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine(matchMoney + "$ ");
+            Console.ResetColor();
+            Console.Write($"Votre fortune s'élève a   : ");
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine(totalMoney + "$\n");
+            Console.ResetColor();
+        }
+
     }
 }

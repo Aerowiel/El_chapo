@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Threading;
 
 namespace el_chapo
 {
@@ -54,9 +55,10 @@ namespace el_chapo
             menuPrincipalContent.AppendLine("0 - Créer le match de samedi prochain");
             menuPrincipalContent.AppendLine("1 - Consulter l'historique des matchs");
             menuPrincipalContent.AppendLine("2 - Consulter la base des contacts");
-            menuPrincipalContent.AppendLine("3 - Quitter le jeu");
+            menuPrincipalContent.AppendLine("3 - Charger une sauvegarde");
+            menuPrincipalContent.AppendLine("4 - Quitter le jeu");
             Console.WriteLine(menuPrincipalContent);
-            SelectedMenu(TestUserInput(0, 4));
+            SelectedMenu(TestUserInput(0, 5));
 
         }
 
@@ -84,9 +86,12 @@ namespace el_chapo
                     RetourMainMenu();
                     break;
                 case 3:
-                    ExitApplication();
-
+                    DisplaySavesMenu();
                     break;
+                case 4:
+                    ExitApplication();
+                    break;
+
                 default:
                     Console.WriteLine("Ce menu n'existe pas veuillez saisir un autre numéro de menu...\n");
                     //DisplayMenu();
@@ -96,6 +101,10 @@ namespace el_chapo
 
         public void ExitApplication()
         {
+            SaveManager saveManager = new SaveManager();
+            saveManager.Save();
+            Thread.Sleep(2000);
+
             System.Environment.Exit(-1);
         }
 
@@ -111,6 +120,14 @@ namespace el_chapo
         {
             Console.Clear();
             DisplayMenu();
+        }
+
+        public void DisplaySavesMenu()
+        {
+            SaveManager saveManager = new SaveManager();
+
+            Console.WriteLine("VEUILLEZ CHOISIR UNE SAUVEGARDE PARMIS LA LISTE CI-DESSOUS");
+            //int selected = Console.ReadLine(TestUserInput(0,))
         }
 
 

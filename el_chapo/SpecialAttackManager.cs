@@ -4,10 +4,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace el_chapo
 {
-    public enum SpecialAttack { Bloque, Oneshot, JuddyPower, DeadPoulePower, HacheFoudroyante, OffensiveBlock, RaieDuC }
+    public enum SpecialAttack {
+        [XmlEnum(Name = "Bloque")]
+        Bloque,
+        [XmlEnum(Name = "Oneshot")]
+        Oneshot,
+        [XmlEnum(Name = "JuddyPower")]
+        JuddyPower,
+        [XmlEnum(Name = "DeadPoulePower")]
+        DeadPoulePower,
+        [XmlEnum(Name = "HacheFoudroyante")]
+        HacheFoudroyante,
+        [XmlEnum(Name = "OffensiveBlock")]
+        OffensiveBlock,
+        [XmlEnum(Name = "RaieDuC")]
+        RaieDuC
+    }
 
     class SpecialAttackManager
     {

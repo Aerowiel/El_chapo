@@ -9,9 +9,10 @@ using System.Threading.Tasks;
 
 namespace el_chapo
 {
-    class MatchManager
+    public class MatchManager
     {
         public static MatchManager instance = new MatchManager();
+
         public Random dice = new Random();
         public List<Catcheur> Catcheurs { get; set; }
         public List<Catcheur> CatcheursOp { get; set; }
@@ -27,6 +28,14 @@ namespace el_chapo
 
         public MatchManager()
         {
+            if(instance != null)
+            {
+                Console.WriteLine("MM !null");
+            }
+            else
+            {
+                Console.WriteLine("MM null");
+            }
             //Init Stats
             Season = 1;
 
@@ -137,7 +146,11 @@ namespace el_chapo
 
         private void ManageFight(Catcheur c1, Catcheur c2)
         {
-            if (MatchThisSeason % 8 == 0)
+            if(MatchThisSeason % 8 == 0)
+            {
+                MatchThisSeason++;
+            }
+            else if(MatchThisSeason % 8 == 0)
             {
                 Season++;
                 MatchThisSeason = 0;
@@ -176,9 +189,9 @@ namespace el_chapo
                     // 2 = AttaqueSpe
                     // On a donc 00, 01, 02, 10, 11, 12, 20, 21, 22
                     string trinaryAction = "" + ((int)c1.action) + "" + ((int)c2.action);
-                    GetMatchUpScreen( c1, c2, trinaryAction);
+                    //GetMatchUpScreen( c1, c2, trinaryAction);
 
-                    IterationMatchUp(trinaryAction, c1, c2);
+                    IterationMatchUp(c1,c2,trinaryAction);
 
                     // On regarde si l'un des deux joueurs est mort à la fin de l'itération en cours.
                     if (CheckDeathAndManageDeath(c1, c2))
@@ -216,7 +229,7 @@ namespace el_chapo
 
                 Console.WriteLine($"Le Vainqueur du match est {winner.Pseudo}, BRAVO ! *El Chapo applaudit*");
                 Console.WriteLine($"Le perdant n'est nul autre que {looser.Pseudo}, ce match lui aura valu une bonne convalescence !\n");
-                ColorMoney(gainDuMatch, MoneyManager.instance.Money);
+                MoneyManager.instance.ColorAndDisplayMoney(gainDuMatch, MoneyManager.instance.Money);
                 HistoryManager.instance.Addhistory(winner, looser, WinState.PAR_DELAI, iteration, gainDuMatch);
                 Console.WriteLine("  ####  NEWS  ####\n  ");
                 SetConvalAndHeal(winner, looser);
@@ -230,8 +243,7 @@ namespace el_chapo
                 Thread.Sleep(3000);
                 Console.WriteLine($"Le Vainqueur du match est {winner.Pseudo}, BRAVO ! *El Chapo applaudit*");
                 Console.WriteLine($"Le perdant n'est nul autre que {looser.Pseudo}, ce match lui aura valu une bonne convalescence !\n");
-                Console.WriteLine($"Le match vous a rapporté  : {gainDuMatch} $ ");
-                Console.WriteLine($"Votre fortune s'élève a   : {MoneyManager.instance.Money} $\n");
+                MoneyManager.instance.ColorAndDisplayMoney(gainDuMatch, MoneyManager.instance.Money);
                 HistoryManager.instance.Addhistory(winner, looser, WinState.KO, iteration, gainDuMatch);
                 HealWinner(winner);
             }
@@ -277,14 +289,6 @@ namespace el_chapo
 
         }
 
-        private void ColorAttackSpe(Catcheur c)
-        {
-            Console.Write($"\n{c.Pseudo} - {c.Health}HP - Action : ");
-            Console.ForegroundColor = ConsoleColor.DarkMagenta;
-            Console.WriteLine(c.action + "\n");
-            Console.ResetColor();
-        }
-
         private void ColorDefend(Catcheur c)
         {
             Console.Write($"\n{c.Pseudo} - {c.Health}HP - Action : ");
@@ -294,107 +298,22 @@ namespace el_chapo
 
         }
 
-        private void ColorMoney(double matchMoney, double totalMoney)
+        private void ColorAttackSpe(Catcheur c)
         {
-            
-            Console.Write("Le match vous a rapporté  : ");
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine(matchMoney + "$ ");
-            Console.ResetColor();
-            Console.Write($"Votre fortune s'élève a   : ");
-            Console.ForegroundColor = ConsoleColor.DarkYellow;
-            Console.WriteLine(totalMoney + "$\n");
+            Console.Write($"\n{c.Pseudo} - {c.Health}HP - Action : ");
+            Console.ForegroundColor = ConsoleColor.DarkMagenta;
+            Console.WriteLine(c.action + "\n");
             Console.ResetColor();
         }
 
-        private void GetMatchUpScreen(Catcheur c1, Catcheur c2, String trinary)
+        public void IterationMatchUp(Catcheur c1, Catcheur c2, string trinary)
         {
-            switch (trinary)
-            {
-
-
-                case "00":
-
-                    ColorAttack(c1);
-                    SoundManager.instance.playSimpleSoundPunch();
-                    ColorAttack(c2);
-                    SoundManager.instance.playSimpleSoundPunch();
-                    break;
-
-                case "01":
-
-                    ColorAttack(c1);
-                    SoundManager.instance.playSimpleSoundPunch();
-                    ColorDefend(c2);
-                    SoundManager.instance.playSimpleSoundDefend();
-                    break;
-
-                case "02":
-
-                    ColorAttack(c1);
-                    SoundManager.instance.playSimpleSoundPunch();
-                    ColorAttackSpe(c2);
-                    break;
-
-
-                case "10":
-                    ColorDefend(c1);
-                    SoundManager.instance.playSimpleSoundDefend();
-                    ColorAttack(c2);
-                    SoundManager.instance.playSimpleSoundPunch();
-                    break;
-
-
-                case "11":
-                    ColorDefend(c1);
-                    SoundManager.instance.playSimpleSoundDefend();
-                    ColorDefend(c2);
-                    SoundManager.instance.playSimpleSoundDefend();
-                    break;
-
-
-                case "12":
-                    ColorDefend(c1);
-                    SoundManager.instance.playSimpleSoundDefend();
-                    ColorAttackSpe(c2);
-                    SoundManager.instance.playSimpleSoundKameha();
-                    break;
-
-
-                case "20":
-                    ColorAttackSpe(c1);
-                    SoundManager.instance.playSimpleSoundKameha();
-                    ColorAttack(c2);
-                    SoundManager.instance.playSimpleSoundPunch();
-                    break;
-
-
-                case "21":
-                    ColorAttackSpe(c1);
-                    SoundManager.instance.playSimpleSoundKameha();
-                    ColorDefend(c2);
-                    SoundManager.instance.playSimpleSoundDefend();
-                    break;
-
-
-                case "22":
-                    ColorAttackSpe(c1);
-                    SoundManager.instance.playSimpleSoundKameha();
-                    ColorAttackSpe(c2);
-                    SoundManager.instance.playSimpleSoundKameha();
-                    break;
-            }
-        }
-
-    
-
-        private void IterationMatchUp(String trinary, Catcheur c1, Catcheur c2)
-        {
-            //ICI LE THREAD ?
             switch (trinary)
             {
                 // Attaque - Attaque
                 case "00":
+                    ColorAttack(c1);
+                    ColorAttack(c2);
                     // ICI LE SON SPEFICIQUE
                     if (c1.AttackTarget(c2)) // Si c1 attaque c2 & c2 ne meurt pas
                     {
@@ -404,44 +323,60 @@ namespace el_chapo
 
                 // Attaque - Defense
                 case "01":
+                    ColorAttack(c1);
+                    ColorDefend(c2);
                     c1.AttackTarget(c2);
                     break;
                 // Attaque - AttaqueSpe
                 case "02":
+                    ColorAttack(c1);
+                    ColorAttackSpe(c2);
                     SpecialAttackManager.instance.SpecialAttackComputing(c2);
                     ManageActionAndDisplayResult(c1, c2);
                     break;
 
                 // Defense - Attaque
                 case "10":
+                    ColorDefend(c1);
+                    ColorAttack(c2);
                     c2.AttackTarget(c1);
                     break;
 
                 // Defense - Defense
                 case "11":
+                    ColorDefend(c1);
+                    ColorDefend(c2);
                     NothingIsHappening(c1, c2);
                     break;
 
                 // Defense - AttaqueSpe
                 case "12":
+                    ColorDefend(c1);
+                    ColorAttackSpe(c2);
                     SpecialAttackManager.instance.SpecialAttackComputing(c2);
                     ManageActionAndDisplayResult(c1, c2);
                     break;
 
                 //AttaqueSpe - Attaque
                 case "20":
+                    ColorAttackSpe(c1);
+                    ColorAttack(c2);
                     SpecialAttackManager.instance.SpecialAttackComputing(c1);
                     ManageActionAndDisplayResult(c1, c2);
                     break;
 
                 //AttaqueSpe - Defense
                 case "21":
+                    ColorAttackSpe(c1);
+                    ColorDefend(c2);
                     SpecialAttackManager.instance.SpecialAttackComputing(c1);
                     ManageActionAndDisplayResult(c1, c2);
                     break;
 
                 // AttaqueSpe - AttaqueSpe
                 case "22":
+                    ColorAttackSpe(c1);
+                    ColorAttackSpe(c2);
                     SpecialAttackManager.instance.SpecialAttackComputing(c1);
                     SpecialAttackManager.instance.SpecialAttackComputing(c2);
                     ManageActionAndDisplayResult(c1, c2);
@@ -516,12 +451,12 @@ namespace el_chapo
                         catcheur.Health = catcheur.maxHealth;
                     }
                 }
-
-
-
+                
+                
+               
             }
         }
-
+           
 
         private Catcheur[] WhoWinsAndLooses(Catcheur c1, Catcheur c2)
         {

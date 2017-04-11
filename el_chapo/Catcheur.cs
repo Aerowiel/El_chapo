@@ -3,12 +3,36 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace el_chapo
 {
-    public enum CatcheurType { Agile, Brute }
-    public enum CatcheurState { Opérationnel, Convalescent, Mort }
-    public enum CatcheurAction { Attack, Defend, SpecialAttack, SpeAttackFailed, Heal }
+    public enum CatcheurType {
+        [XmlEnum(Name = "Agile")]
+        Agile,
+        [XmlEnum(Name = "Brute")]
+        Brute
+    }
+    public enum CatcheurState {
+        [XmlEnum(Name = "Opérationnel")]
+        Opérationnel,
+        [XmlEnum(Name = "Convalescent")]
+        Convalescent,
+        [XmlEnum(Name = "Mort")]
+        Mort
+    }
+    public enum CatcheurAction {
+        [XmlEnum(Name = "Attack")]
+        Attack,
+        [XmlEnum(Name = "Defend")]
+        Defend,
+        [XmlEnum(Name = "SpecialAttack")]
+        SpecialAttack,
+        [XmlEnum(Name = "SpeAttackFailed")]
+        SpeAttackFailed,
+        [XmlEnum(Name = "Heal")]
+        Heal
+    }
     
 
     public class Catcheur
@@ -63,6 +87,12 @@ namespace el_chapo
            
         }
 
+        //Sert à pouvoir sérialisé la classe, il faut qu'il y ai un constructeur vide dans la classe. :p
+        public Catcheur()
+        {
+
+        }
+
        public string Describe(int index)
         {
             StringBuilder sb = new StringBuilder();
@@ -113,7 +143,7 @@ namespace el_chapo
                 }
                 else if(this.DebuffHealth > 0)
                 {
-                    Console.WriteLine($"{Pseudo} se prend -{DebuffHealth} point de dégat de malus dans la face du KING !");
+                    Console.WriteLine($"{Pseudo} se prend -{DebuffHealth} point de dégat de malus dans la face !");
                     Health -= DebuffHealth;
                 }
                 targetDefense = 0;
