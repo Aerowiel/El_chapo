@@ -37,7 +37,7 @@ namespace el_chapo
 
         public  void  playSimpleSoundKameha()
         {
-            SoundPlayer simpleSound = new SoundPlayer(@"..\..\..\ressource\kamehameha.wav");
+            SoundPlayer simpleSound = new SoundPlayer(@"..\..\..\ressource\Punch.wav");
             simpleSound.Play();
            Thread.Sleep(6000);
         }

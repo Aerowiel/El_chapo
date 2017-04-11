@@ -9,9 +9,10 @@ using System.Threading.Tasks;
 
 namespace el_chapo
 {
-    class MatchManager
+    public class MatchManager
     {
         public static MatchManager instance = new MatchManager();
+
         public Random dice = new Random();
         public List<Catcheur> Catcheurs { get; set; }
         public List<Catcheur> CatcheursOp { get; set; }
@@ -27,6 +28,14 @@ namespace el_chapo
 
         public MatchManager()
         {
+            if(instance != null)
+            {
+                Console.WriteLine("MM !null");
+            }
+            else
+            {
+                Console.WriteLine("MM null");
+            }
             //Init Stats
             Season = 1;
 
