@@ -29,10 +29,10 @@ namespace el_chapo
         {
             //Init Stats
             Season = 1;
-            
+
             //Init catcheurs
             Catcheurs = new List<Catcheur>();
-            
+
 
             // Special = 0.33, Attaque = 0.33, Defense = 0.33
             Catcheurs.Add(new Catcheur("L'ordonnateur des pompes funèbres", CatcheurType.Brute, CatcheurState.Opérationnel, SpecialAttack.Bloque));
@@ -46,9 +46,9 @@ namespace el_chapo
             Catcheurs.Add(new Catcheur("Raie Mystérieuse", CatcheurType.Brute, CatcheurState.Opérationnel, SpecialAttack.RaieDuC));
             Catcheurs.Add(new Catcheur("Chris Hart", CatcheurType.Brute, CatcheurState.Opérationnel, SpecialAttack.Bloque));
             Catcheurs.Add(new Catcheur("Bret Benoit", CatcheurType.Agile, CatcheurState.Opérationnel, SpecialAttack.Oneshot));
-            
+
         }
-       
+
         public void CreateNewMatch()
         {
             Console.WriteLine(MenuManager.instance.menuCreationMatch);
@@ -72,7 +72,7 @@ namespace el_chapo
                     CatcheursOp.Add(catcheur);
                     sb.AppendLine(catcheur.Describe(index++));
                 }
-                
+
             }
             opATM = index;
             return sb;
@@ -80,21 +80,21 @@ namespace el_chapo
 
         public void OrderByPseudo() // tri par ordre alphabetique 
         {
-                Catcheurs.Sort((x, y) => string.Compare(x.Pseudo, y.Pseudo));       
+            Catcheurs.Sort((x, y) => string.Compare(x.Pseudo, y.Pseudo));
         }
-     
+
 
         public StringBuilder DisplayFullCatcheurList()
         {
             StringBuilder sb = new StringBuilder();
-            
+
             int index = 0;
             OrderByPseudo();
             foreach (Catcheur catcheur in Catcheurs)
             {
                 sb.AppendLine(catcheur.Describe(index++));
             }
-            
+
             return sb;
         }
 
@@ -108,7 +108,7 @@ namespace el_chapo
 
             do
             {
-                if(tempP2 == int.MaxValue)
+                if (tempP2 == int.MaxValue)
                 {
                     Console.WriteLine("Choisissez le 2éme catcheur : ");
                     tempP2 = MenuManager.instance.TestUserInput(0, opATM);
@@ -118,7 +118,7 @@ namespace el_chapo
                     Console.WriteLine("On ne peut pas combattre contre soi-même... Veuillez choisir un autre catcheur");
                     tempP2 = MenuManager.instance.TestUserInput(0, opATM);
                 }
-                
+
             }
             while (tempP2 == tempP1);
 
@@ -129,15 +129,15 @@ namespace el_chapo
                 SoundManager.instance.playSimpleSoundCina();
                 Thread.Sleep(10000);
             }
-            
+
             ManageFight(CatcheursOp[tempP1], CatcheursOp[tempP2]);
 
         }
-        
+
 
         private void ManageFight(Catcheur c1, Catcheur c2)
         {
-            if(MatchThisSeason == 0)
+            if(MatchThisSeason % 8 == 0)
             {
                 MatchThisSeason++;
             }
@@ -155,9 +155,9 @@ namespace el_chapo
             iteration = 1;
             whoIsDead = null;
 
-            for (iteration = 1; iteration <= iterationMax; iteration++) 
+            for (iteration = 1; iteration <= iterationMax; iteration++)
             {
-                if (!someoneIsDead) 
+                if (!someoneIsDead)
                 {
                     Console.WriteLine($"\n\nITERATION {iteration} !");
                     // On détermine les actions à faire (random)
@@ -180,7 +180,8 @@ namespace el_chapo
                     // 2 = AttaqueSpe
                     // On a donc 00, 01, 02, 10, 11, 12, 20, 21, 22
                     string trinaryAction = "" + ((int)c1.action) + "" + ((int)c2.action);
-                    Console.WriteLine(GetMatchUpScreen(c1, c2));
+                    GetMatchUpScreen( c1, c2, trinaryAction);
+
                     IterationMatchUp(trinaryAction, c1, c2);
 
                     // On regarde si l'un des deux joueurs est mort à la fin de l'itération en cours.
@@ -192,17 +193,17 @@ namespace el_chapo
                     }
                     // On display le résultat pour cette itération
                     RefreshBonus(c1, c2);
-                    DisplayResultCurrentIteration(c1,c2,iteration);
+                    DisplayResultCurrentIteration(c1, c2, iteration);
                     //la
                 }
 
-                if(iteration == iterationMax)
+                if (iteration == iterationMax)
                 {
                     break;
                 }
                 //Thread.Sleep(2000);
             }
-            DisplayAndManageEndGame(c1,c2);
+            DisplayAndManageEndGame(c1, c2);
         }
 
         private void DisplayAndManageEndGame(Catcheur c1, Catcheur c2)
@@ -215,23 +216,26 @@ namespace el_chapo
             if (whoIsDead == null)
             {
                 gainDuMatch = MoneyManager.instance.UpdateMoney(iteration, false);
-                Console.WriteLine($"\n\nLES {iteration} ROUNDS SONT FINIS, FIN DU MATCH SANS MORT !");
+                Console.WriteLine($"\n\nLES {iteration} ROUNDS SONT FINIS, FIN DU MATCH SANS MORT !\n");
+
                 Console.WriteLine($"Le Vainqueur du match est {winner.Pseudo}, BRAVO ! *El Chapo applaudit*");
-                Console.WriteLine($"Le perdant n'est nul autre que {looser.Pseudo}, ce match lui aura valu une bonne convalescence !");
-                Console.WriteLine($"Argent généré par le match : {gainDuMatch} $");
-                Console.WriteLine($"Money : {MoneyManager.instance.Money}");
+                Console.WriteLine($"Le perdant n'est nul autre que {looser.Pseudo}, ce match lui aura valu une bonne convalescence !\n");
+                ColorMoney(gainDuMatch, MoneyManager.instance.Money);
                 HistoryManager.instance.Addhistory(winner, looser, WinState.PAR_DELAI, iteration, gainDuMatch);
+                Console.WriteLine("  ####  NEWS  ####\n  ");
                 SetConvalAndHeal(winner, looser);
-               
+
             }
             else
             {
+                SoundManager.instance.playSimpleSoundMort();
                 gainDuMatch = MoneyManager.instance.UpdateMoney(iteration, true);
-                Console.WriteLine($"\n\nLE MATCH C'EST TERMINE EN {iteration} ROUNDS, malheureusement {looser.Pseudo} est mort !");
+                Console.WriteLine($"\n\nLE MATCH C'EST TERMINE EN {iteration} ROUNDS, malheureusement {looser.Pseudo} est mort !\n");
+                Thread.Sleep(3000);
                 Console.WriteLine($"Le Vainqueur du match est {winner.Pseudo}, BRAVO ! *El Chapo applaudit*");
-                Console.WriteLine($"Le perdant n'est nul autre que {looser.Pseudo}, ce match lui aura valu un sejour à la morgue...");
-                Console.WriteLine($"Argent généré par le match : {gainDuMatch}$ ");
-                Console.WriteLine($"Money : {MoneyManager.instance.Money}");
+                Console.WriteLine($"Le perdant n'est nul autre que {looser.Pseudo}, ce match lui aura valu une bonne convalescence !\n");
+                Console.WriteLine($"Le match vous a rapporté  : {gainDuMatch} $ ");
+                Console.WriteLine($"Votre fortune s'élève a   : {MoneyManager.instance.Money} $\n");
                 HistoryManager.instance.Addhistory(winner, looser, WinState.KO, iteration, gainDuMatch);
                 HealWinner(winner);
             }
@@ -264,21 +268,41 @@ namespace el_chapo
 
         private void DisplayResultCurrentIteration(Catcheur c1, Catcheur c2, int iteration)
         {
-            Console.WriteLine($"\nRésumé du round {iteration} : \n{c1.Pseudo} : {c1.Health} HP\n{c2.Pseudo} : {c2.Health} HP");
+            Console.WriteLine($"\nRésumé du round {iteration} : \n{c1.Pseudo} : {c1.Health} HP\n{c2.Pseudo} : {c2.Health} HP\n");
         }
 
-        private StringBuilder GetMatchUpScreen(Catcheur c1, Catcheur c2)
+
+        private void ColorAttack(Catcheur c)
         {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"\n{c1.Pseudo} - {c1.Health}HP - Action : {c1.action}");
+            Console.Write($"\n{c.Pseudo} - {c.Health}HP - Action : ");
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.WriteLine(c.action + "\n");
+            Console.ResetColor();
 
-            sb.AppendLine($"\n{c2.Pseudo} - {c2.Health}HP - Action : {c2.action}");
-
-            return sb;
         }
 
-        private void IterationMatchUp(String trinary, Catcheur c1, Catcheur c2)
+        private void ColorAttackSpe(Catcheur c)
         {
+            Console.Write($"\n{c.Pseudo} - {c.Health}HP - Action : ");
+            Console.ForegroundColor = ConsoleColor.DarkMagenta;
+            Console.WriteLine(c.action + "\n");
+            Console.ResetColor();
+        }
+
+        /*public void SoundAttak(Catcheur c)
+        {
+
+            if (c.action == CatcheurAction.Attack)
+            {
+                SoundManager.instance.playSimpleSoundPunch();
+                Thread.Sleep(1000);
+            }
+            else if (c.action == CatcheurAction.SpecialAttack)
+            {
+                SoundManager.instance.playSimpleSoundKameha();
+                Thread.Sleep(5000);
+            }
+        }*/
 
             switch (trinary)
             {
@@ -300,9 +324,9 @@ namespace el_chapo
                     SpecialAttackManager.instance.SpecialAttackComputing(c2);
                     ManageActionAndDisplayResult(c1, c2);
                     break;
-                   
+
                 // Defense - Attaque
-                case "10": 
+                case "10":
                     c2.AttackTarget(c1);
                     break;
 
@@ -337,7 +361,7 @@ namespace el_chapo
                     break;
             }
         }
-        
+
         private Boolean CheckDeathAndManageDeath(Catcheur c1, Catcheur c2)
         {
             if (c1.CatcheurState == CatcheurState.Mort)
@@ -361,44 +385,57 @@ namespace el_chapo
         private void SetConvalAndHeal(Catcheur winner, Catcheur looser)
         {
             HealWinner(winner);
-            if(looser.Health < (looser.maxHealth / 2) )
+            if (looser.Health < (looser.maxHealth / 2))
             {
                 looser.DayRemainingBeforeOp = dice.Next(2, 6);
                 looser.CatcheurState = CatcheurState.Convalescent;
-                Console.WriteLine($"Le perdant {looser.Pseudo} part en convalescence pour {looser.DayRemainingBeforeOp} jours suite à ses blessures...");
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.WriteLine($"Le perdant {looser.Pseudo} part en convalescence pour {looser.DayRemainingBeforeOp} jours suite à ses blessures...\n");
+                Console.ResetColor();
             }
             else
             {
-                Console.WriteLine($"Le perdant {looser.Pseudo} est assez en forme pour continuer la saison !");
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.WriteLine($"Le perdant {looser.Pseudo} est assez en forme pour continuer la saison !\n");
+                Console.ResetColor();
             }
         }
 
         private void HealWinner(Catcheur winner)
         {
             winner.Health = winner.maxHealth;
+            Console.ForegroundColor = ConsoleColor.DarkGray;
             Console.WriteLine($"Le gagnant {winner.Pseudo} a été soigné de la totalité de ses points de vie !");
+            Console.ResetColor();
             UpdateConvalAndChangeState();
         }
 
         private void UpdateConvalAndChangeState()
         {
-            foreach(Catcheur catcheur in Catcheurs)
+            foreach (Catcheur catcheur in Catcheurs)
             {
-                if(catcheur.CatcheurState == CatcheurState.Convalescent && catcheur.DayRemainingBeforeOp >= 0)
+                if (catcheur.CatcheurState == CatcheurState.Convalescent && catcheur.DayRemainingBeforeOp >= 0)
                 {
-                    if(catcheur.DayRemainingBeforeOp > 0)
+                    if (catcheur.DayRemainingBeforeOp > 0)
                     {
                         catcheur.DayRemainingBeforeOp -= 1;
                     }
                     else
                     {
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
                         Console.WriteLine($"{catcheur.Pseudo} peut de nouveau combattre !");
+                        Console.ResetColor();
                         catcheur.CatcheurState = CatcheurState.Opérationnel;
                         catcheur.Health = catcheur.maxHealth;
                     }
-                }  
+                }
+                
+                
+               
             }
         }
+           
+
         private Catcheur[] WhoWinsAndLooses(Catcheur c1, Catcheur c2)
         {
             if (c1.Health > c2.Health)
@@ -433,7 +470,7 @@ namespace el_chapo
                     {
                         defenseur.AttackTarget(attaquant);
                     }
-                    else if(defenseur.action == CatcheurAction.Heal)
+                    else if (defenseur.action == CatcheurAction.Heal)
                     {
                         defenseur.Heal(defenseur.BonusHeal);
                     }
@@ -452,7 +489,7 @@ namespace el_chapo
                             defenseur.AttackTarget(attaquant);
                         }
                     }
-                    if(defenseur.action == CatcheurAction.Heal)
+                    if (defenseur.action == CatcheurAction.Heal)
                     {
                         if (attaquant.AttackTarget(defenseur))
                         {
@@ -504,9 +541,9 @@ namespace el_chapo
                     }
                     break;
             }
-       
-       
-    }
+
+
+        }
 
         private void NothingIsHappening(Catcheur c1, Catcheur c2)
         {
