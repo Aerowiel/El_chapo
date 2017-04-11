@@ -17,7 +17,7 @@ namespace el_chapo
         {
             SoundPlayer simpleSound = new SoundPlayer(@"..\..\..\ressource\AND GOODBYE.wav");
             simpleSound.Play();
-           // Thread.Sleep(2000);
+           Thread.Sleep(2000);
 
         }
 
@@ -25,21 +25,21 @@ namespace el_chapo
         {
             SoundPlayer simpleSound = new SoundPlayer(@"..\..\..\ressource\Punch.wav");
             simpleSound.Play();
-            //Thread.Sleep(2000);
+           Thread.Sleep(2000);
         }
 
         public void playSimpleSoundDefend()
         {
             SoundPlayer simpleSound = new SoundPlayer(@"..\..\..\ressource\Defend.wav");
             simpleSound.Play();
-           // Thread.Sleep(2000);
+          Thread.Sleep(2000);
         }
 
         public  void  playSimpleSoundKameha()
         {
             SoundPlayer simpleSound = new SoundPlayer(@"..\..\..\ressource\kamehameha.wav");
             simpleSound.Play();
-            //Thread.Sleep(2000);
+           Thread.Sleep(6000);
         }
 
         public void playSimpleSoundMort()
