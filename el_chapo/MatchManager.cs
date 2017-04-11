@@ -137,7 +137,11 @@ namespace el_chapo
 
         private void ManageFight(Catcheur c1, Catcheur c2)
         {
-            if(MatchThisSeason % 8 == 0)
+            if(MatchThisSeason == 0)
+            {
+                MatchThisSeason++;
+            }
+            else if(MatchThisSeason % 8 == 0)
             {
                 Season++;
                 MatchThisSeason = 0;
@@ -273,24 +277,9 @@ namespace el_chapo
             return sb;
         }
 
-        /*public void SoundAttak(Catcheur c)
-        {
-
-            if (c.action == CatcheurAction.Attack)
-            {
-                SoundManager.instance.playSimpleSoundPunch();
-                Thread.Sleep(1000);
-            }
-            else if (c.action == CatcheurAction.SpecialAttack)
-            {
-                SoundManager.instance.playSimpleSoundKameha();
-                Thread.Sleep(5000);
-            }
-        }*/
-
         private void IterationMatchUp(String trinary, Catcheur c1, Catcheur c2)
         {
-            //ICI LE THREAD ?
+
             switch (trinary)
             {
                 // Attaque - Attaque
@@ -407,14 +396,9 @@ namespace el_chapo
                         catcheur.CatcheurState = CatcheurState.Opérationnel;
                         catcheur.Health = catcheur.maxHealth;
                     }
-                }
-                
-                
-               
+                }  
             }
         }
-           
-
         private Catcheur[] WhoWinsAndLooses(Catcheur c1, Catcheur c2)
         {
             if (c1.Health > c2.Health)
