@@ -180,9 +180,9 @@ namespace el_chapo
                     // 2 = AttaqueSpe
                     // On a donc 00, 01, 02, 10, 11, 12, 20, 21, 22
                     string trinaryAction = "" + ((int)c1.action) + "" + ((int)c2.action);
-                    GetMatchUpScreen( c1, c2, trinaryAction);
+                    //GetMatchUpScreen( c1, c2, trinaryAction);
 
-                    IterationMatchUp(trinaryAction, c1, c2);
+                    IterationMatchUp(c1,c2,trinaryAction);
 
                     // On regarde si l'un des deux joueurs est mort à la fin de l'itération en cours.
                     if (CheckDeathAndManageDeath(c1, c2))
@@ -220,7 +220,7 @@ namespace el_chapo
 
                 Console.WriteLine($"Le Vainqueur du match est {winner.Pseudo}, BRAVO ! *El Chapo applaudit*");
                 Console.WriteLine($"Le perdant n'est nul autre que {looser.Pseudo}, ce match lui aura valu une bonne convalescence !\n");
-                ColorMoney(gainDuMatch, MoneyManager.instance.Money);
+                MoneyManager.instance.ColorAndDisplayMoney(gainDuMatch, MoneyManager.instance.Money);
                 HistoryManager.instance.Addhistory(winner, looser, WinState.PAR_DELAI, iteration, gainDuMatch);
                 Console.WriteLine("  ####  NEWS  ####\n  ");
                 SetConvalAndHeal(winner, looser);
@@ -234,8 +234,7 @@ namespace el_chapo
                 Thread.Sleep(3000);
                 Console.WriteLine($"Le Vainqueur du match est {winner.Pseudo}, BRAVO ! *El Chapo applaudit*");
                 Console.WriteLine($"Le perdant n'est nul autre que {looser.Pseudo}, ce match lui aura valu une bonne convalescence !\n");
-                Console.WriteLine($"Le match vous a rapporté  : {gainDuMatch} $ ");
-                Console.WriteLine($"Votre fortune s'élève a   : {MoneyManager.instance.Money} $\n");
+                MoneyManager.instance.ColorAndDisplayMoney(gainDuMatch, MoneyManager.instance.Money);
                 HistoryManager.instance.Addhistory(winner, looser, WinState.KO, iteration, gainDuMatch);
                 HealWinner(winner);
             }
@@ -281,6 +280,15 @@ namespace el_chapo
 
         }
 
+        private void ColorDefend(Catcheur c)
+        {
+            Console.Write($"\n{c.Pseudo} - {c.Health}HP - Action : ");
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.WriteLine(c.action + "\n");
+            Console.ResetColor();
+
+        }
+
         private void ColorAttackSpe(Catcheur c)
         {
             Console.Write($"\n{c.Pseudo} - {c.Health}HP - Action : ");
@@ -289,25 +297,14 @@ namespace el_chapo
             Console.ResetColor();
         }
 
-        /*public void SoundAttak(Catcheur c)
+        public void IterationMatchUp(Catcheur c1, Catcheur c2, string trinary)
         {
-
-            if (c.action == CatcheurAction.Attack)
-            {
-                SoundManager.instance.playSimpleSoundPunch();
-                Thread.Sleep(1000);
-            }
-            else if (c.action == CatcheurAction.SpecialAttack)
-            {
-                SoundManager.instance.playSimpleSoundKameha();
-                Thread.Sleep(5000);
-            }
-        }*/
-
             switch (trinary)
             {
                 // Attaque - Attaque
                 case "00":
+                    ColorAttack(c1);
+                    ColorAttack(c2);
                     // ICI LE SON SPEFICIQUE
                     if (c1.AttackTarget(c2)) // Si c1 attaque c2 & c2 ne meurt pas
                     {
@@ -317,44 +314,60 @@ namespace el_chapo
 
                 // Attaque - Defense
                 case "01":
+                    ColorAttack(c1);
+                    ColorDefend(c2);
                     c1.AttackTarget(c2);
                     break;
                 // Attaque - AttaqueSpe
                 case "02":
+                    ColorAttack(c1);
+                    ColorAttackSpe(c2);
                     SpecialAttackManager.instance.SpecialAttackComputing(c2);
                     ManageActionAndDisplayResult(c1, c2);
                     break;
 
                 // Defense - Attaque
                 case "10":
+                    ColorDefend(c1);
+                    ColorAttack(c2);
                     c2.AttackTarget(c1);
                     break;
 
                 // Defense - Defense
                 case "11":
+                    ColorDefend(c1);
+                    ColorDefend(c2);
                     NothingIsHappening(c1, c2);
                     break;
 
                 // Defense - AttaqueSpe
                 case "12":
+                    ColorDefend(c1);
+                    ColorAttackSpe(c2);
                     SpecialAttackManager.instance.SpecialAttackComputing(c2);
                     ManageActionAndDisplayResult(c1, c2);
                     break;
 
                 //AttaqueSpe - Attaque
                 case "20":
+                    ColorAttackSpe(c1);
+                    ColorAttack(c2);
                     SpecialAttackManager.instance.SpecialAttackComputing(c1);
                     ManageActionAndDisplayResult(c1, c2);
                     break;
 
                 //AttaqueSpe - Defense
                 case "21":
+                    ColorAttackSpe(c1);
+                    ColorDefend(c2);
                     SpecialAttackManager.instance.SpecialAttackComputing(c1);
                     ManageActionAndDisplayResult(c1, c2);
                     break;
 
                 // AttaqueSpe - AttaqueSpe
                 case "22":
+                    ColorAttackSpe(c1);
+                    ColorAttackSpe(c2);
                     SpecialAttackManager.instance.SpecialAttackComputing(c1);
                     SpecialAttackManager.instance.SpecialAttackComputing(c2);
                     ManageActionAndDisplayResult(c1, c2);

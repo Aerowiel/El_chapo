@@ -113,7 +113,7 @@ namespace el_chapo
                 }
                 else if(this.DebuffHealth > 0)
                 {
-                    Console.WriteLine($"{Pseudo} se prend -{DebuffHealth} point de dégat de malus dans la face du KING !");
+                    Console.WriteLine($"{Pseudo} se prend -{DebuffHealth} point de dégat de malus dans la face !");
                     Health -= DebuffHealth;
                 }
                 targetDefense = 0;
