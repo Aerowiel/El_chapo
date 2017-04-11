@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Save xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <DateLastPlayed>2017-04-11T18:34:58.0999424+02:00</DateLastPlayed>
-  <DateCreated>2017-04-11T18:34:58.1039278+02:00</DateCreated>
+  <DateLastPlayed>2017-04-11T22:43:00.2573836+02:00</DateLastPlayed>
+  <DateCreated>2017-04-11T22:43:00.2613974+02:00</DateCreated>
   <CatcheurList>
     <Catcheur>
       <Pseudo>Bret Benoit</Pseudo>
@@ -25,7 +25,7 @@
       <Pseudo>Chris Hart</Pseudo>
       <CatcheurType>Brute</CatcheurType>
       <CatcheurState>Opérationnel</CatcheurState>
-      <Health>100</Health>
+      <Health>83</Health>
       <maxHealth>100</maxHealth>
       <Defense>1</Defense>
       <Attack>5</Attack>
@@ -42,12 +42,12 @@
     <Catcheur>
       <Pseudo>Dead Poule</Pseudo>
       <CatcheurType>Agile</CatcheurType>
-      <CatcheurState>Mort</CatcheurState>
-      <Health>0</Health>
+      <CatcheurState>Opérationnel</CatcheurState>
+      <Health>125</Health>
       <maxHealth>125</maxHealth>
       <Defense>3</Defense>
       <Attack>3</Attack>
-      <action>SpeAttackFailed</action>
+      <action>Attack</action>
       <BonusAttack>0</BonusAttack>
       <BonusDefense>0</BonusDefense>
       <BonusHeal>0</BonusHeal>
@@ -204,14 +204,14 @@
   </CatcheurList>
   <SeasonMaMa>1</SeasonMaMa>
   <MatchThisSeasonMaMa>1</MatchThisSeasonMaMa>
-  <MoneyMoMa>502849.99999999994</MoneyMoMa>
+  <MoneyMoMa>114129.99999999999</MoneyMoMa>
   <HistoryList>
     <History>
-      <VictoryCatcheur>Chris Hart</VictoryCatcheur>
-      <LooserCatcheur>Dead Poule</LooserCatcheur>
-      <WinState>KO</WinState>
-      <Iteration>87</Iteration>
-      <Gain>502849.99999999994</Gain>
+      <VictoryCatcheur>Dead Poule</VictoryCatcheur>
+      <LooserCatcheur>Chris Hart</LooserCatcheur>
+      <WinState>PAR_DELAI</WinState>
+      <Iteration>20</Iteration>
+      <Gain>114129.99999999999</Gain>
     </History>
   </HistoryList>
 </Save>
