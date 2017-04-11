@@ -67,6 +67,7 @@ namespace el_chapo
             CatcheurType = type;
             CatcheurState = state;
 
+
             switch (type)
             {
                 case CatcheurType.Agile:

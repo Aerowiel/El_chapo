@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Catcheur.cs" />
+    <Compile Include="ExperimentalProgressBar.cs" />
     <Compile Include="History.cs" />
     <Compile Include="HistoryManager.cs" />
     <Compile Include="MatchManager.cs" />
