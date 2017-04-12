@@ -41,10 +41,10 @@ namespace el_chapo
             Catcheurs.Add(new Catcheur("Triple Hache", CatcheurType.Agile, CatcheurState.Opérationnel, SpecialAttack.HacheFoudroyante));
             Catcheurs.Add(new Catcheur("Dead Poule", CatcheurType.Agile, CatcheurState.Opérationnel, SpecialAttack.DeadPoulePower));
             Catcheurs.Add(new Catcheur("Jarvan cinquième du nom", CatcheurType.Brute, CatcheurState.Opérationnel, SpecialAttack.Bloque));
-            Catcheurs.Add(new Catcheur("Madusa", CatcheurType.Agile, CatcheurState.Mort, SpecialAttack.OffensiveBlock));
-            Catcheurs.Add(new Catcheur("John Cinéma", CatcheurType.Agile, CatcheurState.Mort, SpecialAttack.HacheFoudroyante));
-            Catcheurs.Add(new Catcheur("Jeff Radis", CatcheurType.Brute, CatcheurState.Mort, SpecialAttack.Bloque));
-            Catcheurs.Add(new Catcheur("Raie Mystérieuse", CatcheurType.Brute, CatcheurState.Mort, SpecialAttack.RaieDuC));
+            Catcheurs.Add(new Catcheur("Madusa", CatcheurType.Agile, CatcheurState.Opérationnel, SpecialAttack.OffensiveBlock));
+            Catcheurs.Add(new Catcheur("John Cinéma", CatcheurType.Agile, CatcheurState.Opérationnel, SpecialAttack.HacheFoudroyante));
+            Catcheurs.Add(new Catcheur("Jeff Radis", CatcheurType.Brute, CatcheurState.Opérationnel, SpecialAttack.Bloque));
+            Catcheurs.Add(new Catcheur("Raie Mystérieuse", CatcheurType.Brute, CatcheurState.Opérationnel, SpecialAttack.RaieDuC));
             Catcheurs.Add(new Catcheur("Chris Hart", CatcheurType.Brute, CatcheurState.Opérationnel, SpecialAttack.Bloque));
             Catcheurs.Add(new Catcheur("Bret Benoit", CatcheurType.Agile, CatcheurState.Opérationnel, SpecialAttack.Oneshot));
 
