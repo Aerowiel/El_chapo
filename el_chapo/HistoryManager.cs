@@ -33,7 +33,6 @@ namespace el_chapo
         public void Addhistory(Catcheur victory, Catcheur perdant, WinState state, int round, double gain )
         { 
             HistoryCatcheur.Add(new History(victory.Pseudo, perdant.Pseudo, state , round, gain));
-
         }
 
         public void FilterWinnerByKO_OR_WinnerByTKO( int choix)

@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace el_chapo
 {
+    public enum WinState{
+        [XmlEnum(Name = "KO")]
+        KO,
+        [XmlEnum(Name = "PAR_DELAI")]
+        PAR_DELAI
+    }
 
-    public enum WinState{ KO, PAR_DELAI }
-   
-
-
-
-    class History
+    public class History
     {
         public string VictoryCatcheur { get; set; } = "";
         public string LooserCatcheur { get; set; }
@@ -30,6 +32,11 @@ namespace el_chapo
             WinState = winState;
             Iteration = iteration;
             Gain = gain;
+        }
+
+        public History()
+        {
+
         }
 
         public string DescribeHistory()
