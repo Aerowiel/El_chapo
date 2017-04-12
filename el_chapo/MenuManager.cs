@@ -46,8 +46,7 @@ namespace el_chapo
 
         public void DisplayMenu()
         {
-            
-            
+            Console.Clear();
             menuPrincipalContent = new StringBuilder();
             menuPrincipalContent.AppendLine("################ MENU ###############");
             menuPrincipalContent.AppendLine($"Argent gagné : {MoneyManager.instance.Money} $");
@@ -59,6 +58,25 @@ namespace el_chapo
             menuPrincipalContent.AppendLine("4 - Quitter le jeu");
             Console.WriteLine(menuPrincipalContent);
             SelectedMenu(TestUserInput(0, 5));
+
+        }
+
+        public void AskToLoadOrCreate()
+        {
+            Console.WriteLine("Voulez-vous charger une partie déjà existante ou commencer une nouvelle partie ?");
+            Console.WriteLine("1. Nouvelle partie");
+            Console.WriteLine("2. Charger une sauvegarde");
+            int selected = TestUserInput(1, 3);
+            switch (selected)
+            {
+                case 1:
+                    DisplayMenu();
+                    break;
+                case 2:
+                    DisplaySavesMenu();
+                    break;
+                    
+            }
 
         }
 
@@ -104,7 +122,7 @@ namespace el_chapo
             Console.WriteLine("Voulez-vous sauvegarder la partie en cours avant de quitter l'application ?");
             Console.WriteLine("1. Oui");
             Console.WriteLine("2. Non");
-            WouldYouLikeToSave(TestUserInput(1, 2));
+            WouldYouLikeToSave(TestUserInput(1, 3));
         }
 
         public void WouldYouLikeToSave(int answer)
