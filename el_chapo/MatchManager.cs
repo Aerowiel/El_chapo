@@ -28,14 +28,6 @@ namespace el_chapo
 
         public MatchManager()
         {
-            if(instance != null)
-            {
-                Console.WriteLine("MM !null");
-            }
-            else
-            {
-                Console.WriteLine("MM null");
-            }
             //Init Stats
             Season = 1;
 
@@ -50,7 +42,7 @@ namespace el_chapo
             Catcheurs.Add(new Catcheur("Dead Poule", CatcheurType.Agile, CatcheurState.Opérationnel, SpecialAttack.DeadPoulePower));
             Catcheurs.Add(new Catcheur("Jarvan cinquième du nom", CatcheurType.Brute, CatcheurState.Convalescent, SpecialAttack.Bloque));
             Catcheurs.Add(new Catcheur("Madusa", CatcheurType.Agile, CatcheurState.Opérationnel, SpecialAttack.OffensiveBlock));
-            Catcheurs.Add(new Catcheur("John Cinéma", CatcheurType.Agile, CatcheurState.Convalescent, SpecialAttack.HacheFoudroyante));
+            Catcheurs.Add(new Catcheur("John Cinéma", CatcheurType.Agile, CatcheurState.Opérationnel, SpecialAttack.HacheFoudroyante));
             Catcheurs.Add(new Catcheur("Jeff Radis", CatcheurType.Brute, CatcheurState.Convalescent, SpecialAttack.Bloque));
             Catcheurs.Add(new Catcheur("Raie Mystérieuse", CatcheurType.Brute, CatcheurState.Opérationnel, SpecialAttack.RaieDuC));
             Catcheurs.Add(new Catcheur("Chris Hart", CatcheurType.Brute, CatcheurState.Opérationnel, SpecialAttack.Bloque));
@@ -241,8 +233,41 @@ namespace el_chapo
                 HistoryManager.instance.Addhistory(winner, looser, WinState.KO, iteration, gainDuMatch);
                 HealWinner(winner);
             }
-            DisplayEndScreen(c1, c2);
-            Thread.Sleep(3000);
+            Console.ReadKey();
+
+            if (IsEveryoneDead())
+            {
+                DisplayEndScreen(c1, c2);
+            }
+            else
+            {
+                Console.Clear();
+                MenuManager.instance.DisplayMenu();
+            }
+            
+        }
+
+        private Boolean IsEveryoneDead()
+        {
+            List<Catcheur> isNotDead = new List<Catcheur>();
+            foreach (Catcheur catcheur in Catcheurs)
+            {
+
+                if (catcheur.CatcheurState == CatcheurState.Opérationnel)
+                {
+                    isNotDead.Add(catcheur);
+                }
+
+            }
+
+            if(isNotDead.Count <= 1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         private void RefreshBonus(Catcheur c1, Catcheur c2)

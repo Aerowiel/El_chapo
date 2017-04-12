@@ -11,7 +11,8 @@ namespace el_chapo
         static void Main(string[] args)
         {
             MenuManager menuManager = new MenuManager();
-            menuManager.DisplayMenu();
+            menuManager.AskToLoadOrCreate();
+            //menuManager.DisplayMenu();
             Console.ReadKey();
         }
     }

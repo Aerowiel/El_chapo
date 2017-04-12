@@ -26,8 +26,6 @@ namespace el_chapo
             {
                 Saves.Add(saveName);
             }
-
-            //int saveCount = Directory.GetFiles(path, "*", SearchOption.TopDirectoryOnly).Length;
         }
 
         public void CheckAndCreateSaveFolder() {
@@ -74,7 +72,6 @@ namespace el_chapo
 
         public void LoadAndUpdateObjects(string nameOfSave)
         {
-
             Save save;
             XmlSerializer serializer = new XmlSerializer(typeof(Save));
             string path = Path.Combine(nameOfSave);
@@ -98,8 +95,7 @@ namespace el_chapo
             HistoryManager.instance.HistoryCatcheur = save.HistoryList;
             Console.WriteLine($"\n *La sauvegarde \"{nameOfSave}\" s'est chargée avec succès !");
             Thread.Sleep(2000);
-            Console.Clear();
-            
+            Console.Clear(); 
         }
 
         public string GetPath()

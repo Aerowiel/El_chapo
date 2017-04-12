@@ -22,24 +22,19 @@ namespace el_chapo
         {
             int count = 0;
 
-            string progressBar = "";
+            string progressBar = " ";
+
             while (count < lenght)
             {
-                progressBar = "";
                 Console.BackgroundColor = color;
                 
-                for(int i = 0; i < count; i++)
-                {
-                    progressBar = progressBar +  " ";
-                }
-                
                 Console.Write(progressBar);
-                Console.SetCursorPosition(Console.CursorLeft - progressBar.Length, Console.CursorTop);
+                Console.SetCursorPosition(Console.CursorLeft - (progressBar.Length - 1), Console.CursorTop);
                 count++;
                 Thread.Sleep(300);
 
             }
-            
+
             Console.ResetColor();
             Console.Clear();
         }
