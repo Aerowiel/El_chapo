@@ -99,7 +99,7 @@ namespace el_chapo
             sb.AppendLine($"{index}. NOM : {Pseudo} | TYPE : {CatcheurType} | HP : {Health} | Attack : {Attack} | Defense : {Defense} | Attaque Spéciale : {SpecialAtk} | Statut : {CatcheurState}");
             if(CatcheurState == CatcheurState.Convalescent)
             {
-                sb.Append($" | Jour(s) restant(s) : {DayRemainingBeforeOp}");
+                sb.Append($" | Jour(s) restant(s) : {DayRemainingBeforeOp} \n");
             }
 
             return sb.ToString();

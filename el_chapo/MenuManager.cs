@@ -99,8 +99,9 @@ namespace el_chapo
                     break;
                 case 2:
                     Console.WriteLine(MatchManager.instance.DisplayFullCatcheurList());
-                  
-                   
+                    MatchManager.instance.DisplayMenuRessource();
+
+                                    
                     RetourMainMenu();
                     break;
                 case 3:
@@ -129,7 +130,7 @@ namespace el_chapo
         {
             switch (answer)
             {
-                case 0:
+                case 2:
                     System.Environment.Exit(-1);
                     break;
                 case 1:

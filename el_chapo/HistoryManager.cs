@@ -41,10 +41,12 @@ namespace el_chapo
             {
                 case 0:
                     Console.WriteLine(DisplayCatcheurHistoryByKOList());
+                    MenuManager.instance.RetourMainMenuInstant();
                     break;
 
                 case 1:
                     Console.WriteLine(DisplayCatcheurHistoryByTKOList());
+                    MenuManager.instance.RetourMainMenuInstant();
                     break;
 
                 case 2:
