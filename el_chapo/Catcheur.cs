@@ -105,6 +105,18 @@ namespace el_chapo
             return sb.ToString();
         }
 
+        public string Describe()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"NOM : {Pseudo} | TYPE : {CatcheurType} | HP : {Health} | Attack : {Attack} | Defense : {Defense} | Attaque Spéciale : {SpecialAtk} | Statut : {CatcheurState}");
+            if (CatcheurState == CatcheurState.Convalescent)
+            {
+                sb.Append($" | Jour(s) restant(s) : {DayRemainingBeforeOp} \n");
+            }
+
+            return sb.ToString();
+        }
+
         public void ChooseAction()
         {
             // On crée un objet de type Random qui permet de générer des nombres aléatoire (dice = dés)

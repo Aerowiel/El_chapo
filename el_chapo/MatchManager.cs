@@ -63,24 +63,7 @@ namespace el_chapo
             Catcheurs.Sort((x, y) => string.Compare(x.Pseudo, y.Pseudo));
         }
 
-        public List<Catcheur> GetCatcheurMort()
-        {
-            
-            List<Catcheur> CatcheurMort = new List<Catcheur>();
-            //int index = 0;
-            OrderByPseudo();
-            foreach (Catcheur catcheur in Catcheurs)
-            {
-                if (catcheur.CatcheurState == CatcheurState.Mort)
-                {
-                    CatcheurMort.Add(catcheur);                   
-                }
-            }
-            return CatcheurMort;
-        }
-
-        
-
+     
         public void ChooseToSearchOrQuit(int choix)
         {
             switch (choix)
@@ -106,6 +89,23 @@ namespace el_chapo
             Console.WriteLine(menuRessourceContent);
             ChooseToSearchOrQuit(MenuManager.instance.TestUserInput(0, 2));
 
+        }
+
+
+        public List<Catcheur> GetCatcheurMort()
+        {
+
+            List<Catcheur> CatcheurMort = new List<Catcheur>();
+            //int index = 0;
+            OrderByPseudo();
+            foreach (Catcheur catcheur in Catcheurs)
+            {
+                if (catcheur.CatcheurState == CatcheurState.Mort)
+                {
+                    CatcheurMort.Add(catcheur);
+                }
+            }
+            return CatcheurMort;
         }
 
         public List<Catcheur> GetCatcheurOp()
@@ -166,24 +166,28 @@ namespace el_chapo
 
         public string SearchByname()
         {
-            Console.WriteLine("Séléctionnez le nom du catcheur que vous recherchez \n");
-            string nameOfCatcheur = Console.ReadLine();
             Boolean found = false;
-            int index = 0;
-            foreach (Catcheur catcheur in GetOrderedList())
+            
+            do
             {
-                if (nameOfCatcheur == catcheur.Pseudo)
+                Console.WriteLine("Séléctionnez le nom du catcheur que vous recherchez \n");
+                string nameOfCatcheur = Console.ReadLine();
+                foreach (Catcheur catcheur in GetOrderedList())
                 {
-                    Console.WriteLine(catcheur.Describe(index++));
-                    found = true;
-                    return nameOfCatcheur;
-                }         
-            }
-            if (!found )
-            {  
-                    Console.WriteLine(" Le catcheur que vous recherchez néxiste pas !");              
-            }
+                    if (nameOfCatcheur == catcheur.Pseudo)
+                    {
+                        Console.WriteLine(catcheur.Describe());
+                        found = true;
+                        return nameOfCatcheur;
+                    }
+                }
+                if (!found)
+                {
+                    Console.WriteLine(" Le catcheur que vous recherchez n'existe pas !");
+                }
+            } while (!found);
             return "";
+            
         }
 
 
