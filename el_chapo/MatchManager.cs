@@ -22,7 +22,7 @@ namespace el_chapo
         private Catcheur whoIsDead;
         private int iteration;
 
-        private int iterationMax = 100;
+        private int iterationMax = 20;
 
         private int opATM;
 
