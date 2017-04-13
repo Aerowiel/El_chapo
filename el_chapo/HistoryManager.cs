@@ -17,21 +17,24 @@ namespace el_chapo
         public HistoryManager()
         {
             HistoryCatcheur = new List<History>();
-        }
-
-        public void DisplayMenuHistory() //menu pour le choix du filtre 
-        {
             menuHistoryContent = new StringBuilder();
             menuHistoryContent.AppendLine("0 - Filtrer l'historique par KO");
             menuHistoryContent.AppendLine("1 - Filtrer l'hisotrique par DELAI");
             menuHistoryContent.AppendLine("2 - Revenir au menu principal");
+        }
+
+        public void DisplayMenuHistory() //menu pour le choix du filtre 
+        {
+            Console.Clear();
+            Console.WriteLine(" ### HISTORIQUE ### \n");
+            Console.WriteLine("\n" + HistoryManager.instance.DisplayHistory());
             Console.WriteLine(menuHistoryContent);
             FilterWinnerByKO_OR_WinnerByTKO(MenuManager.instance.TestUserInput(0 , 3));
 
         }
 
         public void Addhistory(Catcheur victory, Catcheur perdant, WinState state, int round, double gain )
-        { 
+        {
             HistoryCatcheur.Add(new History(victory.Pseudo, perdant.Pseudo, state , round, gain));
         }
 
@@ -41,12 +44,12 @@ namespace el_chapo
             {
                 case 0:
                     Console.WriteLine(DisplayCatcheurHistoryByKOList());
-                    MenuManager.instance.RetourMainMenuInstant();
+                    MenuManager.instance.RetourMainMenu();
                     break;
 
                 case 1:
                     Console.WriteLine(DisplayCatcheurHistoryByTKOList());
-                    MenuManager.instance.RetourMainMenuInstant();
+                    MenuManager.instance.RetourMainMenu();
                     break;
 
                 case 2:
@@ -55,6 +58,8 @@ namespace el_chapo
             }
             
         }
+
+
 
         public StringBuilder DisplayCatcheurHistoryByKOList()
         {
@@ -96,8 +101,6 @@ namespace el_chapo
         public StringBuilder DisplayHistory()
         {
             StringBuilder sb = new StringBuilder();
-            
-
             foreach (History history in HistoryCatcheur)
             {
                 

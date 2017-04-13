@@ -25,8 +25,15 @@ namespace el_chapo
 
         public Save()
         {
-            //MatchManager
             CatcheurList = new List<Catcheur>();
+            HistoryList = new List<History>();
+        }
+
+        public Save(DateTime lastPlayed, DateTime dateCreated)
+        {
+            //MatchManager
+            Console.WriteLine(MatchManager.instance.Catcheurs.Count); //11
+
             CatcheurList = MatchManager.instance.Catcheurs;
             Season = MatchManager.instance.Season;
             MatchThisSeason = MatchManager.instance.MatchThisSeason;
@@ -35,7 +42,6 @@ namespace el_chapo
             Money = MoneyManager.instance.Money;
 
             //HistoryManager
-            HistoryList = new List<History>();
             HistoryList = HistoryManager.instance.HistoryCatcheur;
         }
 

@@ -40,12 +40,7 @@ namespace el_chapo
 
         public void Save(string name)
         {
-            Save save = new Save()
-            {
-                DateLastPlayed = DateTime.Now,
-                DateCreated = DateTime.Now,
-                //mmInstance = (MatchManager) MatchManager.instance 
-            };
+            Save save = new Save(DateTime.Now, DateTime.Now);
             string path = GetPath();
 
             XDocument xmlFile = new XDocument();
@@ -62,9 +57,6 @@ namespace el_chapo
                     //Pour voir quel élément de la classe pose un probléme on check l'inner exception, ça indique le nom de la variable 
                     Console.WriteLine("Inner Exception : " + e.InnerException);
                 }
-                
-
-                
             }
             //Puis on save dans ..\..\..\saves\
             xmlFile.Save(Path.Combine(path, $"{name}.xml"));
@@ -79,12 +71,16 @@ namespace el_chapo
             {
                 save = (Save)serializer.Deserialize(fileStream);
                 Console.WriteLine("Deserializing file stream");
-                ExperimentalProgressBar progressBar = new ExperimentalProgressBar(ConsoleColor.Blue, 25);
+                ExperimentalProgressBar progressBar = new ExperimentalProgressBar(ConsoleColor.Blue, 0);
                 progressBar.DisplayProgressBar();
                 
             }
             //MatchManager
+            Console.WriteLine(save.CatcheurList.Count); //22
+            Console.ReadKey();
             MatchManager.instance.Catcheurs = save.CatcheurList;
+            Console.WriteLine(MatchManager.instance.Catcheurs.Count); //22
+            Console.ReadKey();
             MatchManager.instance.Season = save.Season;
             MatchManager.instance.MatchThisSeason = save.MatchThisSeason;
 

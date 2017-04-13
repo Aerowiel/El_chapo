@@ -91,8 +91,6 @@ namespace el_chapo
                     break;
 
                 case 1:
-                    Console.Clear();
-                    Console.WriteLine(HistoryManager.instance.DisplayHistory());
                     HistoryManager.instance.DisplayMenuHistory();
 
 

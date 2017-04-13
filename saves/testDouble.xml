@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Save xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <DateLastPlayed>2017-04-12T15:02:08.2253919+02:00</DateLastPlayed>
-  <DateCreated>2017-04-12T15:02:08.229405+02:00</DateCreated>
+  <DateLastPlayed>2017-04-13T14:00:01.3655293+02:00</DateLastPlayed>
+  <DateCreated>2017-04-13T14:00:01.3695322+02:00</DateCreated>
   <CatcheurList>
     <Catcheur>
       <Pseudo>Bret Benoit</Pseudo>
@@ -24,8 +24,8 @@
     <Catcheur>
       <Pseudo>Chris Hart</Pseudo>
       <CatcheurType>Brute</CatcheurType>
-      <CatcheurState>Mort</CatcheurState>
-      <Health>0</Health>
+      <CatcheurState>Opérationnel</CatcheurState>
+      <Health>85</Health>
       <maxHealth>100</maxHealth>
       <Defense>1</Defense>
       <Attack>5</Attack>
@@ -42,12 +42,12 @@
     <Catcheur>
       <Pseudo>Dead Poule</Pseudo>
       <CatcheurType>Agile</CatcheurType>
-      <CatcheurState>Mort</CatcheurState>
-      <Health>0</Health>
+      <CatcheurState>Opérationnel</CatcheurState>
+      <Health>125</Health>
       <maxHealth>125</maxHealth>
       <Defense>3</Defense>
       <Attack>3</Attack>
-      <action>SpeAttackFailed</action>
+      <action>Attack</action>
       <BonusAttack>0</BonusAttack>
       <BonusDefense>0</BonusDefense>
       <BonusHeal>0</BonusHeal>
@@ -78,7 +78,7 @@
     <Catcheur>
       <Pseudo>Jeff Radis</Pseudo>
       <CatcheurType>Brute</CatcheurType>
-      <CatcheurState>Mort</CatcheurState>
+      <CatcheurState>Opérationnel</CatcheurState>
       <Health>100</Health>
       <maxHealth>100</maxHealth>
       <Defense>1</Defense>
@@ -96,7 +96,7 @@
     <Catcheur>
       <Pseudo>John Cinéma</Pseudo>
       <CatcheurType>Agile</CatcheurType>
-      <CatcheurState>Mort</CatcheurState>
+      <CatcheurState>Opérationnel</CatcheurState>
       <Health>125</Health>
       <maxHealth>125</maxHealth>
       <Defense>3</Defense>
@@ -150,7 +150,7 @@
     <Catcheur>
       <Pseudo>Madusa</Pseudo>
       <CatcheurType>Agile</CatcheurType>
-      <CatcheurState>Mort</CatcheurState>
+      <CatcheurState>Opérationnel</CatcheurState>
       <Health>125</Health>
       <maxHealth>125</maxHealth>
       <Defense>3</Defense>
@@ -168,7 +168,7 @@
     <Catcheur>
       <Pseudo>Raie Mystérieuse</Pseudo>
       <CatcheurType>Brute</CatcheurType>
-      <CatcheurState>Mort</CatcheurState>
+      <CatcheurState>Opérationnel</CatcheurState>
       <Health>100</Health>
       <maxHealth>100</maxHealth>
       <Defense>1</Defense>
@@ -203,22 +203,15 @@
     </Catcheur>
   </CatcheurList>
   <Season>1</Season>
-  <MatchThisSeason>2</MatchThisSeason>
-  <Money>678000</Money>
+  <MatchThisSeason>1</MatchThisSeason>
+  <Money>114129.99999999999</Money>
   <HistoryList>
     <History>
-      <VictoryCatcheur>Bret Benoit</VictoryCatcheur>
+      <VictoryCatcheur>Dead Poule</VictoryCatcheur>
       <LooserCatcheur>Chris Hart</LooserCatcheur>
-      <WinState>KO</WinState>
-      <Iteration>17</Iteration>
-      <Gain>107349.99999999999</Gain>
-    </History>
-    <History>
-      <VictoryCatcheur>Jarvan cinquième du nom</VictoryCatcheur>
-      <LooserCatcheur>Dead Poule</LooserCatcheur>
-      <WinState>KO</WinState>
-      <Iteration>99</Iteration>
-      <Gain>570650</Gain>
+      <WinState>PAR_DELAI</WinState>
+      <Iteration>20</Iteration>
+      <Gain>114129.99999999999</Gain>
     </History>
   </HistoryList>
 </Save>

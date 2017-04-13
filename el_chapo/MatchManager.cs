@@ -14,8 +14,21 @@ namespace el_chapo
         public static MatchManager instance = new MatchManager();
 
         public Random dice = new Random();
-        public List<Catcheur> Catcheurs { get; set; }
-        public int Season { get; set; }
+        public List<Catcheur> Catcheurs { get; set; } = new List<Catcheur> {
+            new Catcheur("L'ordonnateur des pompes funèbres", CatcheurType.Brute, CatcheurState.Convalescent, SpecialAttack.Bloque),
+            new Catcheur("Jude Sunny", CatcheurType.Brute, CatcheurState.Opérationnel, SpecialAttack.JuddyPower),
+            new Catcheur("Triple Hache", CatcheurType.Agile, CatcheurState.Convalescent, SpecialAttack.HacheFoudroyante),
+            new Catcheur("Dead Poule", CatcheurType.Agile, CatcheurState.Opérationnel, SpecialAttack.DeadPoulePower),
+            new Catcheur("Jarvan cinquième du nom", CatcheurType.Brute, CatcheurState.Opérationnel, SpecialAttack.Bloque),
+            new Catcheur("Madusa", CatcheurType.Agile, CatcheurState.Opérationnel, SpecialAttack.OffensiveBlock),
+            new Catcheur("John Cinéma", CatcheurType.Agile, CatcheurState.Opérationnel, SpecialAttack.HacheFoudroyante),
+            new Catcheur("Jeff Radis", CatcheurType.Brute, CatcheurState.Convalescent, SpecialAttack.Bloque),
+            new Catcheur("Raie Mystérieuse", CatcheurType.Brute, CatcheurState.Opérationnel, SpecialAttack.RaieDuC),
+            new Catcheur("Chris Hart", CatcheurType.Brute, CatcheurState.Opérationnel, SpecialAttack.Bloque),
+            new Catcheur("Bret Benoit", CatcheurType.Agile, CatcheurState.Opérationnel, SpecialAttack.Oneshot)
+        };
+
+        public int Season { get; set; } = 1;
         public int MatchThisSeason { get; set; }
         public StringBuilder menuRessourceContent;
         private Boolean someoneIsDead = false;
@@ -24,29 +37,8 @@ namespace el_chapo
 
         private int iterationMax = 20;
 
-        private int opATM;
-
         public MatchManager()
         {
-            //Init Stats
-            Season = 1;
-
-            //Init catcheurs
-            Catcheurs = new List<Catcheur>();
-
-
-            // Special = 0.33, Attaque = 0.33, Defense = 0.33
-            Catcheurs.Add(new Catcheur("L'ordonnateur des pompes funèbres", CatcheurType.Brute, CatcheurState.Opérationnel, SpecialAttack.Bloque));
-            Catcheurs.Add(new Catcheur("Jude Sunny", CatcheurType.Brute, CatcheurState.Opérationnel, SpecialAttack.JuddyPower));
-            Catcheurs.Add(new Catcheur("Triple Hache", CatcheurType.Agile, CatcheurState.Opérationnel, SpecialAttack.HacheFoudroyante));
-            Catcheurs.Add(new Catcheur("Dead Poule", CatcheurType.Agile, CatcheurState.Opérationnel, SpecialAttack.DeadPoulePower));
-            Catcheurs.Add(new Catcheur("Jarvan cinquième du nom", CatcheurType.Brute, CatcheurState.Opérationnel, SpecialAttack.Bloque));
-            Catcheurs.Add(new Catcheur("Madusa", CatcheurType.Agile, CatcheurState.Opérationnel, SpecialAttack.OffensiveBlock));
-            Catcheurs.Add(new Catcheur("John Cinéma", CatcheurType.Agile, CatcheurState.Opérationnel, SpecialAttack.HacheFoudroyante));
-            Catcheurs.Add(new Catcheur("Jeff Radis", CatcheurType.Brute, CatcheurState.Opérationnel, SpecialAttack.Bloque));
-            Catcheurs.Add(new Catcheur("Raie Mystérieuse", CatcheurType.Brute, CatcheurState.Opérationnel, SpecialAttack.RaieDuC));
-            Catcheurs.Add(new Catcheur("Chris Hart", CatcheurType.Brute, CatcheurState.Opérationnel, SpecialAttack.Bloque));
-            Catcheurs.Add(new Catcheur("Bret Benoit", CatcheurType.Agile, CatcheurState.Opérationnel, SpecialAttack.Oneshot));
 
         }
 
@@ -58,7 +50,7 @@ namespace el_chapo
 
         }
 
-        public void OrderByPseudo() // tri par ordre alphabetique 
+        public void OrderByPseudo(List<Catcheur> Catcheurs) // tri par ordre alphabetique 
         {
             Catcheurs.Sort((x, y) => string.Compare(x.Pseudo, y.Pseudo));
         }
@@ -91,13 +83,12 @@ namespace el_chapo
 
         }
 
-
         public List<Catcheur> GetCatcheurMort()
         {
 
             List<Catcheur> CatcheurMort = new List<Catcheur>();
             //int index = 0;
-            OrderByPseudo();
+            OrderByPseudo(Catcheurs);
             foreach (Catcheur catcheur in Catcheurs)
             {
                 if (catcheur.CatcheurState == CatcheurState.Mort)
@@ -108,12 +99,14 @@ namespace el_chapo
             return CatcheurMort;
         }
 
+        //Catcheurs.Sort((x, y) => string.Compare(x.Pseudo, y.Pseudo));
         public List<Catcheur> GetCatcheurOp()
         {
             
             List <Catcheur> CatcheursOp = new List<Catcheur>();
+
             // affiche les catcheurs opérationnel , convalescent et mort 
-            OrderByPseudo();
+            OrderByPseudo(Catcheurs);
             foreach(Catcheur catcheur in Catcheurs)
             {
                 if (catcheur.CatcheurState == CatcheurState.Opérationnel)
@@ -143,15 +136,28 @@ namespace el_chapo
         public StringBuilder DisplayCatcheurList()// affiche la liste des catcheurs opérationnel
         {
             StringBuilder sb = new StringBuilder();
-            List<Catcheur> CatcheursOp = GetCatcheurOp();
+            List<Catcheur> CatcheursOpAndConv = GetCatcheurOp();
+            CatcheursOpAndConv.AddRange(GetCatcheurConv());
+
             int index = 0;
             // Affiche uniquement les catcheurs OP 
-            OrderByPseudo();
-            foreach (Catcheur catcheur in CatcheursOp)
+            OrderByPseudo(CatcheursOpAndConv);
+            foreach (Catcheur catcheur in CatcheursOpAndConv)
             {
-                sb.AppendLine(catcheur.Describe(index++));
+                if(catcheur.CatcheurState == CatcheurState.Opérationnel)
+                {
+                    sb.AppendLine(catcheur.Describe(index++));
+                }
             }
-            opATM = index;
+
+            foreach(Catcheur catcheur in CatcheursOpAndConv)
+            {
+                if (catcheur.CatcheurState == CatcheurState.Convalescent)
+                {
+                    sb.AppendLine(catcheur.Describe());
+                }
+            }
+            
             return sb;
         }
 
@@ -197,7 +203,7 @@ namespace el_chapo
        
             
             int index = 0;
-            OrderByPseudo();
+            OrderByPseudo(Catcheurs);
             foreach (Catcheur catcheur in GetOrderedList())
             {
                 sb.AppendLine(catcheur.Describe(index++));
@@ -213,19 +219,19 @@ namespace el_chapo
             int tempP2 = int.MaxValue;
 
             Console.WriteLine("Choisissez le 1er catcheur : ");
-            tempP1 = MenuManager.instance.TestUserInput(0, opATM);
+            tempP1 = MenuManager.instance.TestUserInput(0, GetCatcheurOp().Count);
 
             do
             {
                 if (tempP2 == int.MaxValue)
                 {
                     Console.WriteLine("Choisissez le 2éme catcheur : ");
-                    tempP2 = MenuManager.instance.TestUserInput(0, opATM);
+                    tempP2 = MenuManager.instance.TestUserInput(0, GetCatcheurOp().Count);
                 }
                 else
                 {
                     Console.WriteLine("On ne peut pas combattre contre soi-même... Veuillez choisir un autre catcheur");
-                    tempP2 = MenuManager.instance.TestUserInput(0, opATM);
+                    tempP2 = MenuManager.instance.TestUserInput(0, GetCatcheurOp().Count);
                 }
 
             }
@@ -298,14 +304,13 @@ namespace el_chapo
                     // On display le résultat pour cette itération
                     RefreshBonus(c1, c2);
                     DisplayResultCurrentIteration(c1, c2, iteration);
-                    //la
+                    //Thread.Sleep(1000);
                 }
 
                 if (iteration == iterationMax)
                 {
                     break;
                 }
-                //Thread.Sleep(2000);
             }
             DisplayAndManageEndGame(c1, c2);
         }
@@ -341,15 +346,14 @@ namespace el_chapo
                 HealWinner(winner);
             }
 
-            Thread.Sleep(3000);
             if (IsEveryoneDead())
             {
                 DisplayEndScreen(c1, c2);
             }
             else
             {
-                Console.Clear();
-                MenuManager.instance.DisplayMenu();
+                MenuManager.instance.RetourMainMenu();
+
             }
             
         }

@@ -42,7 +42,9 @@ namespace el_chapo
         public string DescribeHistory()
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine($" {VictoryCatcheur} a  gagné contre {LooserCatcheur} au bout de {Iteration} round par {WinState} et a remporté {Gain} $ ");
+            // string puce = Convert.ToUInt16("\u24C8").ToString("X4");
+            string puce = "-";
+            sb.AppendLine($"{puce} {VictoryCatcheur} a  gagné contre {LooserCatcheur} au bout de {Iteration} rounds par {WinState} et a remporté {Gain} $ ");
 
             return sb.ToString();
         }

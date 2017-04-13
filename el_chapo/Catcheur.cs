@@ -96,11 +96,12 @@ namespace el_chapo
        public string Describe(int index)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"{index}. NOM : {Pseudo} | TYPE : {CatcheurType} | HP : {Health} | Attack : {Attack} | Defense : {Defense} | Attaque Spéciale : {SpecialAtk} | Statut : {CatcheurState}");
-            if(CatcheurState == CatcheurState.Convalescent)
+            string description = $"{index}. NOM : {Pseudo} | TYPE : {CatcheurType} | HP : {Health} | Attack : {Attack} | Defense : {Defense} | Attaque Spéciale : {SpecialAtk} | Statut : {CatcheurState}";
+            if (CatcheurState == CatcheurState.Convalescent)
             {
-                sb.Append($" | Jour(s) restant(s) : {DayRemainingBeforeOp} \n");
+                description = description + $" (jour(s) restant(s) : {DayRemainingBeforeOp})";
             }
+            sb.Append(description);
 
             return sb.ToString();
         }
@@ -108,11 +109,12 @@ namespace el_chapo
         public string Describe()
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"NOM : {Pseudo} | TYPE : {CatcheurType} | HP : {Health} | Attack : {Attack} | Defense : {Defense} | Attaque Spéciale : {SpecialAtk} | Statut : {CatcheurState}");
+            string description = $"NOM : {Pseudo} | TYPE : {CatcheurType} | HP : {Health} | Attack : {Attack} | Defense : {Defense} | Attaque Spéciale : {SpecialAtk} | Statut : {CatcheurState}";
             if (CatcheurState == CatcheurState.Convalescent)
             {
-                sb.Append($" | Jour(s) restant(s) : {DayRemainingBeforeOp} \n");
+                description = description + $" (jour(s) restant(s) : {DayRemainingBeforeOp})";
             }
+            sb.Append(description);
 
             return sb.ToString();
         }

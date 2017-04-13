@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Save xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <DateLastPlayed>2017-04-12T11:29:06.0590992+02:00</DateLastPlayed>
-  <DateCreated>2017-04-12T11:29:06.0631036+02:00</DateCreated>
+  <DateLastPlayed>2017-04-13T12:19:43.1298874+02:00</DateLastPlayed>
+  <DateCreated>2017-04-13T12:19:43.1328895+02:00</DateCreated>
   <CatcheurList>
     <Catcheur>
       <Pseudo>Bret Benoit</Pseudo>
@@ -24,12 +24,12 @@
     <Catcheur>
       <Pseudo>Chris Hart</Pseudo>
       <CatcheurType>Brute</CatcheurType>
-      <CatcheurState>Convalescent</CatcheurState>
-      <Health>33</Health>
+      <CatcheurState>Opérationnel</CatcheurState>
+      <Health>84</Health>
       <maxHealth>100</maxHealth>
       <Defense>1</Defense>
       <Attack>5</Attack>
-      <action>Attack</action>
+      <action>Defend</action>
       <BonusAttack>0</BonusAttack>
       <BonusDefense>0</BonusDefense>
       <BonusHeal>0</BonusHeal>
@@ -60,12 +60,12 @@
     <Catcheur>
       <Pseudo>Jarvan cinquième du nom</Pseudo>
       <CatcheurType>Brute</CatcheurType>
-      <CatcheurState>Convalescent</CatcheurState>
-      <Health>46</Health>
+      <CatcheurState>Opérationnel</CatcheurState>
+      <Health>100</Health>
       <maxHealth>100</maxHealth>
       <Defense>1</Defense>
       <Attack>5</Attack>
-      <action>Defend</action>
+      <action>Attack</action>
       <BonusAttack>0</BonusAttack>
       <BonusDefense>0</BonusDefense>
       <BonusHeal>0</BonusHeal>
@@ -73,17 +73,17 @@
       <DebuffAttack>0</DebuffAttack>
       <DebuffDefense>0</DebuffDefense>
       <SpecialAtk>Bloque</SpecialAtk>
-      <DayRemainingBeforeOp>3</DayRemainingBeforeOp>
+      <DayRemainingBeforeOp>0</DayRemainingBeforeOp>
     </Catcheur>
     <Catcheur>
       <Pseudo>Jeff Radis</Pseudo>
       <CatcheurType>Brute</CatcheurType>
       <CatcheurState>Opérationnel</CatcheurState>
-      <Health>64</Health>
+      <Health>100</Health>
       <maxHealth>100</maxHealth>
       <Defense>1</Defense>
       <Attack>5</Attack>
-      <action>SpeAttackFailed</action>
+      <action>Attack</action>
       <BonusAttack>0</BonusAttack>
       <BonusDefense>0</BonusDefense>
       <BonusHeal>0</BonusHeal>
@@ -202,9 +202,9 @@
       <DayRemainingBeforeOp>0</DayRemainingBeforeOp>
     </Catcheur>
   </CatcheurList>
-  <Season>2</Season>
+  <Season>1</Season>
   <MatchThisSeason>1</MatchThisSeason>
-  <Money>1042006.8999999999</Money>
+  <Money>114129.99999999999</Money>
   <HistoryList>
     <History>
       <VictoryCatcheur>Dead Poule</VictoryCatcheur>
@@ -212,62 +212,6 @@
       <WinState>PAR_DELAI</WinState>
       <Iteration>20</Iteration>
       <Gain>114129.99999999999</Gain>
-    </History>
-    <History>
-      <VictoryCatcheur>Dead Poule</VictoryCatcheur>
-      <LooserCatcheur>Chris Hart</LooserCatcheur>
-      <WinState>PAR_DELAI</WinState>
-      <Iteration>20</Iteration>
-      <Gain>114129.99999999999</Gain>
-    </History>
-    <History>
-      <VictoryCatcheur>Dead Poule</VictoryCatcheur>
-      <LooserCatcheur>Chris Hart</LooserCatcheur>
-      <WinState>PAR_DELAI</WinState>
-      <Iteration>20</Iteration>
-      <Gain>114129.99999999999</Gain>
-    </History>
-    <History>
-      <VictoryCatcheur>Dead Poule</VictoryCatcheur>
-      <LooserCatcheur>Chris Hart</LooserCatcheur>
-      <WinState>PAR_DELAI</WinState>
-      <Iteration>20</Iteration>
-      <Gain>114129.99999999999</Gain>
-    </History>
-    <History>
-      <VictoryCatcheur>Dead Poule</VictoryCatcheur>
-      <LooserCatcheur>Jarvan cinquième du nom</LooserCatcheur>
-      <WinState>PAR_DELAI</WinState>
-      <Iteration>20</Iteration>
-      <Gain>114129.99999999999</Gain>
-    </History>
-    <History>
-      <VictoryCatcheur>Dead Poule</VictoryCatcheur>
-      <LooserCatcheur>Jarvan cinquième du nom</LooserCatcheur>
-      <WinState>PAR_DELAI</WinState>
-      <Iteration>20</Iteration>
-      <Gain>114129.99999999999</Gain>
-    </History>
-    <History>
-      <VictoryCatcheur>Dead Poule</VictoryCatcheur>
-      <LooserCatcheur>Jarvan cinquième du nom</LooserCatcheur>
-      <WinState>PAR_DELAI</WinState>
-      <Iteration>20</Iteration>
-      <Gain>114129.99999999999</Gain>
-    </History>
-    <History>
-      <VictoryCatcheur>Dead Poule</VictoryCatcheur>
-      <LooserCatcheur>Jeff Radis</LooserCatcheur>
-      <WinState>PAR_DELAI</WinState>
-      <Iteration>20</Iteration>
-      <Gain>114129.99999999999</Gain>
-    </History>
-    <History>
-      <VictoryCatcheur>Dead Poule</VictoryCatcheur>
-      <LooserCatcheur>Jeff Radis</LooserCatcheur>
-      <WinState>PAR_DELAI</WinState>
-      <Iteration>20</Iteration>
-      <Gain>128966.89999999997</Gain>
     </History>
   </HistoryList>
 </Save>

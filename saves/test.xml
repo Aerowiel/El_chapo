@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Save xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <DateLastPlayed>2017-04-11T22:44:27.4923764+02:00</DateLastPlayed>
-  <DateCreated>2017-04-11T22:44:27.4968885+02:00</DateCreated>
+  <DateLastPlayed>2017-04-13T12:48:18.7611194+02:00</DateLastPlayed>
+  <DateCreated>2017-04-13T12:48:18.7651217+02:00</DateCreated>
   <CatcheurList>
     <Catcheur>
       <Pseudo>Bret Benoit</Pseudo>
@@ -25,11 +25,11 @@
       <Pseudo>Chris Hart</Pseudo>
       <CatcheurType>Brute</CatcheurType>
       <CatcheurState>Opérationnel</CatcheurState>
-      <Health>86</Health>
+      <Health>80</Health>
       <maxHealth>100</maxHealth>
       <Defense>1</Defense>
       <Attack>5</Attack>
-      <action>SpeAttackFailed</action>
+      <action>Defend</action>
       <BonusAttack>0</BonusAttack>
       <BonusDefense>0</BonusDefense>
       <BonusHeal>0</BonusHeal>
