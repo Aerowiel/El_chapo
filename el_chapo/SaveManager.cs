@@ -71,16 +71,12 @@ namespace el_chapo
             {
                 save = (Save)serializer.Deserialize(fileStream);
                 Console.WriteLine("Deserializing file stream");
-                ExperimentalProgressBar progressBar = new ExperimentalProgressBar(ConsoleColor.Blue, 0);
+                ExperimentalProgressBar progressBar = new ExperimentalProgressBar(ConsoleColor.Blue, 25);
                 progressBar.DisplayProgressBar();
                 
             }
             //MatchManager
-            Console.WriteLine(save.CatcheurList.Count); //22
-            Console.ReadKey();
-            MatchManager.instance.Catcheurs = save.CatcheurList;
-            Console.WriteLine(MatchManager.instance.Catcheurs.Count); //22
-            Console.ReadKey();
+            Contacts.Catcheurs = save.CatcheurList;
             MatchManager.instance.Season = save.Season;
             MatchManager.instance.MatchThisSeason = save.MatchThisSeason;
 
