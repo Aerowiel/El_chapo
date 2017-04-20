@@ -112,7 +112,7 @@ namespace el_chapo
             string description = $"NOM : {Pseudo} | TYPE : {CatcheurType} | HP : {Health} | Attack : {Attack} | Defense : {Defense} | Attaque Spéciale : {SpecialAtk} | Statut : {CatcheurState}";
             if (CatcheurState == CatcheurState.Convalescent)
             {
-                description = description + $" (jour(s) restant(s) : {DayRemainingBeforeOp})";
+                description = description + $" (semaine(s) restante(s) : {DayRemainingBeforeOp})";
             }
             sb.Append(description);
 
