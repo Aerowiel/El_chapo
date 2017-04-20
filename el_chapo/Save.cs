@@ -32,9 +32,9 @@ namespace el_chapo
         public Save(DateTime lastPlayed, DateTime dateCreated)
         {
             //MatchManager
-            Console.WriteLine(MatchManager.instance.Catcheurs.Count); //11
+            Console.WriteLine(Contacts.Catcheurs.Count); //11
 
-            CatcheurList = MatchManager.instance.Catcheurs;
+            CatcheurList = Contacts.Catcheurs;
             Season = MatchManager.instance.Season;
             MatchThisSeason = MatchManager.instance.MatchThisSeason;
 

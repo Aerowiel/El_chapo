@@ -7,12 +7,11 @@ using System.Threading.Tasks;
 namespace el_chapo
 {
     class Program
-    {
+    {       
+
         static void Main(string[] args)
         {
-            MenuManager menuManager = new MenuManager();
-            menuManager.AskToLoadOrCreate();
-            //menuManager.DisplayMenu();
+            GameManager gameManager = new GameManager();
             Console.ReadKey();
         }
     }

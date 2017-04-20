@@ -96,7 +96,7 @@ namespace el_chapo
 
                     break;
                 case 2:
-                    Console.WriteLine(MatchManager.instance.DisplayFullCatcheurList());
+                    Console.WriteLine(Contacts.DisplayFullCatcheurList());
                     MatchManager.instance.DisplayMenuRessource();
 
                                     
