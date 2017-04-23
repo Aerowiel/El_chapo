@@ -93,12 +93,7 @@ namespace el_chapo
             while (tempP2 == tempP1);
             List<Catcheur> catcheursOp = Contacts.GetCatcheurOp();
             Console.WriteLine($"Le combat va se disputer entre {catcheursOp[tempP1].Pseudo} & {catcheursOp[tempP2].Pseudo}");
-            // lancement du son de debut de match 
-            if (("John Cinéma" == catcheursOp[tempP1].Pseudo) || ("John Cinéma" == catcheursOp[tempP2].Pseudo))
-            {
-                SoundManager.instance.playSimpleSoundCina();
-                Thread.Sleep(10000);
-            }
+           
 
             ManageFight(catcheursOp[tempP1], catcheursOp[tempP2]);
 
@@ -154,7 +149,7 @@ namespace el_chapo
                     // On display le résultat pour cette itération
                     RefreshBonus(c1, c2);
                     DisplayResultCurrentIteration(c1, c2, iteration);
-                    //Thread.Sleep(1000);
+                    Thread.Sleep(1000);
                 }
 
                 if (iteration == iterationMax)
